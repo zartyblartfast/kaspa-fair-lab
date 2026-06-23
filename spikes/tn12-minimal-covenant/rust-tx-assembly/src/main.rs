@@ -7,7 +7,7 @@ use kaspa_consensus_core::tx::{
     TransactionOutput,
 };
 use kaspa_rpc_core::{RpcTransaction, SubmitTransactionRequest};
-use workflow_serializer::serializer::Serializer;
+use workflow_serializer::serializer::{Deserializer, Serializer};
 
 fn hex_encode(bytes: &[u8]) -> String {
     const HEX: &[u8; 16] = b"0123456789abcdef";
@@ -17,6 +17,26 @@ fn hex_encode(bytes: &[u8]) -> String {
         encoded.push(HEX[(byte & 0x0f) as usize] as char);
     }
     encoded
+}
+
+fn hex_decode(hex: &str) -> Result<Vec<u8>, String> {
+    let trimmed = hex.trim();
+    if trimmed.len() % 2 != 0 {
+        return Err("hex length must be even".to_string());
+    }
+
+    let mut bytes = Vec::with_capacity(trimmed.len() / 2);
+    let chars: Vec<char> = trimmed.chars().collect();
+    for i in (0..chars.len()).step_by(2) {
+        let hi = chars[i]
+            .to_digit(16)
+            .ok_or_else(|| format!("invalid hex at position {}", i))?;
+        let lo = chars[i + 1]
+            .to_digit(16)
+            .ok_or_else(|| format!("invalid hex at position {}", i + 1))?;
+        bytes.push(((hi << 4) | lo) as u8);
+    }
+    Ok(bytes)
 }
 
 fn main() {
@@ -82,6 +102,8 @@ fn main() {
         artifact_dir.join("local-no-broadcast-rpc-transaction-rpc-serializer.hex");
     let submit_request_serializer_artifact_path =
         artifact_dir.join("local-no-broadcast-submit-transaction-request-rpc-serializer.hex");
+    let rpc_roundtrip_summary_artifact_path =
+        artifact_dir.join("local-no-broadcast-rpc-roundtrip-summary.txt");
     let serialized_bytes = to_vec(&tx).expect("serialize transaction with borsh");
     let serialized_hex = hex_encode(&serialized_bytes);
     let serialization_type =
@@ -195,6 +217,117 @@ fn main() {
     )
     .expect("write submit request serializer artifact");
 
+    let rpc_serializer_artifact_hex =
+        fs::read_to_string(&rpc_serializer_artifact_path).expect("read rpc serializer artifact");
+    let rpc_serializer_artifact_bytes =
+        hex_decode(&rpc_serializer_artifact_hex).expect("decode rpc serializer artifact hex");
+    let mut rpc_reader = std::io::Cursor::new(rpc_serializer_artifact_bytes);
+    let roundtrip_rpc_tx = RpcTransaction::deserialize(&mut rpc_reader)
+        .expect("deserialize rpc transaction artifact with rpc serializer");
+
+    let submit_request_serializer_artifact_hex =
+        fs::read_to_string(&submit_request_serializer_artifact_path)
+            .expect("read submit request serializer artifact");
+    let submit_request_serializer_artifact_bytes =
+        hex_decode(&submit_request_serializer_artifact_hex)
+            .expect("decode submit request serializer artifact hex");
+    let mut submit_request_reader = std::io::Cursor::new(submit_request_serializer_artifact_bytes);
+    let roundtrip_submit_transaction_request =
+        SubmitTransactionRequest::deserialize(&mut submit_request_reader)
+            .expect("deserialize submit request artifact with rpc serializer");
+
+    let roundtrip_rpc_output0 = &roundtrip_rpc_tx.outputs[0];
+    let roundtrip_rpc_covenant_binding_present = roundtrip_rpc_output0.covenant.is_some();
+    let rpc_transaction_roundtrip_pass = roundtrip_rpc_tx.version == rpc_tx.version
+        && roundtrip_rpc_tx.inputs.len() == rpc_tx.inputs.len()
+        && roundtrip_rpc_tx.outputs.len() == rpc_tx.outputs.len()
+        && roundtrip_rpc_output0.value == rpc_output0.value
+        && roundtrip_rpc_covenant_binding_present == covenant_binding_present
+        && roundtrip_rpc_tx.verbose_data.is_some() == rpc_tx.verbose_data.is_some();
+
+    let roundtrip_submit_request_output0 =
+        &roundtrip_submit_transaction_request.transaction.outputs[0];
+    let roundtrip_submit_request_covenant_binding_present =
+        roundtrip_submit_request_output0.covenant.is_some();
+    let submit_request_roundtrip_pass = roundtrip_submit_transaction_request.allow_orphan
+        == allow_orphan
+        && roundtrip_submit_transaction_request.transaction.version == rpc_tx.version
+        && roundtrip_submit_transaction_request
+            .transaction
+            .inputs
+            .len()
+            == rpc_tx.inputs.len()
+        && roundtrip_submit_transaction_request
+            .transaction
+            .outputs
+            .len()
+            == rpc_tx.outputs.len()
+        && roundtrip_submit_request_output0.value == rpc_output0.value
+        && roundtrip_submit_request_covenant_binding_present == covenant_binding_present
+        && roundtrip_submit_transaction_request
+            .transaction
+            .verbose_data
+            .is_some()
+            == rpc_tx.verbose_data.is_some();
+
+    let roundtrip_summary = format!(
+        concat!(
+            "rpc serializer roundtrip summary\n",
+            "rpc_transaction_roundtrip: {}\n",
+            "submit_request_roundtrip: {}\n",
+            "rpc_transaction_version_original: {}\n",
+            "rpc_transaction_version_roundtrip: {}\n",
+            "rpc_input_count_original: {}\n",
+            "rpc_input_count_roundtrip: {}\n",
+            "rpc_output_count_original: {}\n",
+            "rpc_output_count_roundtrip: {}\n",
+            "rpc_output0_value_original: {}\n",
+            "rpc_output0_value_roundtrip: {}\n",
+            "allow_orphan_original: {}\n",
+            "allow_orphan_roundtrip: {}\n",
+            "covenant_binding_present_original: {}\n",
+            "covenant_binding_present_roundtrip_rpc: {}\n",
+            "covenant_binding_present_roundtrip_submit_request: {}\n",
+            "rpc_verbose_data_present_original: {}\n",
+            "rpc_verbose_data_present_roundtrip: {}\n",
+            "submit_request_verbose_data_present_roundtrip: {}\n",
+            "no_rpc_client_called: true\n",
+            "signed: false\n",
+            "broadcast: false\n"
+        ),
+        if rpc_transaction_roundtrip_pass {
+            "pass"
+        } else {
+            "fail"
+        },
+        if submit_request_roundtrip_pass {
+            "pass"
+        } else {
+            "fail"
+        },
+        rpc_tx.version,
+        roundtrip_rpc_tx.version,
+        rpc_tx.inputs.len(),
+        roundtrip_rpc_tx.inputs.len(),
+        rpc_tx.outputs.len(),
+        roundtrip_rpc_tx.outputs.len(),
+        rpc_output0.value,
+        roundtrip_rpc_output0.value,
+        allow_orphan,
+        roundtrip_submit_transaction_request.allow_orphan,
+        covenant_binding_present,
+        roundtrip_rpc_covenant_binding_present,
+        roundtrip_submit_request_covenant_binding_present,
+        rpc_tx.verbose_data.is_some(),
+        roundtrip_rpc_tx.verbose_data.is_some(),
+        roundtrip_submit_transaction_request
+            .transaction
+            .verbose_data
+            .is_some(),
+    );
+    fs::write(&rpc_roundtrip_summary_artifact_path, &roundtrip_summary)
+        .expect("write rpc roundtrip summary artifact");
+
     println!("summary_artifact_path={}", summary_artifact_path.display());
     println!(
         "serialization_artifact_path={}",
@@ -216,6 +349,10 @@ fn main() {
         "submit_request_serializer_artifact_path={}",
         submit_request_serializer_artifact_path.display()
     );
+    println!(
+        "rpc_roundtrip_summary_artifact_path={}",
+        rpc_roundtrip_summary_artifact_path.display()
+    );
     println!("serialization_type={}", serialization_type);
     println!("rpc_serializer_type={}", rpc_serializer_type);
     println!(
@@ -235,6 +372,22 @@ fn main() {
     println!("transaction_id={}", tx_id);
     println!("rpc_transaction_conversion=success");
     println!("submit_transaction_request_construction=success");
+    println!(
+        "rpc_transaction_roundtrip={}",
+        if rpc_transaction_roundtrip_pass {
+            "pass"
+        } else {
+            "fail"
+        }
+    );
+    println!(
+        "submit_request_roundtrip={}",
+        if submit_request_roundtrip_pass {
+            "pass"
+        } else {
+            "fail"
+        }
+    );
     println!("submit_transaction_request_allow_orphan={}", allow_orphan);
     println!("submit_transaction_request_rpc_call_made=false");
     println!("submit_transaction_request_broadcast_attempted=false");

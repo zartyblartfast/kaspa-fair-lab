@@ -1,0 +1,22 @@
+rpc serializer roundtrip summary
+rpc_transaction_roundtrip: pass
+submit_request_roundtrip: pass
+rpc_transaction_version_original: 2
+rpc_transaction_version_roundtrip: 2
+rpc_input_count_original: 1
+rpc_input_count_roundtrip: 1
+rpc_output_count_original: 1
+rpc_output_count_roundtrip: 1
+rpc_output0_value_original: 1500
+rpc_output0_value_roundtrip: 1500
+allow_orphan_original: false
+allow_orphan_roundtrip: false
+covenant_binding_present_original: false
+covenant_binding_present_roundtrip_rpc: false
+covenant_binding_present_roundtrip_submit_request: false
+rpc_verbose_data_present_original: false
+rpc_verbose_data_present_roundtrip: false
+submit_request_verbose_data_present_roundtrip: false
+no_rpc_client_called: true
+signed: false
+broadcast: false

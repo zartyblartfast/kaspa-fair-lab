@@ -10,6 +10,7 @@ Current behavior:
 - converts that local `Transaction` into `kaspa_rpc_core::RpcTransaction` via the official `From<&Transaction> for RpcTransaction` path,
 - constructs a local `kaspa_rpc_core::SubmitTransactionRequest` around that `RpcTransaction` with `allow_orphan = false`,
 - serializes both `RpcTransaction` and `SubmitTransactionRequest` through the Rusty Kaspa RPC `Serializer` trait path and writes lowercase hex artifacts,
+- deserializes those RPC serializer artifacts back into local objects and verifies a local round-trip on key fields,
 - prints a deterministic summary (`version`, input/output counts, output value, script/covenant presence, transaction id),
 - writes a repo-owned artifact file at:
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction-summary.txt`
@@ -22,6 +23,8 @@ Current behavior:
 - writes repo-owned RPC serializer artifacts at:
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-rpc-transaction-rpc-serializer.hex`
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-submit-transaction-request-rpc-serializer.hex`
+- writes a repo-owned local round-trip verification artifact at:
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-rpc-roundtrip-summary.txt`
 
 The constructed object is unsigned and local-only.
 
@@ -73,11 +76,14 @@ Expected `cargo run` outputs include:
 - `submit_request_summary_artifact_path=artifacts/local-no-broadcast-submit-transaction-request-summary.txt`
 - `rpc_serializer_artifact_path=artifacts/local-no-broadcast-rpc-transaction-rpc-serializer.hex`
 - `submit_request_serializer_artifact_path=artifacts/local-no-broadcast-submit-transaction-request-rpc-serializer.hex`
+- `rpc_roundtrip_summary_artifact_path=artifacts/local-no-broadcast-rpc-roundtrip-summary.txt`
 - `serialization_type=borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)`
 - `rpc_serializer_type=rusty-kaspa rpc Serializer trait binary encoded as lowercase hex`
 - `transaction_version=2`
 - `rpc_serializer_bytes_len=171`
 - `submit_request_serializer_bytes_len=178`
+- `rpc_transaction_roundtrip=pass`
+- `submit_request_roundtrip=pass`
 - `no_rpc_client_called=true`
 - `signed=false`
 - `broadcast=false`

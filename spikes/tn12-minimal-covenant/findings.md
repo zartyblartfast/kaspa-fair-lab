@@ -1197,3 +1197,62 @@ What remains unverified:
 - No transaction submission or broadcast was attempted.
 - No mainnet usage.
 ```
+
+## env-027 local RPC serializer round-trip verification
+
+```text
+Run ID: env-027
+Date/time: 2026-06-23T20:41:01Z
+Network: TN12/testnet scope only (local no-broadcast only; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+- spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Commands run:
+- `cargo fmt`
+- `cargo check`
+- `cargo run`
+
+Pass/fail result:
+- `cargo fmt`: PASS
+- `cargo check`: PASS
+- `cargo run`: PASS
+
+Artifact path:
+- `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-rpc-roundtrip-summary.txt`
+
+Observed output summary:
+- `rpc_roundtrip_summary_artifact_path=artifacts/local-no-broadcast-rpc-roundtrip-summary.txt`
+- `rpc_transaction_roundtrip=pass`
+- `submit_request_roundtrip=pass`
+- `no_rpc_client_called=true`
+- `signed=false`
+- `broadcast=false`
+
+Whether RpcTransaction round-trip succeeded:
+- Yes.
+- Key fields matched after local deserialize/round-trip: version, input count, output count, output value, covenant binding presence, and verbose-data presence.
+
+Whether SubmitTransactionRequest round-trip succeeded:
+- Yes.
+- Key fields matched after local deserialize/round-trip: `allow_orphan`, version, input count, output count, output value, covenant binding presence, and verbose-data presence.
+
+Whether any RPC client was called:
+- No.
+
+Whether anything was signed:
+- No.
+
+Whether anything was broadcast:
+- No.
+
+What remains unverified:
+- The exact external/wire meaning of these RPC serializer bytes outside this local object serializer path.
+- No signing path was implemented or tested.
+- No RPC client path was exercised.
+- No live TN12 create/spend/inspect flow was attempted.
+- No transaction submission or broadcast was attempted.
+- No mainnet usage.
+```
