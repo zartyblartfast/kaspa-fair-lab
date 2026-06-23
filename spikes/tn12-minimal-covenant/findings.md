@@ -138,6 +138,36 @@ Notes:
 - All candidate routes remain **UNVERIFIED** until a live command sequence and output artifacts are captured in this file.
 - `docs/toccata-feasibility.md` still states Rust tools were previously missing, which conflicts with the latest check output; treat that as historical context until reconciled in a cleanup pass.
 
+## env-006 SilverScript read-only live probe
+
+- **Run ID:** env-006
+- **Date/time:** 2026-06-23T13:53:11Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- Local command discovery (read-only):
+  - `command -v silverscript` -> not found
+  - `command -v silver` -> not found
+  - `command -v ssc` -> not found
+- Because no command existed, no `--help` or `--version` runs were possible.
+- Repo text search for SilverScript notes/examples (`silver`, `silverscript`, `ssc`) found only existing spike planning references; no runnable command examples or tool-specific setup commands were found.
+- Metadata scan of local files/docs found no official SilverScript source/repo/package identifier.
+
+Success/failure: **pass** for read-only probe execution, with **fail** for current SilverScript route readiness (no local SilverScript command/tooling available).
+
+Assumptions:
+- The shell `PATH` reflects current command lookup state.
+- `command -v` accurately reflects executable availability in this environment.
+
+Unverified:
+- No SilverScript installation, clone, or package query was performed.
+- No SilverScript `--help/--version` run, compile, or live execute evidence.
+- No confirmed SilverScript TN12 create/spend/inspect output.
+
+Notes:
+- All SilverScript evidence for functional viability remains **UNVERIFIED** until a live command path is demonstrated.
+- Next step should be either metadata acquisition (official source/package) followed by an explicit SilverScript build probe, or route pivoting if this is blocked.
+
 ## Verification record
 
 To be updated after each run.

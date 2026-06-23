@@ -55,12 +55,13 @@ Update `findings.md` with:
 Goal for the next run: identify the smallest reproducible path to create/inspect a tiny artefact, without assuming any path works yet.
 
 1. **Proposed next experiment (planned, no run yet):** read-only route-discovery only.
-   - Probe for SilverScript command/help/docs references, and Rust crate/tooling references.
+   - Since no local `silverscript`/`silver`/`ssc` command was found, do a metadata-only discovery for official SilverScript source/repo/package references (no clone/install).
+   - Keep Rust, WASM, and Python checks read-only as secondary follow-up.
    - No build, compile, dependency install, repository clone, transaction submit, or covenant implementation in this step.
 
 2. **Decision rule for first live experiment:**
-   - Prefer SilverScript first if it yields actionable TN12 create/spend guidance.
-   - If SilverScript is not actionable, fall back to Rusty Kaspa / Rust crates.
+   - If SilverScript metadata/actionability is confirmed, proceed with a constrained live SilverScript help/version/create-probe sequence.
+   - If SilverScript metadata/actionability is not confirmed, pivot to Rusty Kaspa / Rust crates for the first live attempt.
 
 3. **Secondary read-only checks (before any live step):**
    - Check feasibility of WASM SDK and Python SDK routes for payload/build/inspection support.
