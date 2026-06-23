@@ -110,6 +110,34 @@ Notes:
 - The earlier `cargo`/`rustc` failure remains most consistent with shell/session PATH visibility immediately after installation rather than a Rust toolchain failure.
 - No additional environment changes were made for this update; this is a revalidation only.
 
+## env-005 tooling route discovery
+
+- **Run ID:** env-005
+- **Date/time:** 2026-06-23T13:43:18Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- Files reviewed:
+  - `docs/toccata-feasibility.md`
+  - `spikes/tn12-minimal-covenant/README.md`
+  - `spikes/tn12-minimal-covenant/findings.md`
+- No covenant runtime/tooling command was executed.
+
+Success/failure: **pass** for documentation pass (route candidates captured, no runtime claims yet)
+
+### Candidate route assessment
+
+| Route | Possible use | What would need to be installed/cloned later | Evidence needed to prove viability | Risks / unknowns |
+| --- | --- | --- | --- | --- |
+| SilverScript | High-level covenant script workflow for building/spending/inspecting a tiny artefact with minimal custom tx plumbing. | Need a working SilverScript distribution path (CLI/package or repository checkout) and any runtime/docs assumptions it requires. | Presence of a usable `silverscript` command (or equivalent), successful help/usage output, and a live TN12 create/spend/inspect sequence with concrete tx/artifact outputs. | Current docs only indicate this as a candidate; actual command availability and TN12 compatibility are unproven. |
+| Rusty Kaspa / Rust crates | Low-level/native construction and signing path for script payloads and transactions, suitable for explicit covenant inspection. | Need Rust crate sources/dependencies for Kaspa/Toccata plus any project templates needed for tx assembly/submission. | Successful minimal compile/build of a tiny create flow, followed by successful spend and inspection outputs on TN12. | Requires compile/build effort and dependency alignment; heavier setup footprint and longer feedback loop. |
+| WASM SDK | JavaScript/wasm-assisted path for constructing covenant payloads or helper logic before signing/submitting via other tooling. | Need WASM toolchain/runtime, package modules, and source package references for available examples. | A runnable WASM invocation that generates a usable covenant payload and a successful handoff into a TN12 tx pipeline with inspectable output. | Might be simulation-only, browser-focused, or missing TN12 covenant examples in current repos. |
+| Python SDK | Automation/orchestration path for scripting checks, wallet setup, and inspection if relevant Kaspa/Toccata Python bindings exist. | Need Python package install and module availability (to be done later), plus any companion tooling for tx signing/submission. | Confirmed import/version and a live command path that creates an artefact, spends it, and prints inspection details. | No direct Python covenant path is confirmed in current spike docs; may only support inspection or be unavailable. |
+
+Notes:
+- All candidate routes remain **UNVERIFIED** until a live command sequence and output artifacts are captured in this file.
+- `docs/toccata-feasibility.md` still states Rust tools were previously missing, which conflicts with the latest check output; treat that as historical context until reconciled in a cleanup pass.
+
 ## Verification record
 
 To be updated after each run.

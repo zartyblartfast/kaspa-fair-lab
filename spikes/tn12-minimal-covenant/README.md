@@ -54,22 +54,15 @@ Update `findings.md` with:
 
 Goal for the next run: identify the smallest reproducible path to create/inspect a tiny artefact, without assuming any path works yet.
 
-1. **Proposed first experiment (planned, do not run yet)**
-   - Conduct a read-only route probe for command availability and docs/help output:
-     - `silverscript*` discovery and `--help` output (if present)
-     - Rust crate/tool availability references in docs
-   - Do **not** build, compile, or submit any transaction in this experiment.
-   - If SilverScript yields actionable TN12 create/spend guidance, use it as the first live experiment.
+1. **Proposed next experiment (planned, no run yet):** read-only route-discovery only.
+   - Probe for SilverScript command/help/docs references, and Rust crate/tooling references.
+   - No build, compile, dependency install, repository clone, transaction submit, or covenant implementation in this step.
 
-2. **Fallback decision rule (if SilverScript is not actionable)**
-   - Use Rusty Kaspa / Rust crates as the next candidate for the first live experiment because it is the most direct lower-level route for native tx and covenant payload control.
+2. **Decision rule for first live experiment:**
+   - Prefer SilverScript first if it yields actionable TN12 create/spend guidance.
+   - If SilverScript is not actionable, fall back to Rusty Kaspa / Rust crates.
 
-3. **Secondary probes (still read-only/documentation-only before live execution)**
-   - Check whether WASM SDK route is available via docs/examples.
-   - Check whether a Python SDK route is documented and importable for minimal orchestration.
-
-4. **Select first live route**
-   - Choose the single narrowest viable path, then execute one minimal command sequence only.
-   - No implementation path is considered working until tx output/artifact is recorded in `findings.md`.
+3. **Secondary read-only checks (before any live step):**
+   - Check feasibility of WASM SDK and Python SDK routes for payload/build/inspection support.
 
 No path is treated as valid until a live command sequence is recorded in `findings.md` with outputs.
