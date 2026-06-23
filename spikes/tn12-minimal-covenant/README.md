@@ -53,6 +53,10 @@ Update `findings.md` with:
 - unknowns,
 - and assumptions introduced.
 
+## How to rerun
+
+Run `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh` from the repo root (or anywhere in this repo).
+
 ## Next-step technical plan
 
 Goal for the next run: convert the current temporary-only evidence into a repository-owned, reproducible no-broadcast local workflow.

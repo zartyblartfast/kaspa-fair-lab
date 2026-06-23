@@ -534,6 +534,23 @@ Notes:
 
 - Constraints were respected: no roulette, no web app, no dependencies installation, no clone operations, no external source edits, and no broadcast activity.
 
+## env-016 local no-broadcast helper script
+
+- **Run ID:** env-016
+- **Date/time:** 2026-06-23T15:23:37Z
+- **Network:** TN12/testnet (local simulation-only)
+- **Script path:** `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
+- **Commands covered:**
+  1. `cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  2. `cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
+  3. `cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
+- **Pass/fail result:** PASS (all three checks completed with no-broadcast)
+- **Artifacts logged to:** `spikes/tn12-minimal-covenant/artifacts/`
+- **Log files:**
+  - `simple-covenant-version2.log`
+  - `transition-demo.log`
+  - `simple-covenant-tx-structured.log`
+- **What remains unverified:** no live TN12 create/spend/inspect transaction sequence has been attempted; no transaction has been submitted or broadcast; no mainnet usage.
 ## Verification record
 
 To be updated after each run.

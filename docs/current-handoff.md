@@ -11,29 +11,26 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Current status
 - `simple_covenant.sil` compiles successfully to JSON: `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`.
-- `simple_covenant.test` fixture was added locally at:
+- Repository-owned fixture set now includes:
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil`
   - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
-- Fixture used in local simulation:
-  - `function: "covenant"`
-  - `expect: "pass"`
-  - `tx.version: 2`
-  - minimal input/output values (`utxo_value` / `value`)
-- Local simulation command passed:
-  - `/root/.cargo/bin/cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
-- Observed output lines:
-  - `RUN version_2_pass`
-  - `PASS version_2_pass`
-  - `1 tests: 1 passed, 0 failed`
-- No TN12 transaction broadcast has been attempted.
-- TN12-style no-broadcast spend-like covenant execution has been run locally via `cli-debugger` with an explicit stateful `covenant` fixture:
-  - `/root/.cargo/bin/cargo run -p cli-debugger -- /tmp/cov_debug_demo.sil --run-all --test-file /tmp/cov_debug_demo.test.json`
-  - observed: `RUN tn12_demo_transition_ok` / `PASS tn12_demo_transition_ok` / `1 tests: 1 passed, 0 failed`
-- `/tmp/cov_debug_demo.sil`, `/tmp/cov_debug_demo.test.json`, and `/tmp/simple_covenant_tx_structured.test.json` were temporary and are **not repo-persistent artifacts**.
-- No transaction has been submitted or broadcast.
-- Working tree currently includes only repo-doc updates:
-  - `spikes/tn12-minimal-covenant/findings.md`
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
+  - `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil`
+  - `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
+- Canonical fixture inputs and checks:
+  - `simple_covenant.test.json`: `function: "covenant"`, `expect: "pass"`, explicit `tx.version: 2`
+  - `tn12_demo_transition.test.json`: transition-style `rebalance` scenario, `expect: "pass"`
+  - `simple_covenant_tx_structured.test.json`: structured tx context variant for `simple_covenant`
+- Local simulation commands now pass with repo-owned artifacts:
+  - `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  - `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
+  - `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
+- Observed outputs in all three runs: PASS (`version_2_pass`, `tn12_demo_transition_ok`, `version_2_with_tx_context`), each with `1 tests: 1 passed, 0 failed`.
+- No TN12 transaction has been submitted, spent, or broadcast; no mainnet activity.
+- Working tree includes repo-doc updates plus fixture assets for the local workflow:
   - `spikes/tn12-minimal-covenant/README.md`
-  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  - `spikes/tn12-minimal-covenant/findings.md`
+  - `spikes/tn12-minimal-covenant/fixtures/` (repo-owned fixture assets)
 
 ## Current evidence anchors
 - Source path: `external/silverscript` in-repo clone (no dependency installs, no new repos).
