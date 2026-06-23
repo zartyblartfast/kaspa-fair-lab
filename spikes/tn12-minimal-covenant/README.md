@@ -44,11 +44,93 @@ Before implementing roulette, we need confidence that base primitives actually w
 - Target network remains TN12/testnet only.
 - One read-only local TN12 `getServerInfo` call succeeded in env-037, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`.
 - One additional read-only local TN12 `getBlockDagInfo` call succeeded in env-038, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-038-get-blockdag-info.txt`.
+- One additional read-only local TN12 `getSyncStatus` call succeeded in env-039, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`.
+- One final additional read-only local TN12 `getCurrentNetwork` call succeeded in env-040, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-040 local TN12 read-only getCurrentNetwork
+
+- **Scope:** approved localhost-only TN12 node startup retry, capture startup logs, run exactly one read-only `getCurrentNetwork` call once RPC was reachable, capture the output, and stop before any wallet/key/faucet/signing/submission/broadcast action.
+
+### Exact startup command used
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only bind check
+
+- P2P listen: `127.0.0.1:16311`
+- gRPC listen: `127.0.0.1:16210`
+- wRPC Borsh listen: `127.0.0.1:17210`
+- No `0.0.0.0` listen flag was used.
+
+### RPC/read-only result
+
+- Exact read-only RPC call used: one gRPC `getCurrentNetwork` call against `grpc://127.0.0.1:16210`.
+- Returned network field:
+  - `network`: `testnet`
+
+### Artifacts
+
+- startup log: `spikes/tn12-minimal-covenant/artifacts/env-040-kaspad-startup.log`
+- read-only result: `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`
+
+### Result
+
+- Node startup succeeded to the point of exposing the approved localhost-only RPC surfaces.
+- Exactly one read-only `getCurrentNetwork` call succeeded.
+- The node was then stopped without any wallet/key/faucet/signing/submission/broadcast activity.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- stop condition reached: stopped immediately after capturing the single read-only `getCurrentNetwork` result
+
+## Env-039 local TN12 read-only getSyncStatus
+
+- **Scope:** approved localhost-only TN12 node startup retry, capture startup logs, run exactly one read-only `getSyncStatus` call once RPC was reachable, capture the output, and stop before any wallet/key/faucet/signing/submission/broadcast action.
+
+### Exact startup command used
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only bind check
+
+- P2P listen: `127.0.0.1:16311`
+- gRPC listen: `127.0.0.1:16210`
+- wRPC Borsh listen: `127.0.0.1:17210`
+- No `0.0.0.0` listen flag was used.
+
+### RPC/read-only result
+
+- Exact read-only RPC call used: one gRPC `getSyncStatus` call against `grpc://127.0.0.1:16210`.
+- Returned sync fields:
+  - `isSynced`: `false`
+
+### Artifacts
+
+- startup log: `spikes/tn12-minimal-covenant/artifacts/env-039-kaspad-startup.log`
+- read-only result: `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`
+
+### Result
+
+- Node startup succeeded to the point of exposing the approved localhost-only RPC surfaces.
+- Exactly one read-only `getSyncStatus` call succeeded.
+- The node was then stopped without any wallet/key/faucet/signing/submission/broadcast activity.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- stop condition reached: stopped immediately after capturing the single read-only `getSyncStatus` result
 
 ## Env-038 local TN12 read-only getBlockDagInfo
 

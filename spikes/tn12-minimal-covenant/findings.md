@@ -1848,6 +1848,132 @@ Scope confirmations:
 - No mainnet usage.
 ```
 
+## env-040 local TN12 read-only getCurrentNetwork
+
+```text
+Run ID: env-040
+Date/time: 2026-06-23T23:38:32Z
+Network: TN12/testnet-12
+
+Files changed:
+- spikes/tn12-minimal-covenant/artifacts/env-040-kaspad-startup.log
+- spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+- spikes/tn12-minimal-covenant/rpc-get-current-network/Cargo.toml
+- spikes/tn12-minimal-covenant/rpc-get-current-network/src/main.rs
+
+Exact startup command used:
+- cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+
+Localhost-only listen check:
+- P2P listen: 127.0.0.1:16311
+- gRPC listen: 127.0.0.1:16210
+- wRPC Borsh listen: 127.0.0.1:17210
+- all approved listen addresses were localhost-only: true
+- no 0.0.0.0 listen flag was used
+
+Node log path:
+- spikes/tn12-minimal-covenant/artifacts/env-040-kaspad-startup.log
+
+RPC readiness evidence:
+- startup log shows:
+  - `GRPC Server starting on: 127.0.0.1:16210`
+  - `P2P Server starting on: 127.0.0.1:16311`
+  - `WRPC Server starting on: 127.0.0.1:17210`
+- `ss -ltnp` confirmed listeners on:
+  - `127.0.0.1:16210`
+  - `127.0.0.1:16311`
+  - `127.0.0.1:17210`
+- after stop, `ss -ltnp` showed no remaining listeners on those ports
+
+Exact read-only RPC call used:
+- one gRPC `getCurrentNetwork` call against `grpc://127.0.0.1:16210`
+- getCurrentNetwork artifact path: `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`
+
+Pass/fail result:
+- node_startup_succeeded=true
+- get_current_network_succeeded=true
+- rpc_call_count=1
+
+Returned network field:
+- `network`: `testnet`
+
+Scope confirmations:
+- whether wallet/key was created: false
+- whether faucet request was made: false
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- stop condition reached: stopped immediately after the single read-only `getCurrentNetwork` result was captured
+
+Notes:
+- The same approved localhost-only startup command from env-037/env-038/env-039 remained sufficient for env-040.
+- `getCurrentNetwork` returned the coarse network enum value `testnet`; unlike earlier `getServerInfo.networkId=testnet-12` and `getBlockDagInfo.network=testnet-12`, this method does not include the `netsuffix` in the returned field.
+```
+
+## env-039 local TN12 read-only getSyncStatus
+
+```text
+Run ID: env-039
+Date/time: 2026-06-23T23:21:42Z
+Network: TN12/testnet-12
+
+Files changed:
+- spikes/tn12-minimal-covenant/artifacts/env-039-kaspad-startup.log
+- spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Exact startup command used:
+- cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+
+Localhost-only listen check:
+- P2P listen: 127.0.0.1:16311
+- gRPC listen: 127.0.0.1:16210
+- wRPC Borsh listen: 127.0.0.1:17210
+- all approved listen addresses were localhost-only: true
+- no 0.0.0.0 listen flag was used
+
+Node log path:
+- spikes/tn12-minimal-covenant/artifacts/env-039-kaspad-startup.log
+
+RPC readiness evidence:
+- startup log shows:
+  - `GRPC Server starting on: 127.0.0.1:16210`
+  - `P2P Server starting on: 127.0.0.1:16311`
+  - `WRPC Server starting on: 127.0.0.1:17210`
+- `ss -ltnp` confirmed listeners on:
+  - `127.0.0.1:16210`
+  - `127.0.0.1:16311`
+  - `127.0.0.1:17210`
+- after stop, `ss -ltnp` showed no remaining listeners on those ports
+
+Exact read-only RPC call used:
+- one gRPC `getSyncStatus` call against `grpc://127.0.0.1:16210`
+- getSyncStatus artifact path: `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`
+
+Returned sync fields:
+- `isSynced`: `false`
+
+Pass/fail result:
+- node_startup_succeeded=true
+- get_sync_status_succeeded=true
+- rpc_call_count=1
+
+Scope confirmations:
+- whether wallet/key was created: false
+- whether faucet request was made: false
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- stop condition reached: stopped immediately after the single read-only `getSyncStatus` result was captured
+
+Notes:
+- The same approved localhost-only startup command from env-037/env-038 remained sufficient for env-039.
+- The returned `isSynced=false` result confirms the node was reachable for the approved read-only method while still in early sync state; this proves method reachability, not sync completion.
+```
+
 ## env-038 local TN12 read-only getBlockDagInfo
 
 ```text

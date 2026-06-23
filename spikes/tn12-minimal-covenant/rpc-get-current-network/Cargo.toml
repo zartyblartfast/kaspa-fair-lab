@@ -1,0 +1,10 @@
+[package]
+name = "tn12-rpc-get-current-network"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+kaspa-grpc-client = { git = "https://github.com/kaspanet/rusty-kaspa", rev = "42b734f16e2e09078175028ab33158a9f75e91cf" }
+kaspa-rpc-core = { git = "https://github.com/kaspanet/rusty-kaspa", rev = "42b734f16e2e09078175028ab33158a9f75e91cf" }
+serde_json = "1.0"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
