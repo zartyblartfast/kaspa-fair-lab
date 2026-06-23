@@ -831,3 +831,55 @@ Notes:
 - Scope constraints held: no roulette, no web app, no mainnet, no faucet, no wallet seed, no clone, no system dependency install, no external SilverScript source edits.
 - This run intentionally proves only the smallest local unsigned transaction-object artifact path.
 ```
+
+## env-021 local transaction serialization artifact
+
+```text
+Run ID: env-021
+Date/time: 2026-06-23T16:15:00Z
+Network: TN12/testnet (local no-broadcast only; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/rust-tx-assembly/Cargo.toml
+- spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+- spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Commands run:
+- cargo fmt
+- cargo check
+- cargo run
+
+Pass/fail result:
+- cargo check: PASS
+- cargo run: PASS
+
+Artifact path:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction.hex
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction-summary.txt
+
+Serialization type:
+- Borsh binary serialization of the local `Transaction`, encoded as lowercase hex.
+- This is a real deterministic binary artifact from the available Rust type API.
+- Observed `serialization_bytes_len=158`.
+- Consensus-wire/raw-network equivalence remains unverified in this run.
+
+Whether anything was signed:
+- No.
+
+Whether anything was broadcast:
+- No.
+
+What remains unverified:
+- Whether this hex artifact matches Kaspa consensus raw transaction wire serialization.
+- No signing path was exercised.
+- No PopulatedTransaction path was exercised.
+- No live TN12 create/spend/inspect flow was attempted.
+
+Observed output summary:
+- `summary_artifact_path=artifacts/local-no-broadcast-transaction-summary.txt`
+- `serialization_artifact_path=artifacts/local-no-broadcast-transaction.hex`
+- `serialization_type=borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)`
+- `serialization_bytes_len=158`
+- `transaction_id=4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd`
+```

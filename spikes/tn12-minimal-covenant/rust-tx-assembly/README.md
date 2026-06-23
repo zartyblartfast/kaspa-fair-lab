@@ -10,8 +10,16 @@ Current behavior:
 - prints a deterministic summary (`version`, input/output counts, output value, script/covenant presence, transaction id),
 - writes a repo-owned artifact file at:
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction-summary.txt`
+- writes a deterministic local serialization artifact at:
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction.hex`
 
 The constructed object is unsigned and local-only.
+
+Serialization note:
+
+- the `.hex` artifact is Borsh binary serialization encoded as lowercase hex,
+- this is a real deterministic binary artifact from the local `Transaction` type,
+- consensus-wire/raw-network equivalence is not yet verified in this spike.
 
 ## Reproducibility note
 
@@ -38,7 +46,9 @@ cargo run
 
 Expected `cargo run` outputs include:
 
-- `artifact_path=artifacts/local-no-broadcast-transaction-summary.txt`
+- `summary_artifact_path=artifacts/local-no-broadcast-transaction-summary.txt`
+- `serialization_artifact_path=artifacts/local-no-broadcast-transaction.hex`
+- `serialization_type=borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)`
 - `transaction_version=2`
 - `input_count=1`
 - `output_count=1`

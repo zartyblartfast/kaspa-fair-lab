@@ -7,6 +7,9 @@ output0_script_bytes_len: 1
 output0_script_bytes_present: true
 output0_covenant_binding_present: false
 transaction_id: 4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd
+serialization_type: borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)
+serialization_bytes_len: 158
+serialization_hex_artifact: artifacts/local-no-broadcast-transaction.hex
 debug: Transaction {
     version: 2,
     inputs: [
