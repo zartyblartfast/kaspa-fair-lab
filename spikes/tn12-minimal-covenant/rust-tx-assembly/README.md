@@ -1,10 +1,17 @@
-# env-019 Rust tx assembly scaffold
+# env-019/env-020 Rust tx assembly scaffold
 
 Goal: local no-broadcast Rust transaction assembly only; no wallet, no faucet, no broadcast.
 
-This spike keeps the experiment constrained to compiling a tiny local transaction-like structure with no network submission and no external signing/faucet steps.
+This spike keeps the experiment constrained to compiling and running a tiny local transaction-like structure with no network submission and no external signing/faucet steps.
 
-Next step: prove a minimal signed payload artifact path in a follow-up after this scaffold compiles.
+Current behavior:
+
+- constructs a minimal local `kaspa-consensus-core::tx::Transaction`,
+- prints a deterministic summary (`version`, input/output counts, output value, script/covenant presence, transaction id),
+- writes a repo-owned artifact file at:
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction-summary.txt`
+
+The constructed object is unsigned and local-only.
 
 ## Reproducibility note
 
@@ -18,3 +25,25 @@ The revision was chosen to match the version already locked by `external/silvers
 This avoids the previous absolute `/root/.cargo/git/checkouts/...` path and makes the scaffold dependency resolution deterministic for other environments that can fetch dependencies.
 
 `Cargo.lock` is intentionally committed for reproducibility for this executable spike.
+
+## How to rerun
+
+From repo root:
+
+```bash
+cd /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly
+cargo check
+cargo run
+```
+
+Expected `cargo run` outputs include:
+
+- `artifact_path=artifacts/local-no-broadcast-transaction-summary.txt`
+- `transaction_version=2`
+- `input_count=1`
+- `output_count=1`
+- `output0_value=1500`
+- `output0_script_bytes_present=true`
+- `output0_covenant_binding_present=false`
+
+No signing, submission, broadcast, faucet, wallet seed, or live TN12 network access is performed by this spike.

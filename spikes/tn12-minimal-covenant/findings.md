@@ -779,3 +779,55 @@ Notes:
 - Scope constraints were respected (no broadcast, no wallets, no faucet, no web app, no roulette, no clone, no mainnet).
 - Next action: add a second, signed path using the same no-broadcast scaffold if/when we need byte-accurate tx artifacts.
 ```
+
+## env-020 local no-broadcast transaction artifact
+
+```text
+Run ID: env-020
+Date/time: 2026-06-23T16:00:00Z
+Network: TN12/testnet (local no-broadcast only; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+- spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Command(s) run:
+- cargo fmt
+- cargo check
+- cargo run
+
+Pass/fail result:
+- cargo check: PASS
+- cargo run: PASS
+
+Output summary:
+- Constructed a local `kaspa-consensus-core::tx::Transaction` with:
+  - version: `2`
+  - inputs: `1`
+  - outputs: `1`
+  - output0 value: `1500`
+  - output0 script bytes present: `true`
+  - output0 covenant binding present: `false`
+  - transaction id: `4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd`
+- Repo-owned artifact written:
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction-summary.txt`
+- `cargo run` also printed the transaction debug representation, including the placeholder outpoint, signature script `aabb`, script public key version `0`, and script bytes `51`.
+
+What this proves:
+- The current `kaspa-consensus-core` API is clear enough to construct a real local transaction-like object with `TransactionInput`, `TransactionOutput`, `ScriptPublicKey`, and `Transaction::new`.
+- `tx.id()` is available on the constructed object and yields a deterministic local transaction id for this fixed placeholder data.
+- A minimal, inspectable, no-broadcast artifact path now exists in this spike and can be rerun locally with `cargo check` and `cargo run`.
+
+What remains unverified:
+- No signing was performed.
+- No `PopulatedTransaction` was constructed in this run.
+- No serialized raw transaction bytes/hex were emitted in this run.
+- No covenant-bound output was constructed in this run (`covenant: None`).
+- No live TN12 create/spend/inspect flow was attempted.
+- No transaction was submitted or broadcast.
+
+Notes:
+- Scope constraints held: no roulette, no web app, no mainnet, no faucet, no wallet seed, no clone, no system dependency install, no external SilverScript source edits.
+- This run intentionally proves only the smallest local unsigned transaction-object artifact path.
+```

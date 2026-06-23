@@ -1,0 +1,44 @@
+transaction summary
+version: 2
+inputs: 1
+outputs: 1
+output0_value: 1500
+output0_script_bytes_len: 1
+output0_script_bytes_present: true
+output0_covenant_binding_present: false
+transaction_id: 4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd
+debug: Transaction {
+    version: 2,
+    inputs: [
+        TransactionInput {
+            previous_outpoint: TransactionOutpoint {
+                transaction_id: 1111111111111111111111111111111111111111111111111111111111111111,
+                index: 0,
+            },
+            signature_script: "aabb",
+            sequence: 0,
+            sig_op_count: 0,
+            compute_budget: 0,
+        },
+    ],
+    outputs: [
+        TransactionOutput {
+            value: 1500,
+            script_public_key: ScriptPublicKey {
+                version: 0,
+                script: "51",
+            },
+            covenant: None,
+        },
+    ],
+    lock_time: 0,
+    subnetwork_id: SubnetworkId {
+        : "0000000000000000000000000000000000000000",
+    },
+    gas: 0,
+    payload: [],
+    mass: TransactionMass(
+        0,
+    ),
+    id: 4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd,
+}
