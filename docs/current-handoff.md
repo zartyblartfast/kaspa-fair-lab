@@ -24,7 +24,11 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
   - `RUN version_2_pass`
   - `PASS version_2_pass`
   - `1 tests: 1 passed, 0 failed`
-- No TN12 transaction create/spend/inspect has been attempted.
+- No TN12 transaction broadcast has been attempted.
+- TN12-style no-broadcast spend-like covenant execution has been run locally via `cli-debugger` with an explicit stateful `covenant` fixture:
+  - `/root/.cargo/bin/cargo run -p cli-debugger -- /tmp/cov_debug_demo.sil --run-all --test-file /tmp/cov_debug_demo.test.json`
+  - observed: `RUN tn12_demo_transition_ok` / `PASS tn12_demo_transition_ok` / `1 tests: 1 passed, 0 failed`
+- `/tmp/cov_debug_demo.sil`, `/tmp/cov_debug_demo.test.json`, and `/tmp/simple_covenant_tx_structured.test.json` were temporary and are **not repo-persistent artifacts**.
 - No transaction has been submitted or broadcast.
 - Working tree currently includes only repo-doc updates:
   - `spikes/tn12-minimal-covenant/findings.md`
@@ -58,5 +62,6 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - Do not submit or broadcast any transaction until the construction path is understood and documented.
 
 ## Unverified / next
-- No live TN12 create/spend/inspect path is verified yet.
-- No no-broadcast transaction-construction output (create/spend/inspect wiring) has been captured yet.
+- Canonical `simple_covenant` path is now exercised with tx-structured test input via `cli-debugger` and verified as pass.
+- Remaining next step: turn this into a documented TN12 transaction-construction workflow (create/spend/inspect sequence) that is directly reusable by the spike.
+- No transaction has been submitted or broadcast.

@@ -37,8 +37,9 @@ Before implementing roulette, we need confidence that base primitives actually w
 - Status: env-010 compile-to-artifact and env-011 local covenant-workflow discovery completed.
 - env-012 local `cli-debugger --run-all` check discovered no upstream `simple_covenant.test.json` fixture; run failed with missing test file.
 - Target network: TN12/testnet.
-- Status: env-013 fixture creation and local `cli-debugger` run completed with PASS; no live submit/broadcast steps yet.
-- Next step: proceed to no-broadcast TN12 transaction-construction planning (create/spend/inspect evidence flow).
+- env-013 fixture creation and local `cli-debugger` run completed with PASS; no live submit/broadcast steps yet.
+- env-014 recorded additional no-broadcast local evidence (unit and `cli-debugger` checks) in `findings.md`.
+- Next step: create a reproducible repo-owned local no-broadcast workflow before any TN12 wallet/faucet/network prerequisite planning.
 
 ## How results are recorded
 
@@ -54,20 +55,22 @@ Update `findings.md` with:
 
 ## Next-step technical plan
 
-Goal for the next run: use the documented local verifier path to validate `simple_covenant` semantics without network submission.
+Goal for the next run: convert the current temporary-only evidence into a repository-owned, reproducible no-broadcast local workflow.
 
-1. **Next approved step completed (local simulation only):**
-   - Created `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`.
-   - Ran:
-     - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
-   - Result captured in `spikes/tn12-minimal-covenant/findings.md`:
-     - `1 tests: 1 passed, 0 failed`
+1. **Create repo-owned fixture files first** (no network):
+   - Keep fixture sources under `spikes/tn12-minimal-covenant/fixtures/` (for example, move the temporary fixture concepts used in previous `/tmp` runs).
+   - Add a minimal fixture bundle for:
+     - transition-style local simulation
+     - explicit tx-structured simple_covenant check
+   - No external dependencies or broadcast steps.
 
-2. **Failure handling for reproducibility (if needed):**
-   - If the command fails in a future attempt, re-run once in a clean shell context before changing route.
+2. **Add a reproducible local command sequence** (README or tiny shell script):
+   - Use explicit absolute/relative paths in repo.
+   - Sequence should run `cli-debugger --run-all` for each repo-owned fixture and capture outputs in command output/docs.
+   - Keep the sequence strictly no-broadcast and TN12-scope.
 
-3. **Planned next step (post-local fixture pass):**
-   - Move to no-broadcast TN12 transaction-construction planning for create/spend/inspect semantics, using simulator/fixtures as the evidence source.
-   - Keep this strictly non-submitting and TN12-only.
+3. **Only after the above is complete**, plan TN12 wallet/faucet/network prerequisites:
+   - document the wallet/tooling/network assumptions separately.
+   - avoid execution or claims of live create/spend/inspect until those prerequisites are defined and evidence is collected.
 
-No path is treated as valid until no-broadcast transaction construction evidence is recorded in `findings.md` with outputs.
+No path is treated as valid until repo-owned no-broadcast evidence is recorded in `findings.md` with outputs.

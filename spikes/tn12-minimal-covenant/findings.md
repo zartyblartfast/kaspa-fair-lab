@@ -460,6 +460,41 @@ Notes:
 - This is a strict local simulation validation of contract code path only.
 - Next follow-up should keep non-submitting constraints and focus on no-broadcast transaction-construction planning.
 
+## env-014 no-broadcast local execution evidence
+
+- **Run ID:** env-014
+- **Date/time:** 2026-06-23T15:03:00Z (per previous run record)
+- **Network:** TN12/testnet (local simulation-only)
+
+Observed (factual):
+- `cargo test -p silverscript-lang singleton_transition_allows_correct_state_update -- --nocapture`
+  - Pass/fail: **PASS** (exit code `0`)
+- `cargo test -p silverscript-lang kcc20_can_split_then_merge_tokens_with_two_way_fanout -- --nocapture`
+  - Pass/fail: **PASS** (exit code `0`)
+- No-broadcast covenant spend-like run via `cli-debugger`:
+  - `/tmp/cov_debug_demo.sil`
+  - `/tmp/cov_debug_demo.test.json`
+  - Command: `cargo run -p cli-debugger -- /tmp/cov_debug_demo.sil --run-all --test-file /tmp/cov_debug_demo.test.json`
+  - Observed output:
+    - `RUN tn12_demo_transition_ok`
+    - `PASS tn12_demo_transition_ok`
+    - `1 tests: 1 passed, 0 failed`
+- Canonical `simple_covenant` with explicit tx structure:
+  - `/tmp/simple_covenant_tx_structured.test.json`
+  - Command: `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file /tmp/simple_covenant_tx_structured.test.json`
+  - Observed output:
+    - `RUN   version_2_with_tx_context`
+    - `PASS  version_2_with_tx_context`
+    - `1 tests: 1 passed, 0 failed`
+
+Artifact reproducibility caveat:
+- `/tmp/cov_debug_demo.sil`, `/tmp/cov_debug_demo.test.json`, and `/tmp/simple_covenant_tx_structured.test.json` were temporary test inputs and are **not preserved in repo**. They are not reproducible repo artifacts and should not be treated as canonical evidence.
+
+Notes:
+- This run still did not execute live TN12 create/spend/inspect transaction construction.
+- No actual Kaspa transaction submission or broadcast was performed.
+- Recommended follow-up: move these temporary fixture concepts into repo-owned files under `spikes/tn12-minimal-covenant/fixtures/` and convert this into a reproducible local command sequence.
+
 ## Verification record
 
 To be updated after each run.
