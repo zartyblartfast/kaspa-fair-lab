@@ -1,0 +1,685 @@
+    Finished `release` profile [optimized] target(s) in 1.83s
+     Running `target/release/kaspad --testnet --netsuffix=12 --disable-upnp '--listen=127.0.0.1:16311' '--rpclisten=127.0.0.1:16210' '--rpclisten-borsh=127.0.0.1:17210'`
+2026-06-23 23:06:18.947+00:00 [INFO ] kaspad v1.1.1-toc.1-42b734f1
+2026-06-23 23:06:18.947+00:00 [INFO ] Application directory: /root/.rusty-kaspa
+2026-06-23 23:06:18.947+00:00 [INFO ] Data directory: /root/.rusty-kaspa/kaspa-testnet-12/datadir
+2026-06-23 23:06:18.947+00:00 [INFO ] Logs directory: /root/.rusty-kaspa/kaspa-testnet-12/logs
+2026-06-23 23:06:19.058+00:00 [INFO ] GRPC Server starting on: 127.0.0.1:16210
+2026-06-23 23:06:19.059+00:00 [INFO ] P2P Server starting on: 127.0.0.1:16311
+2026-06-23 23:06:19.060+00:00 [INFO ] Connection manager: has 0/8 outgoing P2P connections, trying to obtain 4 additional connection(s)...
+2026-06-23 23:06:19.060+00:00 [INFO ] WRPC Server starting on: 127.0.0.1:17210
+2026-06-23 23:06:19.141+00:00 [INFO ] Registering p2p flows for peer 178.105.76.81:16311 for protocol version 9
+2026-06-23 23:06:19.141+00:00 [INFO ] Registering p2p flows for peer 136.243.93.17:16311 for protocol version 9
+2026-06-23 23:06:19.142+00:00 [INFO ] P2P Connected to outgoing peer 178.105.76.81:16311 (outbound: 1)
+2026-06-23 23:06:19.142+00:00 [INFO ] P2P Connected to outgoing peer 136.243.93.17:16311 (outbound: 2)
+2026-06-23 23:06:19.220+00:00 [INFO ] IBD started with peer 136.243.93.17:16311
+2026-06-23 23:06:19.265+00:00 [INFO ] Starting IBD with headers proof with peer 136.243.93.17:16311
+2026-06-23 23:06:19.408+00:00 [INFO ] Registering p2p flows for peer 86.48.24.208:16311 for protocol version 9
+2026-06-23 23:06:19.408+00:00 [INFO ] P2P Connected to outgoing peer 86.48.24.208:16311 (outbound: 3)
+2026-06-23 23:06:19.500+00:00 [INFO ] Registering p2p flows for peer 23.118.8.163:16311 for protocol version 9
+2026-06-23 23:06:19.500+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:06:19.500+00:00 [INFO ] P2P Connected to outgoing peer 23.118.8.163:16311 (outbound: 4)
+2026-06-23 23:06:21.421+00:00 [INFO ] Received headers proof with overall 62158 headers (18775 unique)
+2026-06-23 23:06:21.726+00:00 [INFO ] Validating level 250 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 249 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 248 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 247 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 246 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 245 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 244 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 243 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 242 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 241 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 240 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 239 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 238 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 237 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 236 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 235 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 234 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 233 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 232 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 231 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 230 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 229 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 228 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 227 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 226 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 225 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 224 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 223 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 222 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.727+00:00 [INFO ] Validating level 221 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 220 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 219 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 218 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 217 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 216 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 215 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 214 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 213 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 212 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 211 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 210 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 209 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 208 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 207 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 206 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 205 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 204 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 203 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 202 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 201 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 200 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 199 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 198 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 197 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 196 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 195 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.728+00:00 [INFO ] Validating level 194 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 193 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 192 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 191 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 190 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 189 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 188 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 187 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 186 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 185 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 184 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 183 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 182 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 181 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 180 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 179 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 178 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 177 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 176 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 175 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 174 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 173 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 172 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 171 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 170 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 169 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 168 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 167 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 166 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 165 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.729+00:00 [INFO ] Validating level 164 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 163 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 162 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 161 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 160 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 159 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 158 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 157 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 156 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 155 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 154 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 153 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 152 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 151 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 150 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 149 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 148 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 147 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 146 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 145 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 144 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 143 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 142 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 141 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 140 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 139 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 138 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 137 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.730+00:00 [INFO ] Validating level 136 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 135 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 134 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 133 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 132 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 131 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 130 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 129 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 128 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 127 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 126 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 125 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 124 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 123 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 122 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 121 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 120 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 119 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 118 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 117 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 116 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 115 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 114 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 113 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 112 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 111 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 110 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 109 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.731+00:00 [INFO ] Validating level 108 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 107 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 106 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 105 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 104 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 103 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 102 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 101 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 100 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 99 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 98 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 97 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 96 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 95 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 94 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 93 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 92 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 91 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 90 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 89 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 88 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 87 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 86 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 85 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 84 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 83 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 82 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 81 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.732+00:00 [INFO ] Validating level 80 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 79 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 78 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 77 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 76 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 75 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 74 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 73 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 72 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 71 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 70 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 69 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 68 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 67 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 66 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 65 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 64 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 63 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 62 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 61 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 60 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 59 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 58 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 57 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 56 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.733+00:00 [INFO ] Validating level 55 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 54 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 53 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 52 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 51 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 50 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 49 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 48 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 47 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 46 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 45 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 44 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 43 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 42 from the pruning point proof (1 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 41 from the pruning point proof (2 headers)
+2026-06-23 23:06:21.734+00:00 [INFO ] Validating level 40 from the pruning point proof (3 headers)
+2026-06-23 23:06:21.735+00:00 [INFO ] Validating level 39 from the pruning point proof (4 headers)
+2026-06-23 23:06:21.735+00:00 [INFO ] Validating level 38 from the pruning point proof (4 headers)
+2026-06-23 23:06:21.736+00:00 [INFO ] Validating level 37 from the pruning point proof (5 headers)
+2026-06-23 23:06:21.736+00:00 [INFO ] Validating level 36 from the pruning point proof (10 headers)
+2026-06-23 23:06:21.737+00:00 [INFO ] Validating level 35 from the pruning point proof (16 headers)
+2026-06-23 23:06:21.739+00:00 [INFO ] Validating level 34 from the pruning point proof (40 headers)
+2026-06-23 23:06:21.743+00:00 [INFO ] Validating level 33 from the pruning point proof (76 headers)
+2026-06-23 23:06:21.751+00:00 [INFO ] Validating level 32 from the pruning point proof (148 headers)
+2026-06-23 23:06:21.783+00:00 [INFO ] Validating level 31 from the pruning point proof (295 headers)
+2026-06-23 23:06:21.870+00:00 [INFO ] Validating level 30 from the pruning point proof (558 headers)
+2026-06-23 23:06:22.080+00:00 [INFO ] Validating level 29 from the pruning point proof (1045 headers)
+2026-06-23 23:06:22.430+00:00 [INFO ] Validating level 28 from the pruning point proof (2060 headers)
+2026-06-23 23:06:23.118+00:00 [INFO ] Validating level 27 from the pruning point proof (2001 headers)
+2026-06-23 23:06:23.839+00:00 [INFO ] Validating level 26 from the pruning point proof (2001 headers)
+2026-06-23 23:06:24.619+00:00 [INFO ] Validating level 25 from the pruning point proof (2042 headers)
+2026-06-23 23:06:25.400+00:00 [INFO ] Validating level 24 from the pruning point proof (2001 headers)
+2026-06-23 23:06:26.217+00:00 [INFO ] Validating level 23 from the pruning point proof (2001 headers)
+2026-06-23 23:06:27.010+00:00 [INFO ] Validating level 22 from the pruning point proof (2001 headers)
+2026-06-23 23:06:27.752+00:00 [INFO ] Validating level 21 from the pruning point proof (2001 headers)
+2026-06-23 23:06:28.579+00:00 [INFO ] Validating level 20 from the pruning point proof (2026 headers)
+2026-06-23 23:06:29.061+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-23 23:06:29.418+00:00 [INFO ] Validating level 19 from the pruning point proof (2201 headers)
+2026-06-23 23:06:30.477+00:00 [INFO ] Validating level 18 from the pruning point proof (2028 headers)
+2026-06-23 23:06:31.293+00:00 [INFO ] Validating level 17 from the pruning point proof (2089 headers)
+2026-06-23 23:06:32.107+00:00 [INFO ] Validating level 16 from the pruning point proof (2001 headers)
+2026-06-23 23:06:32.912+00:00 [INFO ] Validating level 15 from the pruning point proof (2001 headers)
+2026-06-23 23:06:33.667+00:00 [INFO ] Validating level 14 from the pruning point proof (2075 headers)
+2026-06-23 23:06:34.447+00:00 [INFO ] Validating level 13 from the pruning point proof (2001 headers)
+2026-06-23 23:06:35.279+00:00 [INFO ] Validating level 12 from the pruning point proof (2001 headers)
+2026-06-23 23:06:35.843+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:06:35.843+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:06:35.980+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:06:35.980+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:06:36.022+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:06:36.022+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 3 additional connection(s)...
+2026-06-23 23:06:36.055+00:00 [INFO ] Validating level 11 from the pruning point proof (2101 headers)
+2026-06-23 23:06:36.889+00:00 [INFO ] Validating level 10 from the pruning point proof (2101 headers)
+2026-06-23 23:06:37.023+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:06:37.024+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:06:37.024+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:06:37.399+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:06:37.399+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:06:37.666+00:00 [INFO ] Validating level 9 from the pruning point proof (2101 headers)
+2026-06-23 23:06:38.448+00:00 [INFO ] Validating level 8 from the pruning point proof (2101 headers)
+2026-06-23 23:06:39.307+00:00 [INFO ] Validating level 7 from the pruning point proof (2101 headers)
+2026-06-23 23:06:40.241+00:00 [INFO ] Validating level 6 from the pruning point proof (2101 headers)
+2026-06-23 23:06:41.091+00:00 [INFO ] Validating level 5 from the pruning point proof (2101 headers)
+2026-06-23 23:06:41.877+00:00 [INFO ] Validating level 4 from the pruning point proof (2101 headers)
+2026-06-23 23:06:42.645+00:00 [INFO ] Validating level 3 from the pruning point proof (2101 headers)
+2026-06-23 23:06:43.441+00:00 [INFO ] Validating level 2 from the pruning point proof (2101 headers)
+2026-06-23 23:06:44.379+00:00 [INFO ] Validating level 1 from the pruning point proof (2101 headers)
+2026-06-23 23:06:45.241+00:00 [INFO ] Validating level 0 from the pruning point proof (2101 headers)
+2026-06-23 23:06:46.112+00:00 [INFO ] Built headers proof with overall 251 headers (1 unique)
+2026-06-23 23:06:47.696+00:00 [INFO ] Finished downloading 0 blocks from the pruning point anticone
+2026-06-23 23:06:47.696+00:00 [INFO ] Starting to download the pruning point chain segment
+2026-06-23 23:06:48.025+00:00 [INFO ] Downloaded 1000 headers from the pruning point chain segment
+2026-06-23 23:06:48.360+00:00 [INFO ] Downloaded 2000 headers from the pruning point chain segment
+2026-06-23 23:06:48.694+00:00 [INFO ] Downloaded 3000 headers from the pruning point chain segment
+2026-06-23 23:06:49.026+00:00 [INFO ] Downloaded 4000 headers from the pruning point chain segment
+2026-06-23 23:06:49.354+00:00 [INFO ] Downloaded 5000 headers from the pruning point chain segment
+2026-06-23 23:06:49.403+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:06:49.403+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:06:49.449+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:06:49.682+00:00 [INFO ] Downloaded 6000 headers from the pruning point chain segment
+2026-06-23 23:06:50.008+00:00 [INFO ] Downloaded 7000 headers from the pruning point chain segment
+2026-06-23 23:06:50.359+00:00 [INFO ] Downloaded 8000 headers from the pruning point chain segment
+2026-06-23 23:06:50.694+00:00 [INFO ] Downloaded 9000 headers from the pruning point chain segment
+2026-06-23 23:06:51.051+00:00 [INFO ] Downloaded 10000 headers from the pruning point chain segment
+2026-06-23 23:06:51.395+00:00 [INFO ] Downloaded 11000 headers from the pruning point chain segment
+2026-06-23 23:06:51.721+00:00 [INFO ] Downloaded 12000 headers from the pruning point chain segment
+2026-06-23 23:06:52.053+00:00 [INFO ] Downloaded 13000 headers from the pruning point chain segment
+2026-06-23 23:06:52.377+00:00 [INFO ] Downloaded 14000 headers from the pruning point chain segment
+2026-06-23 23:06:52.699+00:00 [INFO ] Downloaded 15000 headers from the pruning point chain segment
+2026-06-23 23:06:53.032+00:00 [INFO ] Downloaded 16000 headers from the pruning point chain segment
+2026-06-23 23:06:53.364+00:00 [INFO ] Downloaded 17000 headers from the pruning point chain segment
+2026-06-23 23:06:53.694+00:00 [INFO ] Downloaded 18000 headers from the pruning point chain segment
+2026-06-23 23:06:54.022+00:00 [INFO ] Downloaded 19000 headers from the pruning point chain segment
+2026-06-23 23:06:54.376+00:00 [INFO ] Downloaded 20000 headers from the pruning point chain segment
+2026-06-23 23:06:54.711+00:00 [INFO ] Downloaded 21000 headers from the pruning point chain segment
+2026-06-23 23:06:55.036+00:00 [INFO ] Downloaded 22000 headers from the pruning point chain segment
+2026-06-23 23:06:55.363+00:00 [INFO ] Downloaded 23000 headers from the pruning point chain segment
+2026-06-23 23:06:55.695+00:00 [INFO ] Downloaded 24000 headers from the pruning point chain segment
+2026-06-23 23:06:56.029+00:00 [INFO ] Downloaded 25000 headers from the pruning point chain segment
+2026-06-23 23:06:56.355+00:00 [INFO ] Downloaded 26000 headers from the pruning point chain segment
+2026-06-23 23:06:56.686+00:00 [INFO ] Downloaded 27000 headers from the pruning point chain segment
+2026-06-23 23:06:57.010+00:00 [INFO ] Downloaded 28000 headers from the pruning point chain segment
+2026-06-23 23:06:57.337+00:00 [INFO ] Downloaded 29000 headers from the pruning point chain segment
+2026-06-23 23:06:57.692+00:00 [INFO ] Downloaded 30000 headers from the pruning point chain segment
+2026-06-23 23:06:58.027+00:00 [INFO ] Downloaded 31000 headers from the pruning point chain segment
+2026-06-23 23:06:58.362+00:00 [INFO ] Downloaded 32000 headers from the pruning point chain segment
+2026-06-23 23:06:58.695+00:00 [INFO ] Downloaded 33000 headers from the pruning point chain segment
+2026-06-23 23:06:59.024+00:00 [INFO ] Downloaded 34000 headers from the pruning point chain segment
+2026-06-23 23:06:59.358+00:00 [INFO ] Downloaded 35000 headers from the pruning point chain segment
+2026-06-23 23:06:59.695+00:00 [INFO ] Downloaded 36000 headers from the pruning point chain segment
+2026-06-23 23:07:00.026+00:00 [INFO ] Downloaded 37000 headers from the pruning point chain segment
+2026-06-23 23:07:00.359+00:00 [INFO ] Downloaded 38000 headers from the pruning point chain segment
+2026-06-23 23:07:00.694+00:00 [INFO ] Downloaded 39000 headers from the pruning point chain segment
+2026-06-23 23:07:01.047+00:00 [INFO ] Downloaded 40000 headers from the pruning point chain segment
+2026-06-23 23:07:01.392+00:00 [INFO ] Downloaded 41000 headers from the pruning point chain segment
+2026-06-23 23:07:01.725+00:00 [INFO ] Downloaded 42000 headers from the pruning point chain segment
+2026-06-23 23:07:02.073+00:00 [INFO ] Downloaded 43000 headers from the pruning point chain segment
+2026-06-23 23:07:02.409+00:00 [INFO ] Downloaded 44000 headers from the pruning point chain segment
+2026-06-23 23:07:02.748+00:00 [INFO ] Downloaded 45000 headers from the pruning point chain segment
+2026-06-23 23:07:03.091+00:00 [INFO ] Downloaded 46000 headers from the pruning point chain segment
+2026-06-23 23:07:03.418+00:00 [INFO ] Downloaded 47000 headers from the pruning point chain segment
+2026-06-23 23:07:03.746+00:00 [INFO ] Downloaded 48000 headers from the pruning point chain segment
+2026-06-23 23:07:04.078+00:00 [INFO ] Downloaded 49000 headers from the pruning point chain segment
+2026-06-23 23:07:04.434+00:00 [INFO ] Downloaded 50000 headers from the pruning point chain segment
+2026-06-23 23:07:04.765+00:00 [INFO ] Downloaded 51000 headers from the pruning point chain segment
+2026-06-23 23:07:05.097+00:00 [INFO ] Downloaded 52000 headers from the pruning point chain segment
+2026-06-23 23:07:05.428+00:00 [INFO ] Downloaded 53000 headers from the pruning point chain segment
+2026-06-23 23:07:05.760+00:00 [INFO ] Downloaded 54000 headers from the pruning point chain segment
+2026-06-23 23:07:06.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 3 additional connection(s)...
+2026-06-23 23:07:06.089+00:00 [INFO ] Downloaded 55000 headers from the pruning point chain segment
+2026-06-23 23:07:06.419+00:00 [INFO ] Downloaded 56000 headers from the pruning point chain segment
+2026-06-23 23:07:06.750+00:00 [INFO ] Downloaded 57000 headers from the pruning point chain segment
+2026-06-23 23:07:07.027+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:07:07.080+00:00 [INFO ] Downloaded 58000 headers from the pruning point chain segment
+2026-06-23 23:07:07.407+00:00 [INFO ] Downloaded 59000 headers from the pruning point chain segment
+2026-06-23 23:07:07.764+00:00 [INFO ] Downloaded 60000 headers from the pruning point chain segment
+2026-06-23 23:07:08.094+00:00 [INFO ] Downloaded 61000 headers from the pruning point chain segment
+2026-06-23 23:07:08.431+00:00 [INFO ] Downloaded 62000 headers from the pruning point chain segment
+2026-06-23 23:07:08.768+00:00 [INFO ] Downloaded 63000 headers from the pruning point chain segment
+2026-06-23 23:07:09.105+00:00 [INFO ] Downloaded 64000 headers from the pruning point chain segment
+2026-06-23 23:07:09.435+00:00 [INFO ] Downloaded 65000 headers from the pruning point chain segment
+2026-06-23 23:07:09.764+00:00 [INFO ] Downloaded 66000 headers from the pruning point chain segment
+2026-06-23 23:07:10.104+00:00 [INFO ] Downloaded 67000 headers from the pruning point chain segment
+2026-06-23 23:07:10.428+00:00 [INFO ] Downloaded 68000 headers from the pruning point chain segment
+2026-06-23 23:07:10.753+00:00 [INFO ] Downloaded 69000 headers from the pruning point chain segment
+2026-06-23 23:07:11.110+00:00 [INFO ] Downloaded 70000 headers from the pruning point chain segment
+2026-06-23 23:07:11.435+00:00 [INFO ] Downloaded 71000 headers from the pruning point chain segment
+2026-06-23 23:07:11.762+00:00 [INFO ] Downloaded 72000 headers from the pruning point chain segment
+2026-06-23 23:07:12.139+00:00 [INFO ] Downloaded 73000 headers from the pruning point chain segment
+2026-06-23 23:07:12.470+00:00 [INFO ] Downloaded 74000 headers from the pruning point chain segment
+2026-06-23 23:07:12.800+00:00 [INFO ] Downloaded 75000 headers from the pruning point chain segment
+2026-06-23 23:07:13.123+00:00 [INFO ] Downloaded 76000 headers from the pruning point chain segment
+2026-06-23 23:07:13.456+00:00 [INFO ] Downloaded 77000 headers from the pruning point chain segment
+2026-06-23 23:07:13.790+00:00 [INFO ] Downloaded 78000 headers from the pruning point chain segment
+2026-06-23 23:07:14.112+00:00 [INFO ] Downloaded 79000 headers from the pruning point chain segment
+2026-06-23 23:07:14.471+00:00 [INFO ] Downloaded 80000 headers from the pruning point chain segment
+2026-06-23 23:07:14.810+00:00 [INFO ] Downloaded 81000 headers from the pruning point chain segment
+2026-06-23 23:07:15.140+00:00 [INFO ] Downloaded 82000 headers from the pruning point chain segment
+2026-06-23 23:07:15.472+00:00 [INFO ] Downloaded 83000 headers from the pruning point chain segment
+2026-06-23 23:07:15.804+00:00 [INFO ] Downloaded 84000 headers from the pruning point chain segment
+2026-06-23 23:07:16.143+00:00 [INFO ] Downloaded 85000 headers from the pruning point chain segment
+2026-06-23 23:07:16.473+00:00 [INFO ] Downloaded 86000 headers from the pruning point chain segment
+2026-06-23 23:07:16.800+00:00 [INFO ] Downloaded 87000 headers from the pruning point chain segment
+2026-06-23 23:07:17.122+00:00 [INFO ] Downloaded 88000 headers from the pruning point chain segment
+2026-06-23 23:07:17.452+00:00 [INFO ] Downloaded 89000 headers from the pruning point chain segment
+2026-06-23 23:07:17.806+00:00 [INFO ] Downloaded 90000 headers from the pruning point chain segment
+2026-06-23 23:07:18.135+00:00 [INFO ] Downloaded 91000 headers from the pruning point chain segment
+2026-06-23 23:07:18.471+00:00 [INFO ] Downloaded 92000 headers from the pruning point chain segment
+2026-06-23 23:07:18.818+00:00 [INFO ] Downloaded 93000 headers from the pruning point chain segment
+2026-06-23 23:07:19.144+00:00 [INFO ] Downloaded 94000 headers from the pruning point chain segment
+2026-06-23 23:07:19.466+00:00 [INFO ] Downloaded 95000 headers from the pruning point chain segment
+2026-06-23 23:07:19.530+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:07:19.530+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:07:19.564+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:07:19.564+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:07:19.799+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:07:19.799+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:07:19.808+00:00 [INFO ] Downloaded 96000 headers from the pruning point chain segment
+2026-06-23 23:07:19.824+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:07:20.138+00:00 [INFO ] Downloaded 97000 headers from the pruning point chain segment
+2026-06-23 23:07:20.475+00:00 [INFO ] Downloaded 98000 headers from the pruning point chain segment
+2026-06-23 23:07:20.845+00:00 [INFO ] Downloaded 99000 headers from the pruning point chain segment
+2026-06-23 23:07:21.182+00:00 [INFO ] Downloaded 100000 headers from the pruning point chain segment
+2026-06-23 23:07:21.530+00:00 [INFO ] Downloaded 101000 headers from the pruning point chain segment
+2026-06-23 23:07:21.865+00:00 [INFO ] Downloaded 102000 headers from the pruning point chain segment
+2026-06-23 23:07:22.204+00:00 [INFO ] Downloaded 103000 headers from the pruning point chain segment
+2026-06-23 23:07:22.538+00:00 [INFO ] Downloaded 104000 headers from the pruning point chain segment
+2026-06-23 23:07:22.865+00:00 [INFO ] Downloaded 105000 headers from the pruning point chain segment
+2026-06-23 23:07:23.201+00:00 [INFO ] Downloaded 106000 headers from the pruning point chain segment
+2026-06-23 23:07:23.537+00:00 [INFO ] Downloaded 107000 headers from the pruning point chain segment
+2026-06-23 23:07:23.868+00:00 [INFO ] Downloaded 108000 headers from the pruning point chain segment
+2026-06-23 23:07:24.227+00:00 [INFO ] Downloaded 109000 headers from the pruning point chain segment
+2026-06-23 23:07:24.561+00:00 [INFO ] Downloaded 110000 headers from the pruning point chain segment
+2026-06-23 23:07:24.895+00:00 [INFO ] Downloaded 111000 headers from the pruning point chain segment
+2026-06-23 23:07:25.226+00:00 [INFO ] Downloaded 112000 headers from the pruning point chain segment
+2026-06-23 23:07:25.559+00:00 [INFO ] Downloaded 113000 headers from the pruning point chain segment
+2026-06-23 23:07:25.886+00:00 [INFO ] Downloaded 114000 headers from the pruning point chain segment
+2026-06-23 23:07:26.211+00:00 [INFO ] Downloaded 115000 headers from the pruning point chain segment
+2026-06-23 23:07:26.545+00:00 [INFO ] Downloaded 116000 headers from the pruning point chain segment
+2026-06-23 23:07:26.884+00:00 [INFO ] Downloaded 117000 headers from the pruning point chain segment
+2026-06-23 23:07:27.220+00:00 [INFO ] Downloaded 118000 headers from the pruning point chain segment
+2026-06-23 23:07:27.591+00:00 [INFO ] Downloaded 119000 headers from the pruning point chain segment
+2026-06-23 23:07:27.931+00:00 [INFO ] Downloaded 120000 headers from the pruning point chain segment
+2026-06-23 23:07:28.272+00:00 [INFO ] Downloaded 121000 headers from the pruning point chain segment
+2026-06-23 23:07:28.614+00:00 [INFO ] Downloaded 122000 headers from the pruning point chain segment
+2026-06-23 23:07:28.961+00:00 [INFO ] Downloaded 123000 headers from the pruning point chain segment
+2026-06-23 23:07:29.296+00:00 [INFO ] Downloaded 124000 headers from the pruning point chain segment
+2026-06-23 23:07:29.645+00:00 [INFO ] Downloaded 125000 headers from the pruning point chain segment
+2026-06-23 23:07:29.996+00:00 [INFO ] Downloaded 126000 headers from the pruning point chain segment
+2026-06-23 23:07:30.349+00:00 [INFO ] Downloaded 127000 headers from the pruning point chain segment
+2026-06-23 23:07:30.699+00:00 [INFO ] Downloaded 128000 headers from the pruning point chain segment
+2026-06-23 23:07:31.067+00:00 [INFO ] Downloaded 129000 headers from the pruning point chain segment
+2026-06-23 23:07:31.410+00:00 [INFO ] Downloaded 130000 headers from the pruning point chain segment
+2026-06-23 23:07:31.757+00:00 [INFO ] Downloaded 131000 headers from the pruning point chain segment
+2026-06-23 23:07:32.103+00:00 [INFO ] Downloaded 132000 headers from the pruning point chain segment
+2026-06-23 23:07:32.437+00:00 [INFO ] Downloaded 133000 headers from the pruning point chain segment
+2026-06-23 23:07:32.787+00:00 [INFO ] Downloaded 134000 headers from the pruning point chain segment
+2026-06-23 23:07:33.141+00:00 [INFO ] Downloaded 135000 headers from the pruning point chain segment
+2026-06-23 23:07:33.487+00:00 [INFO ] Downloaded 136000 headers from the pruning point chain segment
+2026-06-23 23:07:33.844+00:00 [INFO ] Downloaded 137000 headers from the pruning point chain segment
+2026-06-23 23:07:34.190+00:00 [INFO ] Downloaded 138000 headers from the pruning point chain segment
+2026-06-23 23:07:34.567+00:00 [INFO ] Downloaded 139000 headers from the pruning point chain segment
+2026-06-23 23:07:34.912+00:00 [INFO ] Downloaded 140000 headers from the pruning point chain segment
+2026-06-23 23:07:35.250+00:00 [INFO ] Downloaded 141000 headers from the pruning point chain segment
+2026-06-23 23:07:35.592+00:00 [INFO ] Downloaded 142000 headers from the pruning point chain segment
+2026-06-23 23:07:35.935+00:00 [INFO ] Downloaded 143000 headers from the pruning point chain segment
+2026-06-23 23:07:36.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 3 additional connection(s)...
+2026-06-23 23:07:36.343+00:00 [INFO ] Downloaded 144000 headers from the pruning point chain segment
+2026-06-23 23:07:36.679+00:00 [INFO ] Downloaded 145000 headers from the pruning point chain segment
+2026-06-23 23:07:37.009+00:00 [INFO ] Downloaded 146000 headers from the pruning point chain segment
+2026-06-23 23:07:37.028+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:07:37.345+00:00 [INFO ] Downloaded 147000 headers from the pruning point chain segment
+2026-06-23 23:07:37.680+00:00 [INFO ] Downloaded 148000 headers from the pruning point chain segment
+2026-06-23 23:07:38.043+00:00 [INFO ] Downloaded 149000 headers from the pruning point chain segment
+2026-06-23 23:07:38.384+00:00 [INFO ] Downloaded 150000 headers from the pruning point chain segment
+2026-06-23 23:07:38.720+00:00 [INFO ] Downloaded 151000 headers from the pruning point chain segment
+2026-06-23 23:07:39.058+00:00 [INFO ] Downloaded 152000 headers from the pruning point chain segment
+2026-06-23 23:07:39.397+00:00 [INFO ] Downloaded 153000 headers from the pruning point chain segment
+2026-06-23 23:07:39.741+00:00 [INFO ] Downloaded 154000 headers from the pruning point chain segment
+2026-06-23 23:07:40.080+00:00 [INFO ] Downloaded 155000 headers from the pruning point chain segment
+2026-06-23 23:07:40.415+00:00 [INFO ] Downloaded 156000 headers from the pruning point chain segment
+2026-06-23 23:07:40.755+00:00 [INFO ] Downloaded 157000 headers from the pruning point chain segment
+2026-06-23 23:07:41.099+00:00 [INFO ] Downloaded 158000 headers from the pruning point chain segment
+2026-06-23 23:07:41.476+00:00 [INFO ] Downloaded 159000 headers from the pruning point chain segment
+2026-06-23 23:07:41.818+00:00 [INFO ] Downloaded 160000 headers from the pruning point chain segment
+2026-06-23 23:07:42.154+00:00 [INFO ] Downloaded 161000 headers from the pruning point chain segment
+2026-06-23 23:07:42.506+00:00 [INFO ] Downloaded 162000 headers from the pruning point chain segment
+2026-06-23 23:07:42.846+00:00 [INFO ] Downloaded 163000 headers from the pruning point chain segment
+2026-06-23 23:07:43.197+00:00 [INFO ] Downloaded 164000 headers from the pruning point chain segment
+2026-06-23 23:07:43.540+00:00 [INFO ] Downloaded 165000 headers from the pruning point chain segment
+2026-06-23 23:07:43.878+00:00 [INFO ] Downloaded 166000 headers from the pruning point chain segment
+2026-06-23 23:07:44.231+00:00 [INFO ] Downloaded 167000 headers from the pruning point chain segment
+2026-06-23 23:07:44.571+00:00 [INFO ] Downloaded 168000 headers from the pruning point chain segment
+2026-06-23 23:07:44.938+00:00 [INFO ] Downloaded 169000 headers from the pruning point chain segment
+2026-06-23 23:07:45.276+00:00 [INFO ] Downloaded 170000 headers from the pruning point chain segment
+2026-06-23 23:07:45.623+00:00 [INFO ] Downloaded 171000 headers from the pruning point chain segment
+2026-06-23 23:07:45.957+00:00 [INFO ] Downloaded 172000 headers from the pruning point chain segment
+2026-06-23 23:07:46.293+00:00 [INFO ] Downloaded 173000 headers from the pruning point chain segment
+2026-06-23 23:07:46.632+00:00 [INFO ] Downloaded 174000 headers from the pruning point chain segment
+2026-06-23 23:07:46.975+00:00 [INFO ] Downloaded 175000 headers from the pruning point chain segment
+2026-06-23 23:07:47.315+00:00 [INFO ] Downloaded 176000 headers from the pruning point chain segment
+2026-06-23 23:07:47.651+00:00 [INFO ] Downloaded 177000 headers from the pruning point chain segment
+2026-06-23 23:07:47.980+00:00 [INFO ] Downloaded 178000 headers from the pruning point chain segment
+2026-06-23 23:07:48.345+00:00 [INFO ] Downloaded 179000 headers from the pruning point chain segment
+2026-06-23 23:07:48.685+00:00 [INFO ] Downloaded 180000 headers from the pruning point chain segment
+2026-06-23 23:07:49.017+00:00 [INFO ] Downloaded 181000 headers from the pruning point chain segment
+2026-06-23 23:07:49.353+00:00 [INFO ] Downloaded 182000 headers from the pruning point chain segment
+2026-06-23 23:07:49.693+00:00 [INFO ] Downloaded 183000 headers from the pruning point chain segment
+2026-06-23 23:07:50.027+00:00 [INFO ] Downloaded 184000 headers from the pruning point chain segment
+2026-06-23 23:07:50.368+00:00 [INFO ] Downloaded 185000 headers from the pruning point chain segment
+2026-06-23 23:07:50.695+00:00 [INFO ] Downloaded 186000 headers from the pruning point chain segment
+2026-06-23 23:07:51.031+00:00 [INFO ] Downloaded 187000 headers from the pruning point chain segment
+2026-06-23 23:07:51.371+00:00 [INFO ] Downloaded 188000 headers from the pruning point chain segment
+2026-06-23 23:07:51.746+00:00 [INFO ] Downloaded 189000 headers from the pruning point chain segment
+2026-06-23 23:07:52.088+00:00 [INFO ] Downloaded 190000 headers from the pruning point chain segment
+2026-06-23 23:07:52.428+00:00 [INFO ] Downloaded 191000 headers from the pruning point chain segment
+2026-06-23 23:07:52.782+00:00 [INFO ] Downloaded 192000 headers from the pruning point chain segment
+2026-06-23 23:07:53.117+00:00 [INFO ] Downloaded 193000 headers from the pruning point chain segment
+2026-06-23 23:07:53.299+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:07:53.299+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:07:53.450+00:00 [INFO ] Downloaded 194000 headers from the pruning point chain segment
+2026-06-23 23:07:53.604+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:07:53.604+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:07:53.794+00:00 [INFO ] Downloaded 195000 headers from the pruning point chain segment
+2026-06-23 23:07:54.132+00:00 [INFO ] Downloaded 196000 headers from the pruning point chain segment
+2026-06-23 23:07:54.471+00:00 [INFO ] Downloaded 197000 headers from the pruning point chain segment
+2026-06-23 23:07:54.833+00:00 [INFO ] Downloaded 198000 headers from the pruning point chain segment
+2026-06-23 23:07:55.156+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:07:55.156+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:07:55.173+00:00 [INFO ] Downloaded 199000 headers from the pruning point chain segment
+2026-06-23 23:07:55.195+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:07:55.504+00:00 [INFO ] Downloaded 200000 headers from the pruning point chain segment
+2026-06-23 23:07:55.835+00:00 [INFO ] Downloaded 201000 headers from the pruning point chain segment
+2026-06-23 23:07:56.161+00:00 [INFO ] Downloaded 202000 headers from the pruning point chain segment
+2026-06-23 23:07:56.491+00:00 [INFO ] Downloaded 203000 headers from the pruning point chain segment
+2026-06-23 23:07:56.836+00:00 [INFO ] Downloaded 204000 headers from the pruning point chain segment
+2026-06-23 23:07:57.174+00:00 [INFO ] Downloaded 205000 headers from the pruning point chain segment
+2026-06-23 23:07:57.516+00:00 [INFO ] Downloaded 206000 headers from the pruning point chain segment
+2026-06-23 23:07:57.852+00:00 [INFO ] Downloaded 207000 headers from the pruning point chain segment
+2026-06-23 23:07:58.223+00:00 [INFO ] Downloaded 208000 headers from the pruning point chain segment
+2026-06-23 23:07:58.561+00:00 [INFO ] Downloaded 209000 headers from the pruning point chain segment
+2026-06-23 23:07:58.899+00:00 [INFO ] Downloaded 210000 headers from the pruning point chain segment
+2026-06-23 23:07:59.237+00:00 [INFO ] Downloaded 211000 headers from the pruning point chain segment
+2026-06-23 23:07:59.575+00:00 [INFO ] Downloaded 212000 headers from the pruning point chain segment
+2026-06-23 23:07:59.930+00:00 [INFO ] Downloaded 213000 headers from the pruning point chain segment
+2026-06-23 23:08:00.264+00:00 [INFO ] Downloaded 214000 headers from the pruning point chain segment
+2026-06-23 23:08:00.605+00:00 [INFO ] Downloaded 215000 headers from the pruning point chain segment
+2026-06-23 23:08:00.949+00:00 [INFO ] Downloaded 216000 headers from the pruning point chain segment
+2026-06-23 23:08:01.285+00:00 [INFO ] Downloaded 217000 headers from the pruning point chain segment
+2026-06-23 23:08:01.644+00:00 [INFO ] Downloaded 218000 headers from the pruning point chain segment
+2026-06-23 23:08:01.989+00:00 [INFO ] Downloaded 219000 headers from the pruning point chain segment
+2026-06-23 23:08:02.329+00:00 [INFO ] Downloaded 220000 headers from the pruning point chain segment
+2026-06-23 23:08:02.664+00:00 [INFO ] Downloaded 221000 headers from the pruning point chain segment
+2026-06-23 23:08:03.000+00:00 [INFO ] Downloaded 222000 headers from the pruning point chain segment
+2026-06-23 23:08:03.343+00:00 [INFO ] Downloaded 223000 headers from the pruning point chain segment
+2026-06-23 23:08:03.682+00:00 [INFO ] Downloaded 224000 headers from the pruning point chain segment
+2026-06-23 23:08:04.034+00:00 [INFO ] Downloaded 225000 headers from the pruning point chain segment
+2026-06-23 23:08:04.363+00:00 [INFO ] Downloaded 226000 headers from the pruning point chain segment
+2026-06-23 23:08:04.697+00:00 [INFO ] Downloaded 227000 headers from the pruning point chain segment
+2026-06-23 23:08:05.063+00:00 [INFO ] Downloaded 228000 headers from the pruning point chain segment
+2026-06-23 23:08:05.406+00:00 [INFO ] Downloaded 229000 headers from the pruning point chain segment
+2026-06-23 23:08:05.739+00:00 [INFO ] Downloaded 230000 headers from the pruning point chain segment
+2026-06-23 23:08:06.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-23 23:08:06.027+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:08:06.079+00:00 [INFO ] Downloaded 231000 headers from the pruning point chain segment
+2026-06-23 23:08:06.416+00:00 [INFO ] Downloaded 232000 headers from the pruning point chain segment
+2026-06-23 23:08:06.435+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:08:06.435+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:08:06.471+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:08:06.471+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:08:06.755+00:00 [INFO ] Downloaded 233000 headers from the pruning point chain segment
+2026-06-23 23:08:07.094+00:00 [INFO ] Downloaded 234000 headers from the pruning point chain segment
+2026-06-23 23:08:07.425+00:00 [INFO ] Downloaded 235000 headers from the pruning point chain segment
+2026-06-23 23:08:07.761+00:00 [INFO ] Downloaded 236000 headers from the pruning point chain segment
+2026-06-23 23:08:08.099+00:00 [INFO ] Downloaded 237000 headers from the pruning point chain segment
+2026-06-23 23:08:08.467+00:00 [INFO ] Downloaded 238000 headers from the pruning point chain segment
+2026-06-23 23:08:08.794+00:00 [INFO ] Downloaded 239000 headers from the pruning point chain segment
+2026-06-23 23:08:09.147+00:00 [INFO ] Downloaded 240000 headers from the pruning point chain segment
+2026-06-23 23:08:09.484+00:00 [INFO ] Downloaded 241000 headers from the pruning point chain segment
+2026-06-23 23:08:09.825+00:00 [INFO ] Downloaded 242000 headers from the pruning point chain segment
+2026-06-23 23:08:10.173+00:00 [INFO ] Downloaded 243000 headers from the pruning point chain segment
+2026-06-23 23:08:10.516+00:00 [INFO ] Downloaded 244000 headers from the pruning point chain segment
+2026-06-23 23:08:10.870+00:00 [INFO ] Downloaded 245000 headers from the pruning point chain segment
+2026-06-23 23:08:11.209+00:00 [INFO ] Downloaded 246000 headers from the pruning point chain segment
+2026-06-23 23:08:11.552+00:00 [INFO ] Downloaded 247000 headers from the pruning point chain segment
+2026-06-23 23:08:11.917+00:00 [INFO ] Downloaded 248000 headers from the pruning point chain segment
+2026-06-23 23:08:12.260+00:00 [INFO ] Downloaded 249000 headers from the pruning point chain segment
+2026-06-23 23:08:12.602+00:00 [INFO ] Downloaded 250000 headers from the pruning point chain segment
+2026-06-23 23:08:12.950+00:00 [INFO ] Downloaded 251000 headers from the pruning point chain segment
+2026-06-23 23:08:13.290+00:00 [INFO ] Downloaded 252000 headers from the pruning point chain segment
+2026-06-23 23:08:13.627+00:00 [INFO ] Downloaded 253000 headers from the pruning point chain segment
+2026-06-23 23:08:13.964+00:00 [INFO ] Downloaded 254000 headers from the pruning point chain segment
+2026-06-23 23:08:14.310+00:00 [INFO ] Downloaded 255000 headers from the pruning point chain segment
+2026-06-23 23:08:14.644+00:00 [INFO ] Downloaded 256000 headers from the pruning point chain segment
+2026-06-23 23:08:14.987+00:00 [INFO ] Downloaded 257000 headers from the pruning point chain segment
+2026-06-23 23:08:15.354+00:00 [INFO ] Downloaded 258000 headers from the pruning point chain segment
+2026-06-23 23:08:15.690+00:00 [INFO ] Downloaded 259000 headers from the pruning point chain segment
+2026-06-23 23:08:16.032+00:00 [INFO ] Downloaded 260000 headers from the pruning point chain segment
+2026-06-23 23:08:16.362+00:00 [INFO ] Downloaded 261000 headers from the pruning point chain segment
+2026-06-23 23:08:16.705+00:00 [INFO ] Downloaded 262000 headers from the pruning point chain segment
+2026-06-23 23:08:17.045+00:00 [INFO ] Downloaded 263000 headers from the pruning point chain segment
+2026-06-23 23:08:17.385+00:00 [INFO ] Downloaded 264000 headers from the pruning point chain segment
+2026-06-23 23:08:17.732+00:00 [INFO ] Downloaded 265000 headers from the pruning point chain segment
+2026-06-23 23:08:18.072+00:00 [INFO ] Downloaded 266000 headers from the pruning point chain segment
+2026-06-23 23:08:18.403+00:00 [INFO ] Downloaded 267000 headers from the pruning point chain segment
+2026-06-23 23:08:18.759+00:00 [INFO ] Downloaded 268000 headers from the pruning point chain segment
+2026-06-23 23:08:19.090+00:00 [INFO ] Downloaded 269000 headers from the pruning point chain segment
+2026-06-23 23:08:19.182+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:08:19.182+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:08:19.218+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:08:19.424+00:00 [INFO ] Downloaded 270000 headers from the pruning point chain segment
+2026-06-23 23:08:19.752+00:00 [INFO ] Downloaded 271000 headers from the pruning point chain segment
+2026-06-23 23:08:20.090+00:00 [INFO ] Downloaded 272000 headers from the pruning point chain segment
+2026-06-23 23:08:36.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-23 23:08:36.026+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:08:53.378+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:08:53.378+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:09:04.980+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:09:04.980+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:09:05.063+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:09:05.063+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:09:05.348+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:09:06.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-23 23:09:06.025+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:09:06.118+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:09:06.118+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:09:18.830+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:09:18.830+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:09:18.865+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:09:18.865+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:09:18.900+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:09:21.357+00:00 [INFO ] Downloaded 273000 headers from the pruning point chain segment
+2026-06-23 23:09:21.686+00:00 [INFO ] Downloaded 274000 headers from the pruning point chain segment
+2026-06-23 23:09:22.018+00:00 [INFO ] Downloaded 275000 headers from the pruning point chain segment
+2026-06-23 23:09:22.341+00:00 [INFO ] Downloaded 276000 headers from the pruning point chain segment
+2026-06-23 23:09:22.669+00:00 [INFO ] Downloaded 277000 headers from the pruning point chain segment
+2026-06-23 23:09:23.021+00:00 [INFO ] Downloaded 278000 headers from the pruning point chain segment
+2026-06-23 23:09:23.357+00:00 [INFO ] Downloaded 279000 headers from the pruning point chain segment
+2026-06-23 23:09:23.689+00:00 [INFO ] Downloaded 280000 headers from the pruning point chain segment
+2026-06-23 23:09:24.018+00:00 [INFO ] Downloaded 281000 headers from the pruning point chain segment
+2026-06-23 23:09:24.364+00:00 [INFO ] Downloaded 282000 headers from the pruning point chain segment
+2026-06-23 23:09:24.704+00:00 [INFO ] Downloaded 283000 headers from the pruning point chain segment
+2026-06-23 23:09:25.056+00:00 [INFO ] Downloaded 284000 headers from the pruning point chain segment
+2026-06-23 23:09:25.397+00:00 [INFO ] Downloaded 285000 headers from the pruning point chain segment
+2026-06-23 23:09:25.731+00:00 [INFO ] Downloaded 286000 headers from the pruning point chain segment
+2026-06-23 23:09:26.072+00:00 [INFO ] Downloaded 287000 headers from the pruning point chain segment
+2026-06-23 23:09:26.437+00:00 [INFO ] Downloaded 288000 headers from the pruning point chain segment
+2026-06-23 23:09:26.762+00:00 [INFO ] Downloaded 289000 headers from the pruning point chain segment
+2026-06-23 23:09:27.106+00:00 [INFO ] Downloaded 290000 headers from the pruning point chain segment
+2026-06-23 23:09:27.433+00:00 [INFO ] Downloaded 291000 headers from the pruning point chain segment
+2026-06-23 23:09:27.805+00:00 [INFO ] Downloaded 292000 headers from the pruning point chain segment
+2026-06-23 23:09:28.138+00:00 [INFO ] Downloaded 293000 headers from the pruning point chain segment
+2026-06-23 23:09:28.477+00:00 [INFO ] Downloaded 294000 headers from the pruning point chain segment
+2026-06-23 23:09:28.809+00:00 [INFO ] Downloaded 295000 headers from the pruning point chain segment
+2026-06-23 23:09:29.154+00:00 [INFO ] Downloaded 296000 headers from the pruning point chain segment
+2026-06-23 23:09:29.523+00:00 [INFO ] Downloaded 297000 headers from the pruning point chain segment
+2026-06-23 23:09:29.863+00:00 [INFO ] Downloaded 298000 headers from the pruning point chain segment
+2026-06-23 23:09:30.185+00:00 [INFO ] Downloaded 299000 headers from the pruning point chain segment
+2026-06-23 23:09:30.508+00:00 [INFO ] Downloaded 300000 headers from the pruning point chain segment
+2026-06-23 23:09:30.859+00:00 [INFO ] Downloaded 301000 headers from the pruning point chain segment
+2026-06-23 23:09:31.193+00:00 [INFO ] Downloaded 302000 headers from the pruning point chain segment
+2026-06-23 23:09:31.512+00:00 [INFO ] Downloaded 303000 headers from the pruning point chain segment
+2026-06-23 23:09:31.847+00:00 [INFO ] Downloaded 304000 headers from the pruning point chain segment
+2026-06-23 23:09:32.167+00:00 [INFO ] Downloaded 305000 headers from the pruning point chain segment
+2026-06-23 23:09:32.494+00:00 [INFO ] Downloaded 306000 headers from the pruning point chain segment
+2026-06-23 23:09:32.850+00:00 [INFO ] Downloaded 307000 headers from the pruning point chain segment
+2026-06-23 23:09:33.182+00:00 [INFO ] Downloaded 308000 headers from the pruning point chain segment
+2026-06-23 23:09:33.509+00:00 [INFO ] Downloaded 309000 headers from the pruning point chain segment
+2026-06-23 23:09:33.839+00:00 [INFO ] Downloaded 310000 headers from the pruning point chain segment
+2026-06-23 23:09:34.158+00:00 [INFO ] Downloaded 311000 headers from the pruning point chain segment
+2026-06-23 23:09:34.481+00:00 [INFO ] Downloaded 312000 headers from the pruning point chain segment
+2026-06-23 23:09:34.801+00:00 [INFO ] Downloaded 313000 headers from the pruning point chain segment
+2026-06-23 23:09:35.124+00:00 [INFO ] Downloaded 314000 headers from the pruning point chain segment
+2026-06-23 23:09:35.443+00:00 [INFO ] Downloaded 315000 headers from the pruning point chain segment
+2026-06-23 23:09:35.770+00:00 [INFO ] Downloaded 316000 headers from the pruning point chain segment
+2026-06-23 23:09:36.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-23 23:09:36.124+00:00 [INFO ] Downloaded 317000 headers from the pruning point chain segment
+2026-06-23 23:09:36.301+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:09:36.305+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:09:36.305+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:09:36.446+00:00 [INFO ] Downloaded 318000 headers from the pruning point chain segment
+2026-06-23 23:09:36.610+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-23 23:09:36.610+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-23 23:09:36.773+00:00 [INFO ] Downloaded 319000 headers from the pruning point chain segment
+2026-06-23 23:09:37.090+00:00 [INFO ] Downloaded 320000 headers from the pruning point chain segment
+2026-06-23 23:09:37.413+00:00 [INFO ] Downloaded 321000 headers from the pruning point chain segment
+2026-06-23 23:09:37.736+00:00 [INFO ] Downloaded 322000 headers from the pruning point chain segment
+2026-06-23 23:09:38.058+00:00 [INFO ] Downloaded 323000 headers from the pruning point chain segment
+2026-06-23 23:09:38.394+00:00 [INFO ] Downloaded 324000 headers from the pruning point chain segment
+2026-06-23 23:09:38.719+00:00 [INFO ] Downloaded 325000 headers from the pruning point chain segment
+2026-06-23 23:09:39.031+00:00 [INFO ] Downloaded 326000 headers from the pruning point chain segment
+2026-06-23 23:09:39.375+00:00 [INFO ] Downloaded 327000 headers from the pruning point chain segment
+2026-06-23 23:09:39.693+00:00 [INFO ] Downloaded 328000 headers from the pruning point chain segment
+2026-06-23 23:09:39.999+00:00 [INFO ] Downloaded 329000 headers from the pruning point chain segment
+2026-06-23 23:09:40.327+00:00 [INFO ] Downloaded 330000 headers from the pruning point chain segment
+2026-06-23 23:09:40.651+00:00 [INFO ] Downloaded 331000 headers from the pruning point chain segment
+2026-06-23 23:09:40.742+00:00 [INFO ] Finished downloading 331279 headers from the pruning point chain segment
+2026-06-23 23:09:51.931+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-23 23:09:51.931+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:09:52.203+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:10:05.001+00:00 [INFO ] GRPC, new incoming connection cb6f83e5-4029-486b-ab26-248d5b8851e0@127.0.0.1:40978 #1
+2026-06-23 23:10:05.011+00:00 [INFO ] GRPC, incoming stream ended by client cb6f83e5-4029-486b-ab26-248d5b8851e0@127.0.0.1:40978
+2026-06-23 23:10:05.011+00:00 [INFO ] GRPC, end connection cb6f83e5-4029-486b-ab26-248d5b8851e0@127.0.0.1:40978 #1
+2026-06-23 23:10:06.024+00:00 [INFO ] Connection manager: has 4/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-23 23:10:06.024+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:10:06.025+00:00 [INFO ] Retrieved 4 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-23 23:10:06.025+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-23 23:10:06.066+00:00 [INFO ] Retrieved 4 addresses from DNS seeder n-testnet-12.kaspa.ws

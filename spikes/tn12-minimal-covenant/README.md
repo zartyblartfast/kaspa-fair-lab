@@ -43,11 +43,61 @@ Before implementing roulette, we need confidence that base primitives actually w
 - deterministic local Borsh artifact production is documented, but consensus-wire equivalence remains unverified.
 - Target network remains TN12/testnet only.
 - One read-only local TN12 `getServerInfo` call succeeded in env-037, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`.
+- One additional read-only local TN12 `getBlockDagInfo` call succeeded in env-038, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-038-get-blockdag-info.txt`.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-038 local TN12 read-only getBlockDagInfo
+
+- **Scope:** approved localhost-only TN12 node startup retry, capture startup logs, run exactly one read-only `getBlockDagInfo` call once RPC was reachable, capture the output, and stop before any wallet/key/faucet/signing/submission/broadcast action.
+
+### Exact startup command used
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only bind check
+
+- P2P listen: `127.0.0.1:16311`
+- gRPC listen: `127.0.0.1:16210`
+- wRPC Borsh listen: `127.0.0.1:17210`
+- No `0.0.0.0` listen flag was used.
+
+### RPC/read-only result
+
+- Exact read-only RPC call used: one gRPC `getBlockDagInfo` call against `grpc://127.0.0.1:16210`.
+- Returned DAG/network fields:
+  - `network`: `testnet-12`
+  - `blockCount`: `0`
+  - `headerCount`: `0`
+  - `tipHashes[0]`: `300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `difficulty`: `655360.625000596`
+  - `pastMedianTime`: `1633687894966`
+  - `virtualParentHashes[0]`: `300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `pruningPointHash`: `300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `virtualDaaScore`: `0`
+  - `sink`: `300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+
+### Artifacts
+
+- startup log: `spikes/tn12-minimal-covenant/artifacts/env-038-kaspad-startup.log`
+- read-only result: `spikes/tn12-minimal-covenant/artifacts/env-038-get-blockdag-info.txt`
+
+### Result
+
+- Node startup succeeded to the point of exposing the approved localhost-only RPC surfaces.
+- Exactly one read-only `getBlockDagInfo` call succeeded.
+- The node was then stopped without any wallet/key/faucet/signing/submission/broadcast activity.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- stop condition reached: stopped immediately after capturing the single read-only `getBlockDagInfo` result
 
 ## Env-037 local TN12 read-only getServerInfo retry
 

@@ -13,6 +13,8 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 1) env-037 succeeded for the approved localhost-only TN12 retry: the local node reached RPC readiness, exactly one read-only `getServerInfo` call succeeded against `grpc://127.0.0.1:16210`, output was captured, and the node was stopped immediately afterward.
 
+1b) env-038 also succeeded for the approved localhost-only follow-up: the local node again reached RPC readiness, exactly one read-only `getBlockDagInfo` call succeeded against `grpc://127.0.0.1:16210`, output was captured, and the node was stopped immediately afterward.
+
 2) Current repo-backed local evidence now covers:
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles.
@@ -25,6 +27,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - local RPC serializer artifacts were produced.
 - local RPC serializer round-trip passes for both `RpcTransaction` and `SubmitTransactionRequest`.
 - one live read-only TN12 `getServerInfo` call now succeeded with captured output.
+- one additional live read-only TN12 `getBlockDagInfo` call now succeeded with captured output.
 
 3) Scope limits still in force and still unproven for anything beyond read-only connectivity:
 - nothing was signed,
@@ -34,11 +37,11 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - no mainnet behaviour is known.
 
 4) Conservative conclusion:
-- Local tooling is now sufficient to prove localhost-only TN12 node startup plus one read-only `getServerInfo` call.
+- Local tooling is now sufficient to prove localhost-only TN12 node startup plus one read-only `getServerInfo` call and one read-only `getBlockDagInfo` call.
 - Local tooling is still not sufficient to claim live TN12 create/spend/inspect works.
 - Any next step beyond read-only connectivity still needs fresh explicit approval.
 
-5) env-037 localhost-only node startup + read-only RPC result:
+5) env-038 localhost-only node startup + read-only RPC result:
 - exact startup command used:
   - `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
 - localhost-only bind policy held:
@@ -48,24 +51,28 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
   - startup log shows `GRPC Server starting on: 127.0.0.1:16210`
   - startup log shows `P2P Server starting on: 127.0.0.1:16311`
   - startup log shows `WRPC Server starting on: 127.0.0.1:17210`
-  - `ss -ltnp` confirmed listeners on the same three localhost ports
+  - `ss -ltnp` confirmed listeners on the same three localhost ports before the call
+  - `ss -ltnp` showed no remaining listeners on those ports after the node was stopped
 - exact read-only RPC call used:
-  - one gRPC `getServerInfo` call against `grpc://127.0.0.1:16210`
+  - one gRPC `getBlockDagInfo` call against `grpc://127.0.0.1:16210`
 - returned fields:
-  - `rpcApiVersion=1`
-  - `rpcApiRevision=0`
-  - `serverVersion=1.1.1-toc.1`
-  - `networkId=testnet-12`
-  - `hasUtxoIndex=false`
-  - `isSynced=false`
+  - `network=testnet-12`
+  - `blockCount=0`
+  - `headerCount=0`
+  - `difficulty=655360.625000596`
+  - `pastMedianTime=1633687894966`
   - `virtualDaaScore=0`
+  - `tipHashes[0]=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `virtualParentHashes[0]=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `pruningPointHash=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `sink=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
 - result:
   - node startup succeeded to RPC readiness
-  - exactly one read-only `getServerInfo` call succeeded
-  - artifacts: `spikes/tn12-minimal-covenant/artifacts/env-037-kaspad-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`
+  - exactly one read-only `getBlockDagInfo` call succeeded
+  - artifacts: `spikes/tn12-minimal-covenant/artifacts/env-038-kaspad-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-038-get-blockdag-info.txt`
   - the node was stopped immediately after capture
 
-6) Constraint confirmations for env-037:
+6) Constraint confirmations for env-038:
 - no wallet/key was created
 - no faucet request was made
 - nothing was signed
