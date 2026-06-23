@@ -1,44 +1,58 @@
 # TN12 Spike Handoff
 
 ## Current project goal
-Continue TN12 minimal covenant spike route discovery with documentation-first evidence, then run the first constrained live path to demonstrate a minimal create/spend/inspect covenant flow.
+Continue TN12 minimal covenant spike route discovery with documentation-first evidence, while staying constrained to:
+
+- no roulette build,
+- no web app,
+- no own covenant implementation,
+- no transaction submission,
+- no mainnet usage.
 
 ## Current status
-- `env-006` SilverScript read-only live probe completed and recorded in `spikes/tn12-minimal-covenant/findings.md`.
-- No local SilverScript tooling command is available (`silverscript`, `silver`, `ssc`).
-- `README.md` and `findings.md` now encode the next-step decision rule and constraints.
-- No implementation, roulette work, web app work, or transaction submission has been done.
+- Working path is `external/silverscript` (isolated clone, uncommitted and git-ignored).
+- `env-008` validated: clone/build/probe baseline succeeded for SilverScript.
+- `env-009` completed: command inventory + artefact-path discovery.
+- `spikes/tn12-minimal-covenant/findings.md` now contains verified command/help/probe evidence including a minimum compile-to-artifact path.
+- `spikes/tn12-minimal-covenant/README.md` updated to make compile-to-artifact as the next-step minimum.
+- No transaction create/spend/inspect has been claimed or executed in code-path yet.
+- `command -v silverscript`, `command -v silver`, `command -v ssc` remain unavailable on PATH (as of last probe), which is handled by using the repository crate build.
 
-## What has been committed / ready to commit
-- Working tree currently has one new uncommitted file: `docs/current-handoff.md`.
-- Last commit on `main`:
-  - `a8ccfad` — "Record SilverScript read-only probe"
-- Other TN12 documentation is committed; no other local spike docs were modified in this session before adding this handoff file.
+## Current evidence anchors
+- Clone URL: `https://github.com/kaspanet/silverscript`
+- Commit checked: `faaa074915edd1e885e4dd552051e348d1854c87`
+- Confirmed command/help probes:
+  - `cargo run -p silverscript-lang -- --help`
+  - `cargo run -p cli-debugger -- --help`
+- Confirmed compile path:
+  - `cargo run -p silverscript-lang -- <example>.sil` writes `<example>.json`
+  - Verified path: `external/silverscript/silverscript-lang/tests/examples/num2bin.json`
+- Example pool:
+  - 81 `.sil` files in `silverscript-lang/tests/examples`
+  - Includes covenant-related examples such as `simple_covenant.sil`.
 
-## Environment status
-- `./scripts/check-env.sh` passes (run at `2026-06-23T13:58:25Z`):
-  - `git`, `node`, `npm`, `python3`, `cargo`, `rustc`, `codex` all present.
+## Active constraints (enforced)
+- Do not install new dependencies.
+- Do not clone additional repositories.
+- Do not submit any Kaspa transaction.
+- Do not use mainnet.
+- Do not implement covenant logic yet.
+- Do not claim transaction create/spend/inspect works until observed and documented with outputs.
 
-## Latest finding
-- `command -v silverscript` -> not found
-- `command -v silver` -> not found
-- `command -v ssc` -> not found
+## Branch / git context
+- Branch: `main`
+- Last commit: `75d7a12` — "Document SilverScript artefact path discovery"
+- Working tree currently dirty with:
+  - `spikes/tn12-minimal-covenant/findings.md`
+  - `spikes/tn12-minimal-covenant/README.md`
 
-## Important correction
-- The missing local SilverScript commands only mean no CLI is installed on PATH.
-- This does **not** prove SilverScript is unusable; it may require cloning and building the official Rust workspace to become available.
+## Suggested next step after /new
+Continue from env-009 and run one constrained SilverScript step:
+- compile one upstream `.sil` example to JSON with
+  - `cargo run -p silverscript-lang -- <example>.sil`
+- record outputs in `findings.md`, then proceed only to command discovery/inspection prep.
 
-## Current recommended next step
-- Do a controlled SilverScript metadata acquisition + clone/build/readme experiment (documentation-guided and constrained) before committing to an alternative route.
-- Keep all outputs command-based and mark any unverified assumptions explicitly as **unverified**.
-
-## Constraints for the next session
-- No roulette yet.
-- No web app.
-- No covenant implementation.
-- No transaction submission.
-- No mainnet assumptions.
-- Any unverified item must remain labeled **unverified**.
-
-## Suggested first prompt after /new
-- "Please continue TN12 from `docs/current-handoff.md`, then run a constrained SilverScript source discoverability + local clone/build/readme-readiness probe only (no install/tx/mainnet/webapp/roulette), and append live outputs to `spikes/tn12-minimal-covenant/findings.md`."
+## Unverified / must-do next
+- No verified TN12 create/spend/inspect command chain yet.
+- No live transaction inspection output yet.
+- Artifact provenance for a covenant-relevant `.sil` in TN12 context is still pending.
