@@ -337,6 +337,39 @@ Notes:
 - This is a covenant-relevant, no-constructor example that compiles cleanly to a JSON artifact.
 - The artifact appears structurally useful for TN12 planning but is not yet validated through on-chain-like behavior.
 
+## env-011 SilverScript covenant-local workflow discovery
+
+- **Run ID:** env-011
+- **Date/time:** 2026-06-23T14:42:29Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- Repository-level docs and tests were inspected to ground the next minimal live experiment:
+  - `external/silverscript/docs/TUTORIAL.md` (compile/internals and transaction introspection)
+  - `external/silverscript/docs/DECL.md` (covenant declaration lowering semantics)
+  - `external/silverscript/debugger/cli/README.md` (CLI `.test.json` workflow)
+  - `external/silverscript/debugger/session/src/test_runner.rs` (`ContractTestCase`, `TestTxScenario`, tx field parsing)
+  - `external/silverscript/silverscript-lang/src/compiler/debug_value_types.rs` (`ScriptPubKeyP2SHFromRedeemScript`, `OpInputCovenantId`) mapping table
+  - `external/silverscript/silverscript-lang/src/compiler/covenant_declarations.rs` and `compiler_tests.rs` (covenant declaration call patterns)
+  - `external/silverscript/tests/common.rs` (`covenant_decl_sigscript`, `execute_input_with_covenants` helpers)
+- Evidence-supported interpretation:
+  - SilverScript provides a documented local verifier path: compile `.sil` -> JSON + ABI, and a CLI debugger that can run function calls and structured `.test.json` suites.
+  - CLI test format already supports covenant spend contexts (`tx` object, `active_input_index`, `inputs`, `outputs`, `covenant_id`, `constructor_args`, `state`, `authorizing_input`, `utxo_script_hex`, etc.).
+  - Decl/COV lowering evidence indicates compiler paths use covenant-specific helpers (`OpAuth*`/`OpCov*`) plus covenant-id derivation via `OpInputCovenantId` and related context ops.
+
+Success/failure:
+- Documentation/test-source inspection: **pass**
+- This run produced no live TN12 network transaction or signing operations.
+
+Unverified:
+- No `cli-debugger --run-all` invocation was executed against a covenant `.test.json` in this run.
+- No signed create/spend flow was run.
+- No tx inspection output from `kaspa` node RPC/submission path has been captured.
+
+Notes:
+- The next experiment should remain simulation-only to respect spike constraints: build a minimal `.test.json` for `simple_covenant.sil` and run `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file <path>` for a spend-only transition check.
+- Keep `mainnet` usage and any transaction submission out of scope until a local pass path is reproducible.
+
 ## Verification record
 
 To be updated after each run.
