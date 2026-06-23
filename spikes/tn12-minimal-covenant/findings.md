@@ -349,9 +349,10 @@ Observed (factual):
   - `external/silverscript/docs/DECL.md` (covenant declaration lowering semantics)
   - `external/silverscript/debugger/cli/README.md` (CLI `.test.json` workflow)
   - `external/silverscript/debugger/session/src/test_runner.rs` (`ContractTestCase`, `TestTxScenario`, tx field parsing)
+  - `external/silverscript/debugger/cli/tests/cli_tests.rs` (embedded `.test.json` covenant fixtures in test helpers)
   - `external/silverscript/silverscript-lang/src/compiler/debug_value_types.rs` (`ScriptPubKeyP2SHFromRedeemScript`, `OpInputCovenantId`) mapping table
-  - `external/silverscript/silverscript-lang/src/compiler/covenant_declarations.rs` and `compiler_tests.rs` (covenant declaration call patterns)
   - `external/silverscript/tests/common.rs` (`covenant_decl_sigscript`, `execute_input_with_covenants` helpers)
+  - `external/silverscript/silverscript-lang/src/compiler/covenant_declarations.rs` and `compiler_tests.rs` (covenant declaration call patterns)
 - Evidence-supported interpretation:
   - SilverScript provides a documented local verifier path: compile `.sil` -> JSON + ABI, and a CLI debugger that can run function calls and structured `.test.json` suites.
   - CLI test format already supports covenant spend contexts (`tx` object, `active_input_index`, `inputs`, `outputs`, `covenant_id`, `constructor_args`, `state`, `authorizing_input`, `utxo_script_hex`, etc.).
@@ -369,6 +370,44 @@ Unverified:
 Notes:
 - The next experiment should remain simulation-only to respect spike constraints: build a minimal `.test.json` for `simple_covenant.sil` and run `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file <path>` for a spend-only transition check.
 - Keep `mainnet` usage and any transaction submission out of scope until a local pass path is reproducible.
+
+## env-012 simple_covenant local simulation
+
+- **Run ID:** env-012
+- **Date/time:** 2026-06-23T14:50:19Z
+- **Network:** TN12/testnet (local simulation-only)
+
+Observed (factual):
+- Commands inspected:
+  - `external/silverscript/debugger/cli/README.md` (CLI testing flow and `--run-all` behavior)
+  - `external/silverscript/debugger/cli/tests/cli_tests.rs` (fixture example helpers and embedded `.test.json` covenant scenarios)
+  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.sil`
+  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
+  - local workspace scan for `.test.json` files in `external/silverscript` (excluding `target/`)
+- Fixture path check:
+  - `simple_covenant.test.json` does not exist in the upstream checkout under `external/silverscript`
+  - no `.test.json` fixture was found for `simple_covenant.sil` in this repo snapshot
+- Exact command run:
+  - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all`
+
+Pass/fail:
+- **FAIL** (expected): CLI returned exit code `1`
+
+Key output summary:
+- `/root/.cargo/bin/cargo` found and used (`cargo 1.96.0`)
+- `cli-debugger` built in `0.25s` (cached incremental dev build)
+- Failure:
+  - `failed to read test file 'silverscript-lang/tests/examples/simple_covenant.test.json': No such file or directory (os error 2)`
+
+What this local simulation proves:
+- `--run-all` on `simple_covenant.sil` resolves to a companion `.test.json` fixture named `simple_covenant.test.json`.
+- Upstream checkout does not currently provide that fixture; without it, run cannot proceed to PASS/FAIL covenant transition checks.
+- This verifies local-command wiring without any live Kaspa interaction.
+
+What remains unverified:
+- no covenant create/spend execution output (simulation command stops before fixture phase)
+- no live TN12 transaction creation, broadcast, or inspect workflow
+- no end-to-end no-broadcast transaction construction planning has been executed yet
 
 ## Verification record
 

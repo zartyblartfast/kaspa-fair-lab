@@ -35,8 +35,9 @@ Before implementing roulette, we need confidence that base primitives actually w
 ## Current status
 
 - Status: env-010 compile-to-artifact and env-011 local covenant-workflow discovery completed.
+- env-012 local `cli-debugger --run-all` check discovered no upstream `simple_covenant.test.json` fixture; run failed with missing test file.
 - Target network: TN12/testnet.
-- Next step: use a local `cli-debugger --run-all` covenant `.test.json` experiment on `simple_covenant.sil` before any network submission.
+- Next step: continue simulation-first by inspecting upstream covenant `.test.json` examples and then planning a local fixture for `simple_covenant.sil` in a follow-up step.
 
 ## How results are recorded
 
@@ -54,9 +55,10 @@ Update `findings.md` with:
 
 Goal for the next run: use the documented local verifier path to validate `simple_covenant` semantics without network submission.
 
-1. **Next approved experiment (local simulation only):**
-   - Create a minimal `simple_covenant.sil`-specific test file that exercises a covenant transition path (for example with `active_input_index`, `inputs`, `outputs`, and `covenant_id`).
-   - Run:
+1. **Next approved step (local simulation only):**
+   - Continue to inspect upstream covenant test examples for `--run-all` schema and `test` payloads (especially in `debugger/cli/tests/cli_tests.rs`) and then decide the `simple_covenant` fixture shape.
+   - Do not create `simple_covenant.test.json` in this turn.
+   - Once a valid fixture is available, run:
      - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file <path-to-test-json>`
    - Capture:
      - full command line,
@@ -65,9 +67,9 @@ Goal for the next run: use the documented local verifier path to validate `simpl
    - Keep this strictly non-submitting and TN12-only.
 
 2. **Failure handling for reproducibility:**
-   - If the command is blocked or nondeterministic, re-run once in a clean shell context before changing route.
+   - If the local command still fails once a fixture exists, re-run once in a clean shell context before changing route.
 
 3. **Fallback plan (after local sim failure only):**
-   - If SilverScript simulator tooling is blocked, pivot to Rust-level constructs (`covenant_decl_sigscript`, `execute_input_with_covenants`) only for pure local spending validation before any live workflow.
+   - If SilverScript simulator tooling remains blocked, pivot to Rust-level constructs (`covenant_decl_sigscript`, `execute_input_with_covenants`) only for pure local spending validation before any live workflow.
 
 No path is treated as valid until a live command sequence is recorded in `findings.md` with outputs.
