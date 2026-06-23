@@ -1126,3 +1126,74 @@ What remains unverified:
 - No transaction submission or broadcast was attempted.
 - No mainnet usage.
 ```
+
+## env-026 local RPC serializer artifacts
+
+```text
+Run ID: env-026
+Date/time: 2026-06-23T20:30:19Z
+Network: TN12/testnet scope only (local no-broadcast only; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/rust-tx-assembly/Cargo.toml
+- spikes/tn12-minimal-covenant/rust-tx-assembly/Cargo.lock
+- spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+- spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Dependency/API used:
+- existing pinned `kaspa-rpc-core`
+- direct `workflow-serializer = "0.18.0"`
+- `workflow_serializer::serializer::Serializer`
+- `impl Serializer for RpcTransaction`
+- `impl Serializer for SubmitTransactionRequest`
+
+Commands run:
+- `cargo fmt`
+- `cargo check`
+- `cargo run`
+
+Pass/fail result:
+- `cargo fmt`: PASS
+- `cargo check`: PASS
+- `cargo run`: PASS
+
+Artifact paths:
+- `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-rpc-transaction-rpc-serializer.hex`
+- `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-submit-transaction-request-rpc-serializer.hex`
+
+Observed output summary:
+- `rpc_serializer_artifact_path=artifacts/local-no-broadcast-rpc-transaction-rpc-serializer.hex`
+- `submit_request_serializer_artifact_path=artifacts/local-no-broadcast-submit-transaction-request-rpc-serializer.hex`
+- `rpc_serializer_type=rusty-kaspa rpc Serializer trait binary encoded as lowercase hex`
+- `rpc_serializer_bytes_len=171`
+- `submit_request_serializer_bytes_len=178`
+- `no_rpc_client_called=true`
+- `signed=false`
+- `broadcast=false`
+
+Whether RpcTransaction serialization succeeded:
+- Yes.
+- A local lowercase-hex artifact was emitted from the Rusty Kaspa RPC `Serializer` trait path.
+
+Whether SubmitTransactionRequest serialization succeeded:
+- Yes.
+- A local lowercase-hex artifact was emitted from the Rusty Kaspa RPC `Serializer` trait path.
+
+Whether any RPC client was called:
+- No.
+
+Whether anything was signed:
+- No.
+
+Whether anything was broadcast:
+- No.
+
+What remains unverified:
+- The exact external/wire meaning of these RPC serializer bytes outside this local object serializer path.
+- No signing path was implemented or tested.
+- No RPC client path was exercised.
+- No live TN12 create/spend/inspect flow was attempted.
+- No transaction submission or broadcast was attempted.
+- No mainnet usage.
+```

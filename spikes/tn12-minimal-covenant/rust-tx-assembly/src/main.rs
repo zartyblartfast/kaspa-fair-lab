@@ -7,6 +7,7 @@ use kaspa_consensus_core::tx::{
     TransactionOutput,
 };
 use kaspa_rpc_core::{RpcTransaction, SubmitTransactionRequest};
+use workflow_serializer::serializer::Serializer;
 
 fn hex_encode(bytes: &[u8]) -> String {
     const HEX: &[u8; 16] = b"0123456789abcdef";
@@ -58,6 +59,16 @@ fn main() {
         transaction: rpc_tx.clone(),
         allow_orphan,
     };
+    let mut rpc_serialized_bytes = Vec::new();
+    rpc_tx
+        .serialize(&mut rpc_serialized_bytes)
+        .expect("serialize rpc transaction with rpc serializer");
+    let rpc_serialized_hex = hex_encode(&rpc_serialized_bytes);
+    let mut submit_request_serialized_bytes = Vec::new();
+    submit_transaction_request
+        .serialize(&mut submit_request_serialized_bytes)
+        .expect("serialize submit transaction request with rpc serializer");
+    let submit_request_serialized_hex = hex_encode(&submit_request_serialized_bytes);
 
     let artifact_dir = PathBuf::from("artifacts");
     fs::create_dir_all(&artifact_dir).expect("create artifacts directory");
@@ -67,6 +78,10 @@ fn main() {
         artifact_dir.join("local-no-broadcast-rpc-transaction-summary.txt");
     let submit_request_summary_artifact_path =
         artifact_dir.join("local-no-broadcast-submit-transaction-request-summary.txt");
+    let rpc_serializer_artifact_path =
+        artifact_dir.join("local-no-broadcast-rpc-transaction-rpc-serializer.hex");
+    let submit_request_serializer_artifact_path =
+        artifact_dir.join("local-no-broadcast-submit-transaction-request-rpc-serializer.hex");
     let serialized_bytes = to_vec(&tx).expect("serialize transaction with borsh");
     let serialized_hex = hex_encode(&serialized_bytes);
     let serialization_type =
@@ -155,6 +170,8 @@ fn main() {
         submit_transaction_request,
     );
 
+    let rpc_serializer_type = "rusty-kaspa rpc Serializer trait binary encoded as lowercase hex";
+
     fs::write(&summary_artifact_path, &summary).expect("write artifact summary");
     fs::write(
         &serialization_artifact_path,
@@ -167,6 +184,16 @@ fn main() {
         &submit_request_summary,
     )
     .expect("write submit request artifact summary");
+    fs::write(
+        &rpc_serializer_artifact_path,
+        format!("{}\n", rpc_serialized_hex),
+    )
+    .expect("write rpc serializer artifact");
+    fs::write(
+        &submit_request_serializer_artifact_path,
+        format!("{}\n", submit_request_serialized_hex),
+    )
+    .expect("write submit request serializer artifact");
 
     println!("summary_artifact_path={}", summary_artifact_path.display());
     println!(
@@ -181,7 +208,16 @@ fn main() {
         "submit_request_summary_artifact_path={}",
         submit_request_summary_artifact_path.display()
     );
+    println!(
+        "rpc_serializer_artifact_path={}",
+        rpc_serializer_artifact_path.display()
+    );
+    println!(
+        "submit_request_serializer_artifact_path={}",
+        submit_request_serializer_artifact_path.display()
+    );
     println!("serialization_type={}", serialization_type);
+    println!("rpc_serializer_type={}", rpc_serializer_type);
     println!(
         "consensus_serialization_conclusion={}",
         consensus_serialization_conclusion
@@ -202,6 +238,14 @@ fn main() {
     println!("submit_transaction_request_allow_orphan={}", allow_orphan);
     println!("submit_transaction_request_rpc_call_made=false");
     println!("submit_transaction_request_broadcast_attempted=false");
+    println!("no_rpc_client_called=true");
+    println!("signed=false");
+    println!("broadcast=false");
+    println!("rpc_serializer_bytes_len={}", rpc_serialized_bytes.len());
+    println!(
+        "submit_request_serializer_bytes_len={}",
+        submit_request_serialized_bytes.len()
+    );
     println!("rpc_transaction_version={}", rpc_tx.version);
     println!("rpc_input_count={}", rpc_tx.inputs.len());
     println!("rpc_output_count={}", rpc_tx.outputs.len());
