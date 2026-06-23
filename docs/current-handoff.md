@@ -9,56 +9,49 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - no transaction submission,
 - no mainnet usage.
 
-## Current status
-- `simple_covenant.sil` compiles successfully to JSON: `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`.
-- Repository-owned fixture set now includes:
-  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil`
-  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
-  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
-  - `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil`
-  - `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
-- Canonical fixture inputs and checks:
-  - `simple_covenant.test.json`: `function: "covenant"`, `expect: "pass"`, explicit `tx.version: 2`
-  - `tn12_demo_transition.test.json`: transition-style `rebalance` scenario, `expect: "pass"`
-  - `simple_covenant_tx_structured.test.json`: structured tx context variant for `simple_covenant`
-- Local simulation commands now pass with repo-owned artifacts:
-  - `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
-  - `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
-  - `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
-- Observed outputs in all three runs: PASS (`version_2_pass`, `tn12_demo_transition_ok`, `version_2_with_tx_context`), each with `1 tests: 1 passed, 0 failed`.
-- No TN12 transaction has been submitted, spent, or broadcast; no mainnet activity.
-- Working tree includes repo-doc updates plus fixture assets for the local workflow:
+## Concise status update
+
+1) env-016 added the canonical helper script: `spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`.
+
+2) env-017 re-ran the helper script successfully:
+- command: `cd /root/kaspa-fair-lab && ./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
+- result: PASS
+- output included: `PASS version_2_pass`, `PASS tn12_demo_transition_ok`, `PASS version_2_with_tx_context`, `[PASS] All local no-broadcast checks passed.`
+
+3) Repo-owned log paths:
+- `spikes/tn12-minimal-covenant/artifacts/simple-covenant-version2.log`
+- `spikes/tn12-minimal-covenant/artifacts/transition-demo.log`
+- `spikes/tn12-minimal-covenant/artifacts/simple-covenant-tx-structured.log`
+- these are generated artifacts and are not modified in this run; continue using them as the canonical local trail.
+
+4) Current evidence proves:
+- SilverScript builds locally.
+- repo-owned local fixtures reproduce no-broadcast SilverScript checks.
+- local cli-debugger transaction-like simulation is working.
+
+5) Current evidence does not prove:
+- live TN12 create/spend/inspect,
+- real transaction serialization/signing,
+- wallet/faucet usage,
+- broadcast,
+- mainnet behaviour.
+
+6) Recommended next task after `/new`:
+- plan a Rust-based local transaction-assembly spike using mock/test keys only;
+- no real wallet seed,
+- no faucet funds,
+- no network broadcast,
+- inspect local Rusty Kaspa / SilverScript dependencies for `Transaction::new`, `PopulatedTransaction`, covenant outputs, serialization, and signing APIs.
+
+## Branch / repo status
+
+- Repo: `/root/kaspa-fair-lab`
+- Branch: `main` (`origin/main`)
+- Modified files:
+  - `docs/current-handoff.md`
   - `spikes/tn12-minimal-covenant/README.md`
   - `spikes/tn12-minimal-covenant/findings.md`
-  - `spikes/tn12-minimal-covenant/fixtures/` (repo-owned fixture assets)
-
-## Current evidence anchors
-- Source path: `external/silverscript` in-repo clone (no dependency installs, no new repos).
-- Confirmed docs/tests inspected:
-  - `external/silverscript/debugger/cli/README.md`
-  - `external/silverscript/debugger/cli/tests/cli_tests.rs`
-  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.sil`
-  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
-
-## Active constraints (enforced)
-- Do not build roulette.
-- Do not create a web app.
-- Do not submit any Kaspa transaction.
-- Do not use mainnet.
-- Do not install dependencies.
-- Do not clone new repositories.
-- Do not modify external SilverScript source.
-
-## Branch / git context
-- Branch: `main` (tracking `origin/main`)
-- Local changes since last clean state are documentation-only and fixture file updates in this repo.
 
 ## Suggested first prompt after /new
-- Plan a no-broadcast TN12 transaction-construction path for create/spend/inspect using local artifacts only.
-- Identify which SDK/crate/tool currently supports constructing a TN12 transaction from the compiled SilverScript artifact (`simple_covenant.json` + `.test.json` context).
-- Do not submit or broadcast any transaction until the construction path is understood and documented.
 
-## Unverified / next
-- Canonical `simple_covenant` path is now exercised with tx-structured test input via `cli-debugger` and verified as pass.
-- Remaining next step: turn this into a documented TN12 transaction-construction workflow (create/spend/inspect sequence) that is directly reusable by the spike.
-- No transaction has been submitted or broadcast.
+`Plan env-019 as a no-broadcast Rust tx-assembly artifact step: generate a signed local tx payload from `spikes/tn12-minimal-covenant/fixtures`, save deterministic artifacts under repo-owned paths, and update `findings.md` with proof-only evidence.`
