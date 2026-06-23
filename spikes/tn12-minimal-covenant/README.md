@@ -34,7 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-033 local TN12 node startup planning added; all live actions remain pending in `findings.md`.
+- Status: env-034 refined the localhost-only TN12 startup command and port plan; all live actions remain pending in `findings.md`.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
 - repo-owned local fixtures pass.
@@ -234,6 +234,66 @@ Conservative conclusion:
 ### Conservative conclusion
 
 - The next safe technical action is to prepare a local TN12 node startup command and log plan, but not run it until explicitly approved.
+
+## Env-034 local TN12 node startup command refinement
+
+- **Scope:** documentation-only refinement; no local node was started and no live RPC call was made.
+
+### Source-backed TN12 conclusion
+
+- `--testnet` alone is not sufficient for TN12 in this codebase.
+- Local `rusty-kaspa` TN12 doc states the TN12 node command is:
+  - `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --utxoindex`
+- The same TN12 doc warns that omitting `--netsuffix=12` connects to mainnet or the default testnet.
+- `kaspad` argument parsing confirms:
+  - `--testnet` selects testnet mode,
+  - default `--netsuffix` is `10`,
+  - `--rpclisten` is gRPC,
+  - `--rpclisten-borsh` is wRPC Borsh,
+  - `--rpclisten-json` is wRPC JSON,
+  - wRPC listeners are disabled unless explicitly enabled.
+
+### Refined localhost-only command
+
+Recommended minimal command for a later read-only `getServerInfo` check:
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+Optional additions only if explicitly wanted later:
+
+- add `--utxoindex` to match the TN12 participation doc and make `has_utxo_index=true`, but it is not required for the first read-only `getServerInfo` check.
+- add `--rpclisten-json=127.0.0.1:18210` only if a JSON wRPC client is intentionally used.
+
+### Port expectations
+
+- TN12/testnet-12 P2P: `16311`
+- testnet gRPC / `--rpclisten`: `16210`
+- testnet wRPC Borsh / `--rpclisten-borsh`: `17210`
+- testnet wRPC JSON / `--rpclisten-json`: `18210`
+
+Notes:
+
+- P2P port varies by testnet suffix; TN12 uses `16311`.
+- RPC/wRPC ports are keyed by network type `testnet`, not by suffix, so TN12 still uses the standard testnet RPC ports above.
+- gRPC already defaults to loopback if `--rpclisten` is omitted, but the explicit loopback form is safer for documentation and review.
+- `--rpclisten-borsh=default` would also resolve to `127.0.0.1:17210`, but the explicit address is clearer.
+
+### Log path for later execution
+
+- startup log artifact: `spikes/tn12-minimal-covenant/artifacts/env-034-kaspad-startup.log`
+- later read-only response artifact: `spikes/tn12-minimal-covenant/artifacts/env-034-get-server-info.txt`
+
+### Stop conditions for the later execution
+
+- stop if the command to be run differs from the approved TN12 form (`--testnet --netsuffix=12`)
+- stop if any listen address is not localhost-only
+- stop if startup fails before the RPC surface is reachable
+- stop after exactly one read-only `getServerInfo` capture, regardless of success/failure
+- stop before wallet creation, key generation, faucet use, signing, submission, or broadcast
+
+### Conservative conclusion
+
+- The later first live run should be a localhost-only TN12 node start plus one read-only `getServerInfo` check, with no `0.0.0.0`, no wallet flow, and no transaction activity.
 
 ## Env-028 local feasibility conclusion
 

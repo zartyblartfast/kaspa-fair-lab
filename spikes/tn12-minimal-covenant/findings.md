@@ -1573,6 +1573,89 @@ Observed (factual):
 
 - The next safe technical action is to prepare a local TN12 node startup command and log plan, but not run it until explicitly approved.
 
+## env-034 local TN12 node startup command refinement
+
+```text
+Run ID: env-034
+Date/time: 2026-06-23 (documentation-only refinement)
+Network: TN12/testnet planning scope only (no live node start, no live RPC call)
+
+Files changed:
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Primary source evidence reviewed:
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/docs/testnet12.md
+  - TN12 startup command documented as: cargo run --release --bin kaspad -- --testnet --netsuffix=12 --utxoindex
+  - explicit warning: omitting --netsuffix=12 connects to mainnet or the default testnet
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/kaspad/src/args.rs
+  - default testnet suffix is 10
+  - --rpclisten is gRPC
+  - --rpclisten-borsh is wRPC Borsh
+  - --rpclisten-json is wRPC JSON
+  - --listen controls P2P listen address
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/kaspad/src/daemon.rs
+  - gRPC defaults to loopback if --rpclisten is omitted
+  - wRPC services are only created when --rpclisten-borsh / --rpclisten-json are set
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/rpc/wrpc/server/src/address.rs
+  - wRPC 'default' resolves to 127.0.0.1:<default-port>
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/network.rs
+  - TN12/testnet-12 P2P port is 16311
+  - testnet gRPC/wRPC ports remain 16210 / 17210 / 18210
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/rpc/service/src/service.rs
+  - getServerInfo reports has_utxo_index directly from self.config.utxoindex
+
+Decisions:
+1. Exact TN12 selector:
+   - use --testnet --netsuffix=12
+   - --testnet alone is not sufficient for TN12 because the default suffix is 10
+2. Exact localhost-only refined command (recommended minimal first-read form):
+   - cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+3. Optional only if intentionally needed later:
+   - add --utxoindex to match the TN12 participation guide and make getServerInfo report has_utxo_index=true
+   - add --rpclisten-json=127.0.0.1:18210 if a JSON wRPC client is intentionally chosen
+4. UTXO index decision for first read-only getServerInfo:
+   - not required
+   - evidence: getServerInfo simply reports has_utxo_index from config; the call itself does not require the index
+5. Exact expected ports:
+   - P2P listen: 127.0.0.1:16311
+   - gRPC RPC: 127.0.0.1:16210
+   - wRPC Borsh: 127.0.0.1:17210
+   - wRPC JSON (optional): 127.0.0.1:18210
+
+Why localhost-only:
+- avoids 0.0.0.0 exposure
+- pairs with --disable-upnp to avoid public port mapping
+- keeps later read-only probe local to this host
+
+Planned later artifact paths:
+- startup log: spikes/tn12-minimal-covenant/artifacts/env-034-kaspad-startup.log
+- one-call server-info output: spikes/tn12-minimal-covenant/artifacts/env-034-get-server-info.txt
+
+Later execution stop conditions:
+- stop if the execution candidate drops --netsuffix=12
+- stop if any listen flag resolves to non-localhost
+- stop if the node does not expose the approved local RPC surface
+- stop after exactly one read-only getServerInfo capture, regardless of success/failure
+- stop before wallet creation, key generation, faucet request, signing, submission, or broadcast
+
+What remains unresolved:
+- launch location/source tree for kaspad itself is still environment-specific (repo-local checkout vs pinned cargo checkout); this run refined flags, not binary placement
+- whether to include --utxoindex on the first run is now a policy choice, not a technical requirement
+- whether to enable optional --rpclisten-json depends on the later client choice
+
+Scope confirmations:
+- No local node was started.
+- No RPC endpoint was called.
+- No wallet or key was created.
+- No faucet request was made.
+- Nothing was signed.
+- Nothing was submitted.
+- Nothing was broadcast.
+- No mainnet usage.
+```
+
 ## env-029 TN12 prerequisite planning
 
 ```text
