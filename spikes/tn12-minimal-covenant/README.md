@@ -34,9 +34,9 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: planned, not yet executed.
+- Status: env-008 clone/build probe executed.
 - Target network: TN12/testnet.
-- Next step: run the first full command sequence and record results in `findings.md`.
+- Next step: do not start transaction creation/spending in this task; prepare the first covenant command sequence for the next run using the probe results.
 
 ## How results are recorded
 
@@ -50,27 +50,19 @@ Update `findings.md` with:
 - unknowns,
 - and assumptions introduced.
 
-## Next-step technical plan (minimum-route discovery only)
+## Next-step technical plan
 
-Goal for the next run: identify the smallest reproducible path to create/inspect a tiny artefact, without assuming any path works yet.
+Goal for the next run: based on the successful SilverScript probe, continue with minimal SilverScript command-sequence planning only.
 
-1. **Proposed next experiment (planned, no run yet):** controlled SilverScript metadata + clone/build readiness probe in an isolated location.
-   - Confirmed local command probes still show no local `silverscript` binary (`command -v silverscript`, `silver`, `ssc` all missing from PATH).
-   - Execute only read-only metadata checks now.
-   - Proposed isolated location for clone/build: `external/` (or `spikes/tn12-minimal-covenant/vendor/`), but **do not clone yet**.
+1. **Next approved experiment (preliminary, non-transactional):**
+   - Keep the clone in `external/silverscript`.
+   - Use verified upstream test/build baseline from `env-008` as the starting point.
+   - Identify (from upstream docs/examples) the smallest next command sequence for create/spend inspection, while continuing to avoid tx submission in this phase.
 
-2. **Candidate first live experiment (when approved):**
-   - Clone (or reuse) official upstream metadata source into the isolated location.
-   - Run `cargo test -p silverscript-lang` as the first build/test check.
-   - Run the documented debugger invocation as the first execution check:
-     - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/if_statement.sil --function hello --ctor-arg 3 --ctor-arg 10 --arg 1 --arg 2`
-   - Mark both commands as **UNVERIFIED** until actually executed in a follow-up task.
+2. **Failure handling for reproducibility:**
+   - If a future SilverScript build/test command is blocked, run an environment refresh/retry before changing route.
 
-3. **Decision rule for first live experiment:**
-   - If official SilverScript route discovery remains intact and clone/build succeeds, prioritize the SilverScript probe first.
-   - If SilverScript is not actionable in this environment, pivot to Rusty Kaspa / Rust crates for the first live attempt.
-
-4. **Secondary read-only checks (before any build/tx):**
-   - Check feasibility of WASM SDK and Python SDK routes for payload/build/inspection support.
+3. **Fallback plan (after a build failure only):**
+   - If SilverScript remains blocked after a targeted retry, fall back to Rusty Kaspa / Rust crates for the first full create/spend path.
 
 No path is treated as valid until a live command sequence is recorded in `findings.md` with outputs.

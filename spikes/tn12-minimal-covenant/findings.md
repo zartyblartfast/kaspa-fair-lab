@@ -207,6 +207,45 @@ Notes:
 - This run closes the gap from env-006 by identifying a probable upstream workspace source and likely first build/test entry points.
 - Recommendation (from this run): proceed to a controlled clone/build proof-of-readiness step in an isolated location before any covenant tx work.
 
+## env-008 SilverScript isolated clone/build probe
+
+- **Run ID:** env-008
+- **Date/time:** 2026-06-23T14:07:18Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- Clone location: `external/silverscript`
+- Repo URL: `https://github.com/kaspanet/silverscript`
+- Commit checked out: `faaa074915edd1e885e4dd552051e348d1854c87`
+- Commands run:
+  - `git clone https://github.com/kaspanet/silverscript external/silverscript`
+  - `cargo test -p silverscript-lang`
+  - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/if_statement.sil --function hello --ctor-arg 3 --ctor-arg 10 --arg 1 --arg 2`
+
+Success/failure:
+- `cargo test -p silverscript-lang`: **pass**
+  - Outcome summary: 13/13 parser tests + 5/5 silverc tests + 1/1 tutorial example + 2/2 rust examples passed.
+- `cargo run -p cli-debugger ...`: **pass** (command runs, exit code 0) with expected script-level runtime behavior:
+  - Key error emitted by example execution:
+  
+    `sdb error: script ran, but verification failed`
+    `--> 12:13` `require(d == a)`
+
+- Local command probes remain relevant: no preinstalled `silverscript`/`silver`/`ssc` command discovered prior to clone (per env-006 record).
+
+Assumptions:
+- `external/silverscript` is the only clone created for this probe.
+- No environment/toolchain changes outside this command sequence.
+
+Unverified:
+- No create/spend tx flow has been executed.
+- No covenant end-to-end transaction artifacts are collected yet.
+- No transaction inspection outputs captured.
+
+Notes:
+- This probe confirms the official Kaspa Network GitHub repo is cloneable and its Rust workspace builds in this environment.
+- It does **not** confirm any full TN12 covenant create/spend pipeline; example contract run demonstrates debugger execution path and script verification failure for this input.
+
 ## Verification record
 
 To be updated after each run.
