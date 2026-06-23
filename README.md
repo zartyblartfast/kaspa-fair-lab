@@ -1,28 +1,45 @@
-# KaspaFair Lab
+# Kaspa Fair Lab
 
-KaspaFair Lab is an experimental research project exploring how Kaspa Toccata features could be used to build provably fair gaming infrastructure.
+Kaspa Fair Lab is a lightweight research repository for evaluating whether Kaspa/Toccata tooling is ready for a provably fair gaming proof-of-concept.
 
-The initial goal is not to build a casino or real-money gambling product.
+## Why this project exists
 
-The first goal is to determine whether currently available Kaspa/Toccata tooling is mature enough to demonstrate a tiny covenant-controlled flow on testnet.
+- Assess whether covenant-controlled flows on Kaspa can be used to model verifiable fairness mechanics with minimal setup.
+- Test whether TN12/testnet tooling and workflows are reliable enough for a small, explainable experiment before building any product-like layer.
+- Keep all early work documentation-first and evidence-first so decisions are traceable.
 
-## Initial Research Question
+The repo intentionally starts with exploration, not implementation.
 
-Can we create, spend, inspect, and explain a minimal Toccata covenant artefact on TN12 or another suitable Kaspa testnet?
+## Immediate technical goal
 
-## Project Direction
+**Can we create, spend, inspect, and explain a tiny Toccata covenant artefact on TN12/testnet using available tooling?**
 
-Possible future use case:
+## Ground rules for this phase
 
-- free-play provably fair roulette demo
-- public game receipts
-- independently verifiable fairness mechanism
-- covenant-controlled demo-chip or payout flow
-- open verifier
-- no real-money gambling in the PoC
+- Do not build roulette yet.
+- Do not create a web app yet.
+- Keep this phase lightweight and mostly documentation-driven.
+- Do not claim covenant functionality is working until it has been demonstrated and recorded.
+- Clearly separate knowns, unknowns, assumptions, and unverified items in every report.
 
-## Current Status
+## Current status
 
-Empty lab repository.  
-No claims have yet been verified.  
-All Toccata-related capabilities are to be tested and documented.
+- No production-ready implementation has started yet.
+- The first commit is documentation and planning led.
+- Scripts are utility-only and non-invasive.
+
+## Repository layout
+
+- `docs/` — project framing, roadmap, and feasibility notes.
+- `spikes/tn12-minimal-covenant/` — documentation-only spike folder for TN12 covenant experiments.
+- `verifier/` — intended place for validation and explanation artifacts.
+- `roulette-demo/` — explicit placeholder for the future roulette PoC (not yet built).
+- `scripts/check-env.sh` — quick local environment sanity check.
+
+## Quick checks
+
+```bash
+./scripts/check-env.sh
+```
+
+This script only inspects the environment and does not install anything.

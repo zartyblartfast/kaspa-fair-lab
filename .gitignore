@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Rust
+target/
+Cargo.lock
+
+# IDE and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Logs and temp files
+*.log
+tmp/
+
+# Local scripts / tooling outputs
+*.out
+*.err
+
+# Build outputs
+build/
+dist/
+coverage/
