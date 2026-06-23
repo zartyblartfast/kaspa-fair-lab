@@ -36,7 +36,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 - Status: env-009 command inventory and artefact-path discovery executed.
 - Target network: TN12/testnet.
-- Next step: compile an existing upstream `.sil` example into a JSON artefact (no tx submit/network action yet), then continue minimal command discovery from that verified artifact.
+- Next step: simple_covenant compile-to-artifact is now verified (env-010); proceed with TN12 transaction/spend planning against this verified covenant-style artifact.
 
 ## How results are recorded
 
@@ -52,12 +52,12 @@ Update `findings.md` with:
 
 ## Next-step technical plan
 
-Goal for the next run: based on env-009 command discovery, convert one upstream `.sil` into an inspectable compiled artifact and log the exact minimum command sequence.
+Goal for the next run: based on env-010 command discovery, use the verified `simple_covenant` artifact as the basis for TN12 create/spend/inspect command planning and log the exact minimum command sequence.
 
 1. **Next approved experiment (preliminary, non-transactional):**
    - Keep the clone in `external/silverscript`.
    - Use `cargo run -p silverscript-lang -- <example>.sil` as the minimum command sequence to emit `<example>.json`.
-   - Prefer a no-ctor example (`contract ...()`), e.g. `silverscript-lang/tests/examples/num2bin.sil`, to avoid constructor-arg setup.
+   - Prefer a no-ctor example (`contract ...()`), e.g. `silverscript-lang/tests/examples/simple_covenant.sil` for covenant-script relevance.
    - Capture the produced artifact path and sample fields (`contract_name`, `script`, `abi`).
 
 2. **Failure handling for reproducibility:**

@@ -300,6 +300,43 @@ Notes:
 - Minimum compile-to-artifact path is now confirmed in the isolated clone and can be reproduced with no transaction/network work.
 - Next step is to target a covenant-relevant `.sil` and capture one minimal compile artifact under a controlled TN12-only workflow before any tx attempt.
 
+## env-010 SilverScript artefact inspection
+
+- **Run ID:** env-010
+- **Date/time:** 2026-06-23T14:29:31Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- **Command run:** `cargo run -p silverscript-lang -- silverscript-lang/tests/examples/simple_covenant.sil`
+- **Execution context:** executed via `/root/.cargo/bin/cargo` because this shell did not expose `cargo` on PATH; behavior/output matched the target command.
+- **Generated JSON artefact path:**
+  - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
+- **High-level JSON structure (sampled from artifact):**
+  - `contract_name`
+  - `compiler_version`
+  - `script`
+  - `ast`
+  - `abi`
+  - `without_selector`
+  - `state_layout`
+  - `debug_info`
+- **Covenant/script-related fields visible:** yes
+  - `ast.functions[0]` is `covenant()` and is marked `entrypoint`
+  - `ast.functions[0].body` includes `require(tx.version == 2)`
+  - `script` includes the compiled bytecode payload
+
+Success/failure:
+- `cargo run -p silverscript-lang -- silverscript-lang/tests/examples/simple_covenant.sil`: **pass**
+
+Unverified:
+- TN12 covenant create transaction has not yet been executed.
+- TN12 covenant spend transaction has not yet been executed.
+- No inspection output from a real covenant tx has been captured.
+
+Notes:
+- This is a covenant-relevant, no-constructor example that compiles cleanly to a JSON artifact.
+- The artifact appears structurally useful for TN12 planning but is not yet validated through on-chain-like behavior.
+
 ## Verification record
 
 To be updated after each run.
