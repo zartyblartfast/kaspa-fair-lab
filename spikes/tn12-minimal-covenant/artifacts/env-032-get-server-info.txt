@@ -1,0 +1,11 @@
+Run ID: env-032
+Status: blocked
+Date/time: 2026-06-23T21:34:58Z
+Purpose: Identify TN12 endpoint/local node path and finalize exact read-only getServerInfo request before live env-031 execution.
+Result:
+- No local kaspad/kaspa CLI executable available in PATH.
+- No local kaspad process detected.
+- No explicit public TN12/testnet RPC endpoint URL found in checked repo/docs sources.
+- Documented local startup path exists: kaspad with --utxoindex and --rpclisten[/--rpclisten-borsh]; candidate local RPC endpoint ws://127.0.0.1:17110.
+- Planned read-only call: rpc_client.get_server_info_call(None, GetServerInfoRequest {})
+- Action not executed in this stage (read-only docs-only per plan).

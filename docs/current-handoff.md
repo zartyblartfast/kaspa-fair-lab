@@ -40,16 +40,23 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 5) env-031 next live-planning step identified (read-only only):
 - execution mode: one-call read-only TN12 endpoint probe via `getServerInfo` (`get_server_info_call(None, GetServerInfoRequest {})`)
-- safest path: tiny Rust probe client once endpoint is known (no wallet/state/signing/broadcast),
-- no local Rusty Kaspa CLI/client command was detected in this host/path,
-- endpoint/path still needed before execution.
+- safest path: tiny Rust probe client once endpoint is approved (no wallet/state/signing/broadcast),
+- no local `kaspad`/CLI executable is currently in PATH,
+- repository/docs scan confirms local node startup command exists but has no explicit public TN12 endpoint URL.
+
+5b) env-032 execution-readiness status:
+- local availability checks complete:
+  - `command -v` for kaspad/kaspa-cli/kaspa-rpc/kaspa-grpc/kaspactl => NOT_FOUND
+  - no local kaspad process detected
+- endpoint candidate:
+  - local: start kaspad with `--utxoindex --rpclisten=0.0.0.0 --rpclisten-borsh=0.0.0.0` (preferred) then target `ws://127.0.0.1:17110`
+  - public TN12/testnet endpoint: not documented in checked docs/source for this spike
 
 6) Information required before any live step:
-- TN12 RPC endpoint URL or local node command/path,
+- TN12 RPC endpoint URL or confirmed local node command/path,
 - network selector/name,
 - expected node version/Toccata/TN12 status,
-- safe read-only RPC command to call,
-- exact read-only method/API path,
+- safe read-only RPC command/API path,
 - logging/artifact path (`spikes/tn12-minimal-covenant/artifacts/env-031-get-server-info.txt`),
 - explicit stop condition before any state-changing action.
 
@@ -58,7 +65,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - approval before faucet request,
 - approval before signing,
 - approval before broadcast,
-- **additional approval required before env-031 execution itself (endpoint + read-only command).**
+- additional approval required before env-031/032 execution itself (endpoint + read-only command).
 
 ## Branch / repo status
 

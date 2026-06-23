@@ -1463,6 +1463,59 @@ Manual approval is required before running env-031 for all of:
 - If response includes an unexpected network mode or state, stop and revise endpoint selection.
 - If output capture path is missing/unwritable, stop and collect evidence of the I/O failure first.
 
+## env-032 TN12 endpoint identification
+
+- **Run ID:** env-032
+- **Date/time:** 2026-06-23 (deferred)
+- **Network:** TN12/testnet (readiness planning only)
+
+Observed (factual):
+
+- `command -v` checks run in-shell session:
+  - `kaspad` -> NOT_FOUND
+  - `kaspa-cli` -> NOT_FOUND
+  - `kaspa-rpc` -> NOT_FOUND
+  - `kaspa-grpc` -> NOT_FOUND
+  - `kaspactl` -> NOT_FOUND
+- No running `kaspad` process was detected.
+- No repo-local executable path/CLI for a TN12 RPC endpoint was found in checked sources.
+- Official docs evidence reviewed:
+  - `https://raw.githubusercontent.com/kaspanet/docs/main/content/docs/integrate/kaspa-node.mdx`:
+    - recommended local node command: `cargo run --release --bin kaspad -- --utxoindex --rpclisten=0.0.0.0 --rpclisten-borsh=0.0.0.0`
+    - docker example exposes ports `16110`/`17110`
+  - `https://raw.githubusercontent.com/kaspanet/docs/main/content/docs/integrate/getting-started.mdx`:
+    - network example uses `networkId = "mainnet"`
+    - placeholder RPC URL: `ws://host:17110`
+  - `https://raw.githubusercontent.com/kaspanet/rusty-kaspa/master/README.md`:
+    - explicit testnet startup example: `cargo run --release --bin kaspad -- --testnet`
+
+Decision:
+
+- **Public TN12/testnet RPC endpoint URL:** not found in repo/docs/source scan for this stage.
+- **Best known endpoint path:** local TN12 node when available (preferred), candidate RPC endpoint `ws://127.0.0.1:17110` (from local node examples and examples using `kaspad` port mapping).
+
+Exact planned read-only call:
+
+- Rust API: `rpc_client.get_server_info_call(None, GetServerInfoRequest {})`
+
+Exact log path prepared:
+
+- `spikes/tn12-minimal-covenant/artifacts/env-032-get-server-info.txt`
+
+Manual approval status:
+
+- **Required** before execution:
+  1) endpoint confirmation and TN12/testnet match,
+  2) allow read-only call,
+  3) write path confirmation,
+  4) one-call-only stop confirmation and no wallet/faucet/signing/broadcast actions.
+
+Stop conditions:
+
+- Stop if endpoint is unknown, not TN12/testnet, or if endpoint proof from docs cannot be reconfirmed.
+- Stop before any call if artifact path is unavailable.
+- Stop immediately after first successful/failing `getServerInfo` response parse.
+
 
 ## env-029 TN12 prerequisite planning
 

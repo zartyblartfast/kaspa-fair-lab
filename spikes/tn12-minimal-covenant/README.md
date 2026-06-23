@@ -148,6 +148,46 @@ Conservative conclusion:
 - Stop if response does not confirm TN12/testnet.
 - Stop immediately after the single read-only response is captured.
 
+## Env-032 TN12 endpoint identification
+
+### Decision and evidence
+
+- Local node command/path check (this host):
+  - `command -v kaspad` -> not found
+  - `command -v kaspa-cli` -> not found
+  - `command -v kaspa-rpc` -> not found
+  - `command -v kaspa-grpc` -> not found
+  - `command -v kaspactl` -> not found
+- No running local kaspa node process was detected.
+- Repo/source/docs scan did **not** find a ready-to-run executable path for TN12 RPC in this environment.
+
+### Official/local node source references
+
+- Kaspa docs (`content/docs/integrate/kaspa-node.mdx`) documents local node startup:
+  - `cargo run --release --bin kaspad -- --utxoindex --rpclisten=0.0.0.0 --rpclisten-borsh=0.0.0.0`
+  - docker example exposes ports `16110` and `17110`.
+- The same docs' JavaScript quickstart shows a test RPC override placeholder: `ws://host:17110`.
+- `rusty-kaspa` README documents testnet launch as `cargo run --release --bin kaspad -- --testnet`.
+
+### Endpoint conclusion for env-032
+
+- **Public TN12/testnet endpoint URL:** not documented in the repo/docs source checked for this spike.
+- **Safe path for this stage:** local node startup command above (once built/available), then use the node-local wRPC candidate `ws://127.0.0.1:17110`.
+- Exact first-read call once endpoint is approved:
+  - `rpc_client.get_server_info_call(None, GetServerInfoRequest {})`
+
+### Output/logging target
+
+- Planned artifact path for eventual env-032 execution: `spikes/tn12-minimal-covenant/artifacts/env-032-get-server-info.txt`
+
+### Manual approval still required
+
+- Before env-032 execution:
+  1. endpoint confirmation (must be TN12/testnet),
+  2. explicit permission for one read-only call,
+  3. confirmation of artifact path availability,
+  4. stop gate for no wallet/faucet/signing/broadcast.
+
 ## Env-028 local feasibility conclusion
 
 Local tooling is now credible enough to plan a controlled TN12 experiment, but not enough to claim live TN12 create/spend/inspect works.
