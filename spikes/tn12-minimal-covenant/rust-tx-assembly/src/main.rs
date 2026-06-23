@@ -6,7 +6,7 @@ use kaspa_consensus_core::tx::{
     ScriptPublicKey, Transaction, TransactionId, TransactionInput, TransactionOutpoint,
     TransactionOutput,
 };
-use kaspa_rpc_core::RpcTransaction;
+use kaspa_rpc_core::{RpcTransaction, SubmitTransactionRequest};
 
 fn hex_encode(bytes: &[u8]) -> String {
     const HEX: &[u8; 16] = b"0123456789abcdef";
@@ -53,6 +53,11 @@ fn main() {
     let rpc_output0 = &rpc_tx.outputs[0];
     let rpc_script_bytes = rpc_output0.script_public_key.script();
     let rpc_script_bytes_present = !rpc_script_bytes.is_empty();
+    let allow_orphan = false;
+    let submit_transaction_request = SubmitTransactionRequest {
+        transaction: rpc_tx.clone(),
+        allow_orphan,
+    };
 
     let artifact_dir = PathBuf::from("artifacts");
     fs::create_dir_all(&artifact_dir).expect("create artifacts directory");
@@ -60,6 +65,8 @@ fn main() {
     let serialization_artifact_path = artifact_dir.join("local-no-broadcast-transaction.hex");
     let rpc_summary_artifact_path =
         artifact_dir.join("local-no-broadcast-rpc-transaction-summary.txt");
+    let submit_request_summary_artifact_path =
+        artifact_dir.join("local-no-broadcast-submit-transaction-request-summary.txt");
     let serialized_bytes = to_vec(&tx).expect("serialize transaction with borsh");
     let serialized_hex = hex_encode(&serialized_bytes);
     let serialization_type =
@@ -125,6 +132,29 @@ fn main() {
         rpc_tx,
     );
 
+    let submit_request_summary = format!(
+        concat!(
+            "submit transaction request summary\n",
+            "request_type: SubmitTransactionRequest\n",
+            "allow_orphan: {}\n",
+            "rpc_transaction_version: {}\n",
+            "rpc_input_count: {}\n",
+            "rpc_output_count: {}\n",
+            "rpc_output0_value: {}\n",
+            "rpc_source_output0_covenant_binding_present: {}\n",
+            "rpc_call_made: false\n",
+            "broadcast_attempted: false\n",
+            "request_debug: {:#?}\n"
+        ),
+        submit_transaction_request.allow_orphan,
+        submit_transaction_request.transaction.version,
+        submit_transaction_request.transaction.inputs.len(),
+        submit_transaction_request.transaction.outputs.len(),
+        submit_transaction_request.transaction.outputs[0].value,
+        covenant_binding_present,
+        submit_transaction_request,
+    );
+
     fs::write(&summary_artifact_path, &summary).expect("write artifact summary");
     fs::write(
         &serialization_artifact_path,
@@ -132,6 +162,11 @@ fn main() {
     )
     .expect("write serialization artifact");
     fs::write(&rpc_summary_artifact_path, &rpc_summary).expect("write rpc artifact summary");
+    fs::write(
+        &submit_request_summary_artifact_path,
+        &submit_request_summary,
+    )
+    .expect("write submit request artifact summary");
 
     println!("summary_artifact_path={}", summary_artifact_path.display());
     println!(
@@ -141,6 +176,10 @@ fn main() {
     println!(
         "rpc_summary_artifact_path={}",
         rpc_summary_artifact_path.display()
+    );
+    println!(
+        "submit_request_summary_artifact_path={}",
+        submit_request_summary_artifact_path.display()
     );
     println!("serialization_type={}", serialization_type);
     println!(
@@ -159,6 +198,10 @@ fn main() {
     );
     println!("transaction_id={}", tx_id);
     println!("rpc_transaction_conversion=success");
+    println!("submit_transaction_request_construction=success");
+    println!("submit_transaction_request_allow_orphan={}", allow_orphan);
+    println!("submit_transaction_request_rpc_call_made=false");
+    println!("submit_transaction_request_broadcast_attempted=false");
     println!("rpc_transaction_version={}", rpc_tx.version);
     println!("rpc_input_count={}", rpc_tx.inputs.len());
     println!("rpc_output_count={}", rpc_tx.outputs.len());

@@ -8,6 +8,7 @@ Current behavior:
 
 - constructs a minimal local `kaspa-consensus-core::tx::Transaction`,
 - converts that local `Transaction` into `kaspa_rpc_core::RpcTransaction` via the official `From<&Transaction> for RpcTransaction` path,
+- constructs a local `kaspa_rpc_core::SubmitTransactionRequest` around that `RpcTransaction` with `allow_orphan = false`,
 - prints a deterministic summary (`version`, input/output counts, output value, script/covenant presence, transaction id),
 - writes a repo-owned artifact file at:
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction-summary.txt`
@@ -15,6 +16,8 @@ Current behavior:
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction.hex`
 - writes a repo-owned local RPC transaction artifact at:
   - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-rpc-transaction-summary.txt`
+- writes a repo-owned local submit-request artifact at:
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-submit-transaction-request-summary.txt`
 
 The constructed object is unsigned and local-only.
 
@@ -32,7 +35,8 @@ Serialization note:
 env-023 note:
 
 - Source-only inspection indicates submission boundary is `RpcTransaction`, not raw transaction hex.
-- env-024 now emits a local no-broadcast `RpcTransaction` summary artifact via the official `From<&Transaction> for RpcTransaction` conversion path.
+- env-024 emits a local no-broadcast `RpcTransaction` summary artifact via the official `From<&Transaction> for RpcTransaction` conversion path.
+- env-025 emits a local no-broadcast `SubmitTransactionRequest` summary artifact without calling any RPC client.
 
 ## Reproducibility note
 
@@ -62,6 +66,7 @@ Expected `cargo run` outputs include:
 - `summary_artifact_path=artifacts/local-no-broadcast-transaction-summary.txt`
 - `serialization_artifact_path=artifacts/local-no-broadcast-transaction.hex`
 - `rpc_summary_artifact_path=artifacts/local-no-broadcast-rpc-transaction-summary.txt`
+- `submit_request_summary_artifact_path=artifacts/local-no-broadcast-submit-transaction-request-summary.txt`
 - `serialization_type=borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)`
 - `consensus_serialization_conclusion=unresolved: targeted rusty-kaspa source audit found Borsh + serde/RPC object serializers, but no explicit consensus/raw wire transaction serialization API`
 - `transaction_version=2`
@@ -71,6 +76,10 @@ Expected `cargo run` outputs include:
 - `output0_script_bytes_present=true`
 - `output0_covenant_binding_present=false`
 - `rpc_transaction_conversion=success`
+- `submit_transaction_request_construction=success`
+- `submit_transaction_request_allow_orphan=false`
+- `submit_transaction_request_rpc_call_made=false`
+- `submit_transaction_request_broadcast_attempted=false`
 - `rpc_transaction_version=2`
 - `rpc_input_count=1`
 - `rpc_output_count=1`

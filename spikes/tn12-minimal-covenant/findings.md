@@ -1063,3 +1063,66 @@ What remains unverified:
 - No transaction submission or broadcast was attempted.
 - No mainnet usage.
 ```
+
+## env-025 local SubmitTransactionRequest artifact
+
+```text
+Run ID: env-025
+Date/time: 2026-06-23T20:24:30Z
+Network: TN12/testnet scope only (local no-broadcast only; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+- spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Dependency/API used:
+- existing pinned `kaspa-rpc-core`
+- `kaspa_rpc_core::SubmitTransactionRequest`
+- existing local `RpcTransaction` from `let rpc_tx: RpcTransaction = (&tx).into();`
+
+Commands run:
+- `cargo fmt`
+- `cargo check`
+- `cargo run`
+
+Pass/fail result:
+- `cargo fmt`: PASS
+- `cargo check`: PASS
+- `cargo run`: PASS
+
+Artifact path:
+- `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-submit-transaction-request-summary.txt`
+
+Observed output summary:
+- `submit_request_summary_artifact_path=artifacts/local-no-broadcast-submit-transaction-request-summary.txt`
+- `submit_transaction_request_construction=success`
+- `submit_transaction_request_allow_orphan=false`
+- `submit_transaction_request_rpc_call_made=false`
+- `submit_transaction_request_broadcast_attempted=false`
+- `rpc_transaction_version=2`
+- `rpc_input_count=1`
+- `rpc_output_count=1`
+- `rpc_output0_value=1500`
+- `rpc_source_output0_covenant_binding_present=false`
+
+Whether a local SubmitTransactionRequest object was constructed:
+- Yes.
+- Local code constructs `SubmitTransactionRequest { transaction: rpc_tx.clone(), allow_orphan: false }`.
+
+Whether any RPC client was called:
+- No.
+
+Whether anything was signed:
+- No.
+
+Whether anything was broadcast:
+- No.
+
+What remains unverified:
+- No signing path was implemented or tested.
+- No RPC client path was exercised.
+- No live TN12 create/spend/inspect flow was attempted.
+- No transaction submission or broadcast was attempted.
+- No mainnet usage.
+```
