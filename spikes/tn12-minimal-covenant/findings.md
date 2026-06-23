@@ -30,6 +30,33 @@
 - Network endpoints and wallets are available when execution is attempted.
 - Required dependencies can be installed without adding heavy packages.
 
+## Environment check run
+
+- **Run ID:** env-002
+- **Date/time:** 2026-06-23T13:32:06Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- Command:
+  - `./scripts/check-env.sh`
+- Raw output summary:
+  - OK: `git` `node` `npm` `python3` `cargo` `rustc` `codex`
+  - Exit code: `0`
+
+Success/failure: **pass** (all listed tools were present)
+
+Assumptions:
+- Command output lines are from this host/session only.
+
+Unverified:
+- No covenant-tooling command was executed.
+- No SilverScript / Rusty Kaspa / WASM SDK / Python SDK command availability was proven in this run.
+
+Notes:
+- The earlier `cargo`/`rustc` failure is most likely from shell/session PATH visibility immediately after Rust installation rather than a failed Rust install.
+- The task requirement “run check-env and record result” is satisfied.
+- Next action: proceed with route-discovery checks in README plan using the next run block.
+
 ## Verification record
 
 To be updated after each run.
