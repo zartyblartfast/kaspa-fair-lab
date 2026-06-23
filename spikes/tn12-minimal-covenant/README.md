@@ -54,16 +54,23 @@ Update `findings.md` with:
 
 Goal for the next run: identify the smallest reproducible path to create/inspect a tiny artefact, without assuming any path works yet.
 
-1. **Proposed next experiment (planned, no run yet):** read-only route-discovery only.
-   - Since no local `silverscript`/`silver`/`ssc` command was found, do a metadata-only discovery for official SilverScript source/repo/package references (no clone/install).
-   - Keep Rust, WASM, and Python checks read-only as secondary follow-up.
-   - No build, compile, dependency install, repository clone, transaction submit, or covenant implementation in this step.
+1. **Proposed next experiment (planned, no run yet):** controlled SilverScript metadata + clone/build readiness probe in an isolated location.
+   - Confirmed local command probes still show no local `silverscript` binary (`command -v silverscript`, `silver`, `ssc` all missing from PATH).
+   - Execute only read-only metadata checks now.
+   - Proposed isolated location for clone/build: `external/` (or `spikes/tn12-minimal-covenant/vendor/`), but **do not clone yet**.
 
-2. **Decision rule for first live experiment:**
-   - If SilverScript metadata/actionability is confirmed, proceed with a constrained live SilverScript help/version/create-probe sequence.
-   - If SilverScript metadata/actionability is not confirmed, pivot to Rusty Kaspa / Rust crates for the first live attempt.
+2. **Candidate first live experiment (when approved):**
+   - Clone (or reuse) official upstream metadata source into the isolated location.
+   - Run `cargo test -p silverscript-lang` as the first build/test check.
+   - Run the documented debugger invocation as the first execution check:
+     - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/if_statement.sil --function hello --ctor-arg 3 --ctor-arg 10 --arg 1 --arg 2`
+   - Mark both commands as **UNVERIFIED** until actually executed in a follow-up task.
 
-3. **Secondary read-only checks (before any live step):**
+3. **Decision rule for first live experiment:**
+   - If official SilverScript route discovery remains intact and clone/build succeeds, prioritize the SilverScript probe first.
+   - If SilverScript is not actionable in this environment, pivot to Rusty Kaspa / Rust crates for the first live attempt.
+
+4. **Secondary read-only checks (before any build/tx):**
    - Check feasibility of WASM SDK and Python SDK routes for payload/build/inspection support.
 
 No path is treated as valid until a live command sequence is recorded in `findings.md` with outputs.

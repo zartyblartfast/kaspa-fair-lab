@@ -168,6 +168,45 @@ Notes:
 - All SilverScript evidence for functional viability remains **UNVERIFIED** until a live command path is demonstrated.
 - Next step should be either metadata acquisition (official source/package) followed by an explicit SilverScript build probe, or route pivoting if this is blocked.
 
+## env-007 SilverScript official-source and workspace metadata probe
+
+- **Run ID:** env-007
+- **Date/time:** 2026-06-23T14:00:49Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- URL probe:
+  - `curl -I https://github.com/kaspanet/silverscript`
+- Metadata fetch:
+  - `curl -L https://raw.githubusercontent.com/kaspanet/silverscript/master/Cargo.toml`
+  - `curl -L https://raw.githubusercontent.com/kaspanet/silverscript/master/README.md`
+- Evidence:
+  - The upstream repo URL resolves and is reachable (`kaspanet/silverscript`).
+  - `Cargo.toml` shows a Rust `[workspace]` with members `silverscript-lang`, `debugger/session`, and `debugger/cli`.
+  - `README.md` says: this repo is a Rust workspace; build target command is `cargo test -p silverscript-lang`.
+  - `README.md` also shows a debugger invocation:
+    - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/if_statement.sil --function hello --ctor-arg 3 --ctor-arg 10 --arg 1 --arg 2`
+  - `README.md` explicitly says outputs are currently TN12-only.
+- Local command probe is still negative for installed CLI (from env-006):
+  - `command -v silverscript` -> not found
+  - `command -v silver` -> not found
+  - `command -v ssc` -> not found
+
+Success/failure: **pass** for remote metadata discovery, **blocked** for executable readiness (no local command and no clone/build performed).
+
+Assumptions:
+- `curl` outputs are from this host/session and can represent repository availability at the time of write.
+- No clone/build side effects occurred.
+
+Unverified:
+- `kaspanet/silverscript` is the official/source-of-truth repo for SilverScript (high-confidence inference from URL + namespace, not officially confirmed in project docs).
+- `cargo test -p silverscript-lang` and debugger command outputs are **UNVERIFIED** because they were not run.
+- No SilverScript CLI install, build, `--help`, or tx-level covenant workflow has been executed locally.
+
+Notes:
+- This run closes the gap from env-006 by identifying a probable upstream workspace source and likely first build/test entry points.
+- Recommendation (from this run): proceed to a controlled clone/build proof-of-readiness step in an isolated location before any covenant tx work.
+
 ## Verification record
 
 To be updated after each run.
