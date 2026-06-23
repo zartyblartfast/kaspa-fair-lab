@@ -246,6 +246,60 @@ Notes:
 - This probe confirms the official Kaspa Network GitHub repo is cloneable and its Rust workspace builds in this environment.
 - It does **not** confirm any full TN12 covenant create/spend pipeline; example contract run demonstrates debugger execution path and script verification failure for this input.
 
+## env-009 SilverScript command inventory and artefact path
+
+- **Run ID:** env-009
+- **Date/time:** 2026-06-23T14:21:00Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- **Repo commit hash checked:** `faaa074915edd1e885e4dd552051e348d1854c87`
+- **Commands inspected/executed in `external/silverscript`:**
+  - `git rev-parse HEAD`
+  - `cargo metadata --no-deps --format-version 1`
+  - `cargo run -p silverscript-lang -- --help`
+  - `cargo run -p cli-debugger -- --help`
+  - `find . -maxdepth 4 -type f | grep -E '(\.sil|README|Cargo.toml|\.md)$'`
+  - `rg -n "compile|silverc|covenant|tn12|testnet|script|artifact|output|cli-debugger" -S docs/TUTORIAL.md README.md debugger/cli/README.md`
+  - `cargo run -p silverscript-lang -- --stdout silverscript-lang/tests/examples/num2bin.sil`
+  - `cargo run -p silverscript-lang -- silverscript-lang/tests/examples/num2bin.sil`
+- **Available crates/binaries discovered:**
+  - Workspace packages: `silverscript-lang`, `cli-debugger`, `debugger-session`
+  - Binaries available from source/help:
+    - `silverc` (from `silverscript-lang`)
+    - `cli-debugger` (from `debugger/cli`)
+- **Available `.sil` examples:**
+  - Total examples under `silverscript-lang/tests/examples`: `81`
+  - No-constructor examples (compile-ready without `--constructor-args`): `31`
+  - Representative files: `announcement.sil`, `num2bin.sil`, `return_basic.sil`, `return_loop.sil`, `simple_covenant.sil`, `simple_multisig.sil`
+- **Candidate compile/debug commands identified:**
+  - `cargo run -p silverscript-lang -- <example>.sil`
+  - `cargo run -p silverscript-lang -- <example>.sil -o <artifact>.json`
+  - `cargo run -p silverscript-lang -- --stdout <example>.sil`
+  - `cargo run -p cli-debugger -- <path-to-example>.sil -f <function> [--ctor-arg ...] [--arg ...]`
+  - equivalent docs-level forms: `silverc <contract>.sil`, `silverc <contract>.sil -o <artifact>.json`, `cli-debugger <contract-path> --run-all`
+- **Compiled/script artefact path discovery:**
+  - Verified default artifact path is `<SOURCE>.json`.
+  - Verified file created from this run:
+    - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/tests/examples/num2bin.json`
+  - JSON artifact contains `contract_name`, `compiler_version`, `script`, `ast`, and `abi` fields.
+
+Success/failure:
+- `cargo metadata --no-deps`: **pass** (workspace members and package set enumerated)
+- `cargo run -p silverscript-lang -- --help`: **pass**
+- `cargo run -p cli-debugger -- --help`: **pass**
+- `cargo run -p silverscript-lang -- --stdout silverscript-lang/tests/examples/num2bin.sil`: **pass**
+- `cargo run -p silverscript-lang -- silverscript-lang/tests/examples/num2bin.sil`: **pass** (artifact file written)
+
+Unverified:
+- `silverc` direct binary execution (`silverc ...`) was not invoked independently (only through `cargo run -p silverscript-lang ...`).
+- No transaction create/spend/inspect command chain was executed (per current scope and constraints).
+- No mainnet tooling/workflow was used.
+
+Notes:
+- Minimum compile-to-artifact path is now confirmed in the isolated clone and can be reproduced with no transaction/network work.
+- Next step is to target a covenant-relevant `.sil` and capture one minimal compile artifact under a controlled TN12-only workflow before any tx attempt.
+
 ## Verification record
 
 To be updated after each run.

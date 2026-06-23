@@ -34,9 +34,9 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-008 clone/build probe executed.
+- Status: env-009 command inventory and artefact-path discovery executed.
 - Target network: TN12/testnet.
-- Next step: do not start transaction creation/spending in this task; prepare the first covenant command sequence for the next run using the probe results.
+- Next step: compile an existing upstream `.sil` example into a JSON artefact (no tx submit/network action yet), then continue minimal command discovery from that verified artifact.
 
 ## How results are recorded
 
@@ -52,15 +52,16 @@ Update `findings.md` with:
 
 ## Next-step technical plan
 
-Goal for the next run: based on the successful SilverScript probe, continue with minimal SilverScript command-sequence planning only.
+Goal for the next run: based on env-009 command discovery, convert one upstream `.sil` into an inspectable compiled artifact and log the exact minimum command sequence.
 
 1. **Next approved experiment (preliminary, non-transactional):**
    - Keep the clone in `external/silverscript`.
-   - Use verified upstream test/build baseline from `env-008` as the starting point.
-   - Identify (from upstream docs/examples) the smallest next command sequence for create/spend inspection, while continuing to avoid tx submission in this phase.
+   - Use `cargo run -p silverscript-lang -- <example>.sil` as the minimum command sequence to emit `<example>.json`.
+   - Prefer a no-ctor example (`contract ...()`), e.g. `silverscript-lang/tests/examples/num2bin.sil`, to avoid constructor-arg setup.
+   - Capture the produced artifact path and sample fields (`contract_name`, `script`, `abi`).
 
 2. **Failure handling for reproducibility:**
-   - If a future SilverScript build/test command is blocked, run an environment refresh/retry before changing route.
+   - If a future compile command is blocked, run one retry in a clean shell context before changing route.
 
 3. **Fallback plan (after a build failure only):**
    - If SilverScript remains blocked after a targeted retry, fall back to Rusty Kaspa / Rust crates for the first full create/spend path.
