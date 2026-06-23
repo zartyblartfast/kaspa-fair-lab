@@ -52,10 +52,63 @@ Unverified:
 - No covenant-tooling command was executed.
 - No SilverScript / Rusty Kaspa / WASM SDK / Python SDK command availability was proven in this run.
 
-Notes:
+## Notes:
 - The earlier `cargo`/`rustc` failure is most likely from shell/session PATH visibility immediately after Rust installation rather than a failed Rust install.
 - The task requirement “run check-env and record result” is satisfied.
 - Next action: proceed with route-discovery checks in README plan using the next run block.
+
+## env-003 tooling route discovery
+
+- **Run ID:** env-003
+- **Date/time:** 2026-06-23T13:36:27Z
+- **Network:** TN12/testnet (not networked in this run)
+
+Observed (factual):
+- Files reviewed:
+  - `docs/toccata-feasibility.md`
+  - `spikes/tn12-minimal-covenant/README.md`
+  - `spikes/tn12-minimal-covenant/findings.md`
+- Route candidates are documented from existing project docs only; no new covenant tooling was executed.
+
+Success/failure: **pass** for route-discovery documentation pass (no command-path claims made)
+
+### Candidate route assessment
+
+| Route | Intended use | What needs install/clone later | Evidence needed to prove viable | Risks / unknowns |
+| --- | --- | --- | --- | --- |
+| SilverScript | Highest-level covenant script authoring path for building/signing minimal artefacts with least custom transaction plumbing. | If available, a SilverScript CLI/tool install or repository checkout (to be confirmed later), plus any node-based runtime used by examples. | Presence of command/help, minimal compile example output, and successful create/spend/inspect command traces on TN12. | Untested locally; may be unavailable, immature, or not TN12-ready. Current docs only contain planned probe steps. |
+| Rusty Kaspa / Rust crates | Lower-level, likely more reliable control of script/payload construction and transaction assembly through native libraries. | Rust crate dependencies and source artifacts (to be fetched later), plus any project/tool templates for signing and tx submission. | Verified crate API docs/examples, successful minimal compile and run that produces a tiny artefact and spend with inspectable outputs. | Heavier setup/build time and extra dependency surface; requires compiling and version alignment before live testing. |
+| WASM SDK | Client-side/helper route for covenant payload building via wasm tooling if available. | WASM runtime/tooling plus relevant SDK package(s) or repo checkout. | A minimal wasm helper run that emits expected covenant payload and successful handoff to TN12 transaction tooling. | Could be simulation-only or require browser-specific glue not available in this CLI environment. |
+| Python SDK | Orchestration route for automation/inspection if mature Kaspa/Toccata Python bindings exist. | Python package installation + module import availability (to be done later). | Confirmed module import/version, then successful command output that creates, spends, and inspects a tiny artefact. | No explicit Python covenant path exists in current docs; may not support covenant payload compilation. |
+
+Notes:
+- All candidate viability items remain **UNVERIFIED** until live outputs are produced.
+- `docs/toccata-feasibility.md` still states cargo/rustc were previously missing; this should be updated in a later documentation-cleanup pass.
+
+## env-004 tool-check rerun after Rust/Cargo PATH refresh
+
+- **Run ID:** env-004
+- **Date/time:** 2026-06-23T13:38:30Z
+- **Network:** TN12/testnet (not networked in this check)
+
+Observed (factual):
+- Command:
+  - `./scripts/check-env.sh`
+- Raw output summary:
+  - OK: `git` `node` `npm` `python3` `cargo` `rustc` `codex`
+  - Exit code: `0`
+
+Success/failure: **pass**
+
+Assumptions:
+- Output reflects this host/session after PATH refresh.
+
+Unverified:
+- No covenant-tooling command was executed.
+
+Notes:
+- The earlier `cargo`/`rustc` failure remains most consistent with shell/session PATH visibility immediately after installation rather than a Rust toolchain failure.
+- No additional environment changes were made for this update; this is a revalidation only.
 
 ## Verification record
 
