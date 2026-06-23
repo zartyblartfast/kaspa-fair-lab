@@ -883,3 +883,66 @@ Observed output summary:
 - `serialization_bytes_len=158`
 - `transaction_id=4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd`
 ```
+
+## env-022 consensus serialization check
+
+```text
+Run ID: env-022
+Date/time: 2026-06-23T16:30:00Z
+Network: TN12/testnet (local no-broadcast only; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+- spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Commands run:
+- cargo fmt
+- cargo check
+- cargo run
+
+Pass/fail result:
+- cargo check: PASS
+- cargo run: PASS
+
+Source evidence reviewed:
+- `consensus/core/src/tx.rs`
+  - `Transaction` derives `BorshSerialize`/`BorshDeserialize`.
+- `consensus/core/src/tx/serde_impl.rs`
+  - documents version-aware serde for `Transaction` and explicitly says JSON and bincode go through that implementation.
+- `rpc/core/src/model/tx.rs`
+  - defines separate `RpcTransaction*` serializers/deserializers.
+- targeted search results:
+  - no matches for `consensus_encode`
+  - no matches for `serialize_to_vec`
+  - no matches for `TransactionHex`
+  - no meaningful `Transaction::serialize` API hit beyond WASM/object serialization references
+
+Whether Borsh is confirmed as consensus/raw serialization:
+- No.
+- Current evidence only confirms that Borsh serialization exists on the local Rust type.
+- Current evidence does not prove that `borsh::to_vec(&tx)` is the intended Kaspa consensus/raw wire transaction format.
+
+Whether a new consensus/raw hex artifact was produced:
+- No.
+- No clear consensus/raw transaction serialization API was identified from the allowed source audit, so no new artifact was added.
+
+Observed output summary:
+- `serialization_type=borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)`
+- `consensus_serialization_conclusion=unresolved: targeted rusty-kaspa source audit found Borsh + serde/RPC object serializers, but no explicit consensus/raw wire transaction serialization API`
+- existing artifact retained:
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/artifacts/local-no-broadcast-transaction.hex`
+- no new `*-consensus.hex` artifact was produced
+
+Whether anything was signed:
+- No.
+
+Whether anything was broadcast:
+- No.
+
+What remains unverified:
+- The actual Kaspa consensus/raw wire transaction serialization API/path for this pinned revision.
+- Whether the existing Borsh hex artifact matches any node/RPC accepted raw transaction encoding.
+- No signing path was exercised.
+- No live TN12 create/spend/inspect flow was attempted.
+```

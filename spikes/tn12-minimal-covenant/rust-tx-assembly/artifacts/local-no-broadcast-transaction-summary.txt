@@ -8,6 +8,7 @@ output0_script_bytes_present: true
 output0_covenant_binding_present: false
 transaction_id: 4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd
 serialization_type: borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)
+consensus_serialization_conclusion: unresolved: targeted rusty-kaspa source audit found Borsh + serde/RPC object serializers, but no explicit consensus/raw wire transaction serialization API
 serialization_bytes_len: 158
 serialization_hex_artifact: artifacts/local-no-broadcast-transaction.hex
 debug: Transaction {

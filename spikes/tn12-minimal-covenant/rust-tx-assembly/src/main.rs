@@ -57,6 +57,7 @@ fn main() {
     let serialized_hex = hex_encode(&serialized_bytes);
     let serialization_type =
         "borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)";
+    let consensus_serialization_conclusion = "unresolved: targeted rusty-kaspa source audit found Borsh + serde/RPC object serializers, but no explicit consensus/raw wire transaction serialization API";
 
     let summary = format!(
         concat!(
@@ -70,6 +71,7 @@ fn main() {
             "output0_covenant_binding_present: {}\n",
             "transaction_id: {}\n",
             "serialization_type: {}\n",
+            "consensus_serialization_conclusion: {}\n",
             "serialization_bytes_len: {}\n",
             "serialization_hex_artifact: {}\n",
             "debug: {:#?}\n"
@@ -83,6 +85,7 @@ fn main() {
         covenant_binding_present,
         tx_id,
         serialization_type,
+        consensus_serialization_conclusion,
         serialized_bytes.len(),
         serialization_artifact_path.display(),
         tx,
@@ -101,6 +104,10 @@ fn main() {
         serialization_artifact_path.display()
     );
     println!("serialization_type={}", serialization_type);
+    println!(
+        "consensus_serialization_conclusion={}",
+        consensus_serialization_conclusion
+    );
     println!("serialization_bytes_len={}", serialized_bytes.len());
     println!("transaction_version={}", tx.version);
     println!("input_count={}", tx.inputs.len());

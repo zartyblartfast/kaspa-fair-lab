@@ -19,7 +19,12 @@ Serialization note:
 
 - the `.hex` artifact is Borsh binary serialization encoded as lowercase hex,
 - this is a real deterministic binary artifact from the local `Transaction` type,
-- consensus-wire/raw-network equivalence is not yet verified in this spike.
+- targeted source audit evidence for the pinned `rusty-kaspa` revision:
+  - `consensus/core/src/tx.rs` derives `BorshSerialize`/`BorshDeserialize` for `Transaction`,
+  - `consensus/core/src/tx/serde_impl.rs` documents version-aware serde for JSON/bincode-style object serialization,
+  - `rpc/core/src/model/tx.rs` defines separate `RpcTransaction*` serializers,
+  - no explicit consensus/raw wire transaction serialization API was identified from the allowed targeted searches (`consensus_encode`, `Transaction::serialize`, `serialize_to_vec`, `TransactionHex`).
+- conclusion for env-022: Borsh output is not confirmed as Kaspa consensus/raw wire serialization in this spike.
 
 ## Reproducibility note
 
@@ -49,6 +54,7 @@ Expected `cargo run` outputs include:
 - `summary_artifact_path=artifacts/local-no-broadcast-transaction-summary.txt`
 - `serialization_artifact_path=artifacts/local-no-broadcast-transaction.hex`
 - `serialization_type=borsh binary hex (deterministic local artifact; consensus-wire equivalence unverified)`
+- `consensus_serialization_conclusion=unresolved: targeted rusty-kaspa source audit found Borsh + serde/RPC object serializers, but no explicit consensus/raw wire transaction serialization API`
 - `transaction_version=2`
 - `input_count=1`
 - `output_count=1`
