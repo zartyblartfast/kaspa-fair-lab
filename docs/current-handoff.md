@@ -11,9 +11,9 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Concise status update
 
-1) env-028 added the local feasibility conclusion and TN12 readiness checklist to the spike docs.
+1) env-029 added TN12 prerequisite planning to the spike docs.
 
-2) Current repo-backed local evidence now covers:
+2) Current repo-backed local evidence still covers:
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles.
 - repo-owned local fixtures pass.
@@ -35,17 +35,29 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 4) Conservative conclusion:
 - Local tooling is credible enough to plan a controlled TN12 experiment.
+- The next safe move is read-only TN12 connectivity/discovery, not transaction creation.
 - Local tooling is not yet sufficient to claim live TN12 create/spend/inspect works.
 
-5) Recommended next task after `/new`:
-- stay documentation-first and plan the first live TN12 prerequisite step only,
-- use a test-only wallet/key,
-- isolate test funds,
-- identify the TN12 RPC endpoint or local node,
-- confirm faucet process,
-- confirm transaction version/covenant expectations,
-- decide whether the first approved live step is read-only RPC connectivity or faucet/address setup,
-- require explicit manual approval before any broadcast.
+5) Recommended first live step after `/new`:
+- read-only TN12 RPC connectivity check only,
+- no wallet,
+- no faucet,
+- no signing,
+- no transaction submission.
+
+6) Information required before any live step:
+- TN12 RPC endpoint or local node path,
+- network selector/name,
+- expected node version/Toccata/TN12 status,
+- safe read-only RPC command to call,
+- logging/artifact path,
+- explicit stop condition before any state-changing action.
+
+7) Manual approval gates:
+- approval before wallet/key creation,
+- approval before faucet request,
+- approval before signing,
+- approval before broadcast.
 
 ## Branch / repo status
 

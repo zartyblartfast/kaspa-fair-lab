@@ -34,7 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-028 local feasibility conclusion completed and documented in `findings.md`.
+- Status: env-029 TN12 prerequisite planning completed and documented in `findings.md`.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
 - repo-owned local fixtures pass.
@@ -44,8 +44,43 @@ Before implementing roulette, we need confidence that base primitives actually w
 - Target network remains TN12/testnet only.
 - No RPC client was called.
 - No signing was performed.
+- No real UTXO was used.
+- No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-029 prerequisite planning conclusion
+
+Recommended first live step:
+- read-only TN12 RPC connectivity/discovery only.
+- no wallet.
+- no faucet.
+- no signing.
+- no transaction submission.
+
+Candidate first live step options:
+- read-only TN12 RPC connectivity check.
+- test-only address/key generation.
+- faucet/address setup.
+- no-broadcast signed local transaction construction.
+- live submission/broadcast later only with explicit manual approval.
+
+Information needed before any live step:
+- TN12 RPC endpoint or local node path.
+- network selector/name.
+- expected node version/Toccata/TN12 status.
+- safe read-only RPC command to call.
+- logging/artifact path.
+- explicit stop condition before any state-changing action.
+
+Manual approval gates:
+- approval before wallet/key creation.
+- approval before faucet request.
+- approval before signing.
+- approval before broadcast.
+
+Conservative conclusion:
+- The next safe move is read-only TN12 connectivity/discovery, not transaction creation.
 
 ## Env-028 local feasibility conclusion
 
@@ -95,68 +130,27 @@ Run `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh` from the repo ro
 
 ## Next-step technical plan
 
-Goal for the next run: move from verification-only tests to explicit no-broadcast transaction-construction planning (still no wallet or broadcast).
+Goal for the next run: perform TN12 prerequisite discovery only, starting with a read-only connectivity/discovery check if and only if the required live inputs are provided and explicitly approved.
 
-1. **Done (this phase):** repo-owned fixture files are in place under
-   `spikes/tn12-minimal-covenant/fixtures/` and were executed via `run_no_broadcast_checks.sh`.
-   - Add a minimal fixture bundle for:
-     - transition-style local simulation
-     - explicit tx-structured simple_covenant check
-   - No external dependencies or broadcast steps.
+1. Confirm the minimum live prerequisites before any command is run:
+   - TN12 RPC endpoint or local node path.
+   - network selector/name.
+   - expected node version/Toccata/TN12 status.
+   - one safe read-only RPC command.
+   - artifact/log path.
+   - explicit stop condition before any state-changing action.
 
-2. **Run the reproducible repo-owned workflow** (repo-only, no broadcast):
+2. First approved live action should stay read-only:
+   - call only the agreed read-only TN12 RPC connectivity/discovery command,
+   - collect raw output to the chosen artifact/log path,
+   - stop immediately after confirming connectivity/version/status information.
 
-   From the external clone:
+3. Do not proceed further in the same run without fresh manual approval for each escalation:
+   - wallet/key creation,
+   - faucet request,
+   - signing,
+   - broadcast.
 
-   ```bash
-   cd /root/kaspa-fair-lab/external/silverscript
+Recommended now: keep `run_no_broadcast_checks.sh` and the local Rust object/serializer evidence as the canonical baseline, and treat read-only TN12 connectivity/discovery as the only safe first live step.
 
-   /root/.cargo/bin/cargo run -p cli-debugger -- \
-     /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil \
-     --run-all \
-     --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json
-
-   /root/.cargo/bin/cargo run -p cli-debugger -- \
-     /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil \
-     --run-all \
-     --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json
-   ```
-
-   Optional explicit tx-version check (same contract):
-
-   ```bash
-   /root/.cargo/bin/cargo run -p cli-debugger -- \
-     /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil \
-     --run-all \
-     --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json
-   ```
-
-   Expected result: all tests in each fixture report PASS locally with output entries like `RUN ...` and `PASS ...`.
-
-3. **Next recommendation:** proceed with explicit route planning for no-broadcast transaction construction (no live submit):
-   - keep this script path as the canonical verifier baseline,
-   - confirm whether a repo-owned Rust `Transaction`/`PopulatedTransaction` assembly path is needed for signed payload output.
-
-Recommended now: keep using this script-based local verifier path as the canonical baseline, and open a follow-up task that wires a Rust/tx-assembly path (e.g., `Transaction::new` + `PopulatedTransaction`) to generate and log concrete signed transaction blobs for future create/spend/inspect testing.
-
-No path is considered valid until repo-owned no-broadcast evidence is recorded in `findings.md` with outputs.
-
-### Env-019 next-step plan
-
-Recommended next-step now:
-
-- keep the spike constrained to local no-broadcast assembly only,
-- use the new scaffold at `spikes/tn12-minimal-covenant/rust-tx-assembly/`,
-- keep `run_no_broadcast_checks.sh` as the canonical verifier baseline,
-- after this scaffold confirms minimal construction, proceed to a follow-up that emits deterministic transaction plan fields (and later signed payloads) without wallets, faucets, network submit, or broadcast.
-
-### Env-019 short next-step checklist
-
-- Keep `run_no_broadcast_checks.sh` as the canonical evidence baseline.
-- Add a Rust-only, local tx-assembly planning pass (no broadcast, no wallet/faucet/mainnet).
-- Capture in `findings.md`:
-  - tx assembly API route chosen,
-  - mock key strategy,
-  - transaction context fields emitted (version, inputs, outputs, covenant ids),
-  - serialization/signature output form.
-- After env-019 evidence is complete, update `README.md` + `findings.md` and request explicit go-ahead for env-020 (no-broadcast signed payload proof).
+No path is considered valid until repo-owned evidence is recorded in `findings.md` with exact commands, outputs, and explicit stop conditions.

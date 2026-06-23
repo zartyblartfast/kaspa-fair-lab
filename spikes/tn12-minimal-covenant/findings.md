@@ -1319,3 +1319,67 @@ Scope confirmations:
 - No live TN12 create/spend/inspect was attempted.
 - No mainnet usage.
 ```
+
+## env-029 TN12 prerequisite planning
+
+```text
+Run ID: env-029
+Date/time: 2026-06-23T21:11:02Z
+Network: TN12/testnet planning scope only (documentation-only update; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Planning basis carried forward:
+- env-028 concluded local tooling is credible enough to plan a controlled TN12 experiment.
+- Local SilverScript/covenant simulation works.
+- Local `Transaction` -> `RpcTransaction` -> `SubmitTransactionRequest` path works.
+- RPC serializer artifacts and round-trip verification work.
+- No signing has been implemented.
+- No real UTXO has been used.
+- No faucet funding has been used.
+- No live TN12 RPC submission has been attempted.
+- No broadcast has occurred.
+
+Candidate first live step options:
+- read-only TN12 RPC connectivity check.
+- test-only address/key generation.
+- faucet/address setup.
+- no-broadcast signed local transaction construction.
+- live submission/broadcast later only with explicit manual approval.
+
+Recommended first live step:
+- read-only TN12 RPC connectivity check only.
+- no wallet.
+- no faucet.
+- no signing.
+- no transaction submission.
+
+Information needed before any live step:
+- TN12 RPC endpoint or local node path.
+- network selector/name.
+- expected node version/Toccata/TN12 status.
+- safe read-only RPC command to call.
+- logging/artifact path.
+- explicit stop condition before any state-changing action.
+
+Manual approval gates:
+- approval before wallet/key creation.
+- approval before faucet request.
+- approval before signing.
+- approval before broadcast.
+
+Conservative conclusion:
+- The next safe move is read-only TN12 connectivity/discovery, not transaction creation.
+
+Scope confirmations:
+- No live RPC endpoint was called.
+- No wallet or seed was created or used.
+- No faucet was requested.
+- Nothing was signed.
+- Nothing was submitted.
+- Nothing was broadcast.
+- No mainnet usage.
+```
