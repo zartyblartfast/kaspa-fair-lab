@@ -38,27 +38,27 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - The next safe move is read-only TN12 connectivity/discovery, not transaction creation.
 - Local tooling is not yet sufficient to claim live TN12 create/spend/inspect works.
 
-5) Recommended first live step after `/new`:
-- read-only TN12 RPC connectivity check only (candidate first call: `getServerInfo` / `get_server_info_call(None, GetServerInfoRequest {})`),
-- no wallet,
-- no faucet,
-- no signing,
-- no transaction submission.
+5) env-031 next live-planning step identified (read-only only):
+- execution mode: one-call read-only TN12 endpoint probe via `getServerInfo` (`get_server_info_call(None, GetServerInfoRequest {})`)
+- safest path: tiny Rust probe client once endpoint is known (no wallet/state/signing/broadcast),
+- no local Rusty Kaspa CLI/client command was detected in this host/path,
+- endpoint/path still needed before execution.
 
 6) Information required before any live step:
-- TN12 RPC endpoint or local node path,
+- TN12 RPC endpoint URL or local node command/path,
 - network selector/name,
 - expected node version/Toccata/TN12 status,
 - safe read-only RPC command to call,
 - exact read-only method/API path,
-- logging/artifact path,
+- logging/artifact path (`spikes/tn12-minimal-covenant/artifacts/env-031-get-server-info.txt`),
 - explicit stop condition before any state-changing action.
 
 7) Manual approval gates:
 - approval before wallet/key creation,
 - approval before faucet request,
 - approval before signing,
-- approval before broadcast.
+- approval before broadcast,
+- **additional approval required before env-031 execution itself (endpoint + read-only command).**
 
 ## Branch / repo status
 

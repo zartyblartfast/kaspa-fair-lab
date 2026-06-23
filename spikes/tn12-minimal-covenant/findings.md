@@ -1397,6 +1397,73 @@ Conservative conclusion:
 
 - First safe action is to identify endpoint and run the approved read-only `getServerInfo` call only (or equivalent), then stop.
 
+## env-031 read-only TN12 getServerInfo execution plan
+
+### Decision: execution path to use
+
+Given evidence at this point:
+
+- **Existing local Rusty Kaspa CLI/client:** no local CLI binary or executable path was found in this repository or session PATH (`kaspad`, `kaspa-cli`, `kaspa-rpc`, etc. were not discoverable).
+- **Node command path:** no known local node command/path is documented in repo docs/source yet, and no local endpoint is currently configured.
+- **Tiny Rust client:** this is the safest available path for env-031 because it is explicit, auditable, and requires no wallet state.
+
+### TN12 endpoint/local node path needed
+
+Safe execution requires one authoritative TN12/testnet endpoint before `env-031`:
+
+1. A local node RPC URL (preferred), or
+2. A documented public/community TN12/testnet RPC URL that explicitly states TN12/testnet and policy for usage.
+
+Current state:
+
+- **Endpoint is not yet known in repo docs/source.**
+- No node command/path was identified in the checked docs (`README`, `findings`, `current-handoff`) as the live source for RPC.
+
+### Exact read-only API call to run (once endpoint is approved)
+
+- Method: `get_server_info_call`
+- Request type: `GetServerInfoRequest {}`
+- Exact call expression: `rpc_client.get_server_info_call(None, GetServerInfoRequest {})`
+
+Execution intent:
+
+- Exactly **one** call only
+- No retries
+- No state mutation
+- Stop immediately on success/failure after parsing response
+
+### Where to log output
+
+Log this run to:
+
+- `spikes/tn12-minimal-covenant/artifacts/env-031-get-server-info.txt`
+
+Suggested minimal logged content:
+
+- UTC timestamp
+- approved endpoint string (redacted if needed)
+- request string
+- raw response payload (or normalized JSON)
+- extracted fields used for safety checks (`network`, `is_synced`, node/network ids)
+- outcome (`pass`/`blocked`)
+- command/cause if blocked
+
+### Manual approval required before execution
+
+Manual approval is required before running env-031 for all of:
+
+1. endpoint confirmation (must explicitly be TN12/testnet and reachable),
+2. authorization to send one read-only RPC call,
+3. permission to record response in `artifacts/env-031-get-server-info.txt`,
+4. explicit stop confirmation (no wallet/key/faucet/signing/broadcast in this step).
+
+### Stop condition for env-031
+
+- If endpoint remains unknown, or response does not confirm TN12/testnet, stop before issuing any RPC call.
+- If response includes an unexpected network mode or state, stop and revise endpoint selection.
+- If output capture path is missing/unwritable, stop and collect evidence of the I/O failure first.
+
+
 ## env-029 TN12 prerequisite planning
 
 ```text

@@ -127,6 +127,27 @@ Conservative conclusion:
 - stop before signing
 - stop before broadcast
 
+## Env-031 read-only TN12 getServerInfo execution plan
+
+### Decision
+
+- Existing local Rusty Kaspa CLI/client: **not detected** in local PATH/repo context.
+- Node command/path: **not documented** in repo yet.
+- Required approach for now: **tiny Rust probe client** once endpoint is provided.
+
+### Execution plan for env-031
+
+- Endpoint required before run: TN12/testnet RPC URL or local node path (not yet known in docs).
+- Candidate safe call: `get_server_info_call(None, GetServerInfoRequest {})`.
+- Log destination: `spikes/tn12-minimal-covenant/artifacts/env-031-get-server-info.txt`.
+- Manual approval required before running (endpoint + command confirmation).
+
+### Stop conditions
+
+- Stop if endpoint is unknown.
+- Stop if response does not confirm TN12/testnet.
+- Stop immediately after the single read-only response is captured.
+
 ## Env-028 local feasibility conclusion
 
 Local tooling is now credible enough to plan a controlled TN12 experiment, but not enough to claim live TN12 create/spend/inspect works.
