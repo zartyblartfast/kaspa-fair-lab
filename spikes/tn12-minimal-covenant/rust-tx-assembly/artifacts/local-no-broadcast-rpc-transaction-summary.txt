@@ -1,0 +1,46 @@
+rpc transaction summary
+conversion_path: official From<&Transaction> for RpcTransaction
+source_transaction_id: 4b58fecdab78499ea09c6a46ca0acd86532097740f07897ff1b518e72f1420fd
+rpc_version: 2
+rpc_inputs: 1
+rpc_outputs: 1
+rpc_output0_value: 1500
+rpc_output0_script_bytes_len: 1
+rpc_output0_script_bytes_present: true
+source_output0_covenant_binding_present: false
+rpc_verbose_data_present: false
+rpc_debug: RpcTransaction {
+    version: 2,
+    lock_time: 0,
+    subnetwork_id: SubnetworkId {
+        : "0000000000000000000000000000000000000000",
+    },
+    gas: 0,
+    payload: "",
+    mass: 0,
+    inputs: [
+        RpcTransactionInput {
+            previous_outpoint: RpcTransactionOutpoint {
+                transaction_id: 1111111111111111111111111111111111111111111111111111111111111111,
+                index: 0,
+            },
+            signature_script: "aabb",
+            sequence: 0,
+            sig_op_count: 0,
+            compute_budget: 0,
+            verbose_data: None,
+        },
+    ],
+    outputs: [
+        RpcTransactionOutput {
+            value: 1500,
+            script_public_key: ScriptPublicKey {
+                version: 0,
+                script: "51",
+            },
+            verbose_data: None,
+            covenant: None,
+        },
+    ],
+    verbose_data: None,
+}

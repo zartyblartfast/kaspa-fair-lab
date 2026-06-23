@@ -6,6 +6,7 @@ use kaspa_consensus_core::tx::{
     ScriptPublicKey, Transaction, TransactionId, TransactionInput, TransactionOutpoint,
     TransactionOutput,
 };
+use kaspa_rpc_core::RpcTransaction;
 
 fn hex_encode(bytes: &[u8]) -> String {
     const HEX: &[u8; 16] = b"0123456789abcdef";
@@ -48,11 +49,17 @@ fn main() {
     let script_bytes = output0.script_public_key.script();
     let script_bytes_present = !script_bytes.is_empty();
     let covenant_binding_present = output0.covenant.is_some();
+    let rpc_tx: RpcTransaction = (&tx).into();
+    let rpc_output0 = &rpc_tx.outputs[0];
+    let rpc_script_bytes = rpc_output0.script_public_key.script();
+    let rpc_script_bytes_present = !rpc_script_bytes.is_empty();
 
     let artifact_dir = PathBuf::from("artifacts");
     fs::create_dir_all(&artifact_dir).expect("create artifacts directory");
     let summary_artifact_path = artifact_dir.join("local-no-broadcast-transaction-summary.txt");
     let serialization_artifact_path = artifact_dir.join("local-no-broadcast-transaction.hex");
+    let rpc_summary_artifact_path =
+        artifact_dir.join("local-no-broadcast-rpc-transaction-summary.txt");
     let serialized_bytes = to_vec(&tx).expect("serialize transaction with borsh");
     let serialized_hex = hex_encode(&serialized_bytes);
     let serialization_type =
@@ -91,17 +98,49 @@ fn main() {
         tx,
     );
 
+    let rpc_summary = format!(
+        concat!(
+            "rpc transaction summary\n",
+            "conversion_path: official From<&Transaction> for RpcTransaction\n",
+            "source_transaction_id: {}\n",
+            "rpc_version: {}\n",
+            "rpc_inputs: {}\n",
+            "rpc_outputs: {}\n",
+            "rpc_output0_value: {}\n",
+            "rpc_output0_script_bytes_len: {}\n",
+            "rpc_output0_script_bytes_present: {}\n",
+            "source_output0_covenant_binding_present: {}\n",
+            "rpc_verbose_data_present: {}\n",
+            "rpc_debug: {:#?}\n"
+        ),
+        tx_id,
+        rpc_tx.version,
+        rpc_tx.inputs.len(),
+        rpc_tx.outputs.len(),
+        rpc_output0.value,
+        rpc_script_bytes.len(),
+        rpc_script_bytes_present,
+        covenant_binding_present,
+        rpc_tx.verbose_data.is_some(),
+        rpc_tx,
+    );
+
     fs::write(&summary_artifact_path, &summary).expect("write artifact summary");
     fs::write(
         &serialization_artifact_path,
         format!("{}\n", serialized_hex),
     )
     .expect("write serialization artifact");
+    fs::write(&rpc_summary_artifact_path, &rpc_summary).expect("write rpc artifact summary");
 
     println!("summary_artifact_path={}", summary_artifact_path.display());
     println!(
         "serialization_artifact_path={}",
         serialization_artifact_path.display()
+    );
+    println!(
+        "rpc_summary_artifact_path={}",
+        rpc_summary_artifact_path.display()
     );
     println!("serialization_type={}", serialization_type);
     println!(
@@ -119,5 +158,20 @@ fn main() {
         covenant_binding_present
     );
     println!("transaction_id={}", tx_id);
+    println!("rpc_transaction_conversion=success");
+    println!("rpc_transaction_version={}", rpc_tx.version);
+    println!("rpc_input_count={}", rpc_tx.inputs.len());
+    println!("rpc_output_count={}", rpc_tx.outputs.len());
+    println!("rpc_output0_value={}", rpc_output0.value);
+    println!(
+        "rpc_output0_script_bytes_present={}",
+        rpc_script_bytes_present
+    );
+    println!(
+        "rpc_source_output0_covenant_binding_present={}",
+        covenant_binding_present
+    );
+    println!("rpc_verbose_data_present={}", rpc_tx.verbose_data.is_some());
     println!("transaction_debug={:#?}", tx);
+    println!("rpc_transaction_debug={:#?}", rpc_tx);
 }
