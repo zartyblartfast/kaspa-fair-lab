@@ -10,17 +10,26 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - no mainnet usage.
 
 ## Current status
-- `simple_covenant.sil` compiles successfully to `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`.
-- The artifact contains `covenant()` as entrypoint, `require(tx.version == 2)`, and a compiled script byte array (`"script": [178,82,156,105]`).
-- `env-011` identified SilverScript's local debugger/test-fixture workflow.
-- `env-012` executed:
-  - `/root/.cargo/bin/cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all`
-- `env-012` failed only because inferred fixture path was missing:
-  - `silverscript-lang/tests/examples/simple_covenant.test.json`.
+- `simple_covenant.sil` compiles successfully to JSON: `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`.
+- `simple_covenant.test` fixture was added locally at:
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+- Fixture used in local simulation:
+  - `function: "covenant"`
+  - `expect: "pass"`
+  - `tx.version: 2`
+  - minimal input/output values (`utxo_value` / `value`)
+- Local simulation command passed:
+  - `/root/.cargo/bin/cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+- Observed output lines:
+  - `RUN version_2_pass`
+  - `PASS version_2_pass`
+  - `1 tests: 1 passed, 0 failed`
 - No TN12 transaction create/spend/inspect has been attempted.
+- No transaction has been submitted or broadcast.
 - Working tree currently includes only repo-doc updates:
   - `spikes/tn12-minimal-covenant/findings.md`
   - `spikes/tn12-minimal-covenant/README.md`
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
 
 ## Current evidence anchors
 - Source path: `external/silverscript` in-repo clone (no dependency installs, no new repos).
@@ -31,24 +40,23 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
   - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
 
 ## Active constraints (enforced)
-- Do not install dependencies.
-- Do not clone repositories.
-- Do not submit Kaspa transactions.
+- Do not build roulette.
+- Do not create a web app.
+- Do not submit any Kaspa transaction.
 - Do not use mainnet.
+- Do not install dependencies.
+- Do not clone new repositories.
 - Do not modify external SilverScript source.
-- Do not implement a web app.
 
 ## Branch / git context
 - Branch: `main` (tracking `origin/main`)
-- Local changes since last clean state are documentation-only in this repo.
+- Local changes since last clean state are documentation-only and fixture file updates in this repo.
 
 ## Suggested first prompt after /new
-- Inspect upstream embedded fixture examples in local SilverScript tests/docs.
-- Design a minimal local fixture for `simple_covenant.sil` in our repo (not in `external/silverscript` source).
-- Run the local simulation with:
-  - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file <path-to-local-fixture>`
-- Keep work simulation-only (no broadcast / no network tx chain).
+- Plan a no-broadcast TN12 transaction-construction path for create/spend/inspect using local artifacts only.
+- Identify which SDK/crate/tool currently supports constructing a TN12 transaction from the compiled SilverScript artifact (`simple_covenant.json` + `.test.json` context).
+- Do not submit or broadcast any transaction until the construction path is understood and documented.
 
 ## Unverified / next
 - No live TN12 create/spend/inspect path is verified yet.
-- No local covenant transition PASS/FAIL exists yet for `simple_covenant.sil` due to missing fixture.
+- No no-broadcast transaction-construction output (create/spend/inspect wiring) has been captured yet.
