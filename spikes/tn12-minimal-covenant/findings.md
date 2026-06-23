@@ -742,3 +742,40 @@ Notes:
 - check-env reported environment status; covenant commands were not yet run.
 - Next follow-up action: execute the first full command sequence and attach txid/output artifacts.
 ```
+
+## env-019 Rust tx assembly scaffold
+
+```text
+Run ID: env-019
+Date/time: 2026-06-23T15:55:00Z
+Network: TN12/testnet (local no-broadcast)
+
+Observed (factual):
+- files created:
+  - spikes/tn12-minimal-covenant/rust-tx-assembly/Cargo.toml
+  - spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+  - spikes/tn12-minimal-covenant/rust-tx-assembly/README.md
+- local dependencies used:
+  - kaspa-consensus-core via local path
+    - /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core
+- command run:
+  - cargo check (from spikes/tn12-minimal-covenant/rust-tx-assembly)
+- command output:
+  - cargo check: success
+  - output confirmed typechecked local `tn12-rust-tx-assembly` binary target
+- result: pass
+
+Assumptions:
+- Local Rusty-Kaspa checkout referenced by absolute path remains available for the spike run.
+- Existing local build/toolchain state supports the dependency set.
+
+Unverified:
+- No transaction signing exercised in this scaffold.
+- No PopulatedTransaction was instantiated in this pass.
+- No signed/serialized covenant tx payload was produced.
+- No live TN12 create/spend/inspect transaction run was performed.
+
+Notes:
+- Scope constraints were respected (no broadcast, no wallets, no faucet, no web app, no roulette, no clone, no mainnet).
+- Next action: add a second, signed path using the same no-broadcast scaffold if/when we need byte-accurate tx artifacts.
+```

@@ -1,0 +1,7 @@
+[package]
+name = "tn12-rust-tx-assembly"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+kaspa-consensus-core = { path = "/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core" }

@@ -107,6 +107,15 @@ Recommended now: keep using this script-based local verifier path as the canonic
 
 No path is considered valid until repo-owned no-broadcast evidence is recorded in `findings.md` with outputs.
 
+### Env-019 next-step plan
+
+Recommended next-step now:
+
+- keep the spike constrained to local no-broadcast assembly only,
+- use the new scaffold at `spikes/tn12-minimal-covenant/rust-tx-assembly/`,
+- keep `run_no_broadcast_checks.sh` as the canonical verifier baseline,
+- after this scaffold confirms minimal construction, proceed to a follow-up that emits deterministic transaction plan fields (and later signed payloads) without wallets, faucets, network submit, or broadcast.
+
 ### Env-019 short next-step checklist
 
 - Keep `run_no_broadcast_checks.sh` as the canonical evidence baseline.
