@@ -10,10 +10,10 @@
 
 | Test | Command / Input | Result | Verified | Notes |
 | --- | --- | --- | --- | --- |
-| Create minimal covenant artefact | (to be added) | Unknown | No | Toolchain/path not yet run |
-| Spend artefact in follow-up tx | (to be added) | Unknown | No | Depends on creation success |
-| Inspect transaction and artefact fields | (to be added) | Unknown | No | Need concrete output sample |
-| Explain the flow to reviewer | (to be added) | Unknown | No | Requires complete artifact capture |
+| Create minimal covenant artefact (repo-owned local verifier) | `run_no_broadcast_checks.sh` fixture path `simple_covenant.sil` + `simple_covenant.test.json` | PASS (`RUN version_2_pass`) | Yes | Local simulation only; verifies `tx.version == 2` path in `simple_covenant` |
+| Spend artefact in follow-up tx (repo-owned local verifier) | `run_no_broadcast_checks.sh` fixture pair `tn12_demo_transition.sil` + `tn12_demo_transition.test.json` | PASS (`RUN tn12_demo_transition_ok`) | Yes | Transition-style check executes in `--run-all`; no live submit/broadcast |
+| Inspect transaction and artefact fields | `run_no_broadcast_checks.sh` fixture `simple_covenant_tx_structured.test.json` | PASS (`RUN version_2_with_tx_context`) | Yes | `tx` object context (version/inputs/outputs) is consumed by verifier; no serialized tx/hex output produced |
+| Explain the flow to reviewer | See findings blocks env-016/env-017 and run logs in `artifacts/` | Partial | No | Needs final narrative + tx-construction route selection |
 
 ## Known
 
@@ -551,6 +551,48 @@ Notes:
   - `transition-demo.log`
   - `simple-covenant-tx-structured.log`
 - **What remains unverified:** no live TN12 create/spend/inspect transaction sequence has been attempted; no transaction has been submitted or broadcast; no mainnet usage.
+
+## env-017 no-broadcast script validation (repo-owned, logged)
+
+- **Run ID:** env-017
+
+- **Date/time:** 2026-06-23T15:35:30Z
+- **Network:** TN12/testnet (local simulation-only)
+
+Observed (factual):
+
+- Command run:
+  - `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
+- Script execution summary (from command stdout and artifacts):
+  - `simple-covenant-version2`: `RUN version_2_pass` / `PASS  version_2_pass`
+  - `transition-demo`: `RUN tn12_demo_transition_ok` / `PASS  tn12_demo_transition_ok`
+  - `simple-covenant-tx-structured`: `RUN version_2_with_tx_context` / `PASS  version_2_with_tx_context`
+  - `1 tests: 1 passed, 0 failed` for each run
+  - `[PASS] All local no-broadcast checks passed.`
+- Artifacts written by script:
+  - `spikes/tn12-minimal-covenant/artifacts/simple-covenant-version2.log`
+  - `spikes/tn12-minimal-covenant/artifacts/transition-demo.log`
+  - `spikes/tn12-minimal-covenant/artifacts/simple-covenant-tx-structured.log`
+
+Success/failure: **PASS**
+
+What remains unverified:
+
+- No live TN12 create/spend/inspect transaction sequence has been attempted.
+- No transaction payload serialization/signing/submission output was produced.
+- No mainnet usage.
+
+Notes:
+
+- This run reconfirms env-015 with durable repo-owned logging and avoids `/tmp` files.
+- This remains a local verifier-only path (no wallet, faucet, or broadcast).
+
+### Route evidence snapshot
+
+- **SilverScript local verifier route:** confirmed via `external/silverscript/debugger/cli/README.md` that `--run-all` plus explicit `--test-file` is supported; `debugger/session/src/test_runner.rs` shows the fixture contract for `tx` context (`version`, `active_input_index`, `inputs`, `outputs`, `covenant_id`).
+- **Rusty-Kaspa direct route:** workspace dependency to `kaspa-consensus-core`/`kaspa-txscript` is declared in `external/silverscript/Cargo.toml`, and repo tests show transaction assembly APIs already exercised (`Transaction::new`, `PopulatedTransaction::new`) in `silverscript-lang/tests/silverc_tests.rs` and helper utilities in `silverscript-lang/tests/common.rs`.
+- **WASM/Python direct route:** no repo-owned Kaspa-WASM or Python Kaspa tx-construction route is documented in this spike context; available references are Rust/CLI test fixtures and docs.
+
 ## Verification record
 
 To be updated after each run.

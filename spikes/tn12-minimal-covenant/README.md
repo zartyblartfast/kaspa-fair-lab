@@ -34,12 +34,13 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-010 compile-to-artifact and env-011 local covenant-workflow discovery completed.
-- env-012 local `cli-debugger --run-all` check discovered no upstream `simple_covenant.test.json` fixture; run failed with missing test file.
+- Status: env-016/017 no-broadcast workflow validation completed and documented in `findings.md`.
+- env-013 fixture creation and local `cli-debugger --run-all` checks passed.
+- env-014/015 added deeper local verifier passes and moved temporary fixture concepts into repo-owned fixtures.
+- env-016 introduced `run_no_broadcast_checks.sh`.
+- env-017 executed `run_no_broadcast_checks.sh` and confirmed all three checks pass, with output logs captured in `spikes/tn12-minimal-covenant/artifacts/`.
 - Target network: TN12/testnet.
-- env-013 fixture creation and local `cli-debugger` run completed with PASS; no live submit/broadcast steps yet.
-- env-014 recorded additional no-broadcast local evidence (unit and `cli-debugger` checks) in `findings.md`.
-- Next step: create a reproducible repo-owned local no-broadcast workflow before any TN12 wallet/faucet/network prerequisite planning.
+- No live submit/broadcast steps yet.
 
 ## How results are recorded
 
@@ -59,16 +60,16 @@ Run `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh` from the repo ro
 
 ## Next-step technical plan
 
-Goal for the next run: convert the current temporary-only evidence into a repository-owned, reproducible no-broadcast local workflow.
+Goal for the next run: move from verification-only tests to explicit no-broadcast transaction-construction planning (still no wallet or broadcast).
 
-1. **Create repo-owned fixture files first** (no network):
-   - Keep fixture sources under `spikes/tn12-minimal-covenant/fixtures/` (for example, move the temporary fixture concepts used in previous `/tmp` runs).
+1. **Done (this phase):** repo-owned fixture files are in place under
+   `spikes/tn12-minimal-covenant/fixtures/` and were executed via `run_no_broadcast_checks.sh`.
    - Add a minimal fixture bundle for:
      - transition-style local simulation
      - explicit tx-structured simple_covenant check
    - No external dependencies or broadcast steps.
 
-2. **Run this reproducible repo-owned workflow** (repo-only, no broadcast):
+2. **Run the reproducible repo-owned workflow** (repo-only, no broadcast):
 
    From the external clone:
 
@@ -95,10 +96,12 @@ Goal for the next run: convert the current temporary-only evidence into a reposi
      --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json
    ```
 
-   Expected result: all tests in each fixture should report PASS locally with output entries like `RUN ...` and `PASS ...`.
+   Expected result: all tests in each fixture report PASS locally with output entries like `RUN ...` and `PASS ...`.
 
-3. **After this**: plan TN12 wallet/faucet/network prerequisites:
-   - document the wallet/tooling/network assumptions separately.
-   - avoid execution or claims of live create/spend/inspect until those prerequisites are defined and evidence is collected.
+3. **Next recommendation:** proceed with explicit route planning for no-broadcast transaction construction (no live submit):
+   - keep this script path as the canonical verifier baseline,
+   - confirm whether a repo-owned Rust `Transaction`/`PopulatedTransaction` assembly path is needed for signed payload output.
+
+Recommended now: keep using this script-based local verifier path as the canonical baseline, and open a follow-up task that wires a Rust/tx-assembly path (e.g., `Transaction::new` + `PopulatedTransaction`) to generate and log concrete signed transaction blobs for future create/spend/inspect testing.
 
 No path is treated as valid until repo-owned no-broadcast evidence is recorded in `findings.md` with outputs.
