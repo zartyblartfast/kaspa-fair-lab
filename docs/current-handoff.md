@@ -11,7 +11,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Concise status update
 
-1) env-029 added TN12 prerequisite planning to the spike docs.
+1) env-030 added TN12 read-only RPC connectivity planning to the spike docs (after env-029).
 
 2) Current repo-backed local evidence still covers:
 - SilverScript builds locally.
@@ -39,7 +39,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - Local tooling is not yet sufficient to claim live TN12 create/spend/inspect works.
 
 5) Recommended first live step after `/new`:
-- read-only TN12 RPC connectivity check only,
+- read-only TN12 RPC connectivity check only (candidate first call: `getServerInfo` / `get_server_info_call(None, GetServerInfoRequest {})`),
 - no wallet,
 - no faucet,
 - no signing,
@@ -50,6 +50,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - network selector/name,
 - expected node version/Toccata/TN12 status,
 - safe read-only RPC command to call,
+- exact read-only method/API path,
 - logging/artifact path,
 - explicit stop condition before any state-changing action.
 

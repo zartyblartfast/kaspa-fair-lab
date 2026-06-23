@@ -1313,12 +1313,89 @@ Conservative conclusion:
 - Local tooling is now credible enough to plan a controlled TN12 experiment, but not enough to claim live TN12 create/spend/inspect works.
 
 Scope confirmations:
-- No RPC client was called.
-- Nothing was signed.
-- Nothing was broadcast.
+- No live RPC endpoint was called.
 - No live TN12 create/spend/inspect was attempted.
+- Nothing was signed.
+- Nothing was submitted.
+- Nothing was broadcast.
 - No mainnet usage.
 ```
+
+## env-030 TN12 read-only RPC connectivity planning
+
+### Candidate connectivity options
+
+- **local TN12 node (preferred if available)**
+  - Confirm a local node process already running and expose a Kaspa RPC endpoint reachable from this host.
+  - Pros: lowest latency, minimal trust, easier to stop/inspect.
+  - Blocker: endpoint/port may be unknown or not exposed.
+
+- **public/community TN12 RPC endpoint, if documented**
+  - Use only if a trusted TN12/testnet endpoint is publicly documented and explicitly indicates TN12/testnet selection.
+  - Pros: fastest path when local node is unavailable.
+  - Blocker: endpoint policy/rate limits and no direct operational control.
+
+- **Rusty Kaspa CLI/RPC client path, if available**
+  - Local audit found read-only route handlers in `rusty-kaspa` for `get-server-info`/`get-block-dag-info`/`get-sync-status`/`get-current-network`/`get-info`.
+  - Pros: typed client path and structured output.
+  - Blocker: CLI binary/tooling and auth configuration are not yet confirmed for execution.
+
+- **custom tiny Rust RPC client (fallback later)**
+  - Small Rust read-only client against RPC endpoint, using `get_server_info_call` first.
+  - Pros: deterministic and explicit.
+  - Blocker: extra build step before first live action.
+
+### Candidate safe read-only RPC calls
+
+Read-only candidates from existing evidence:
+
+- `get_server_info_call(None, GetServerInfoRequest {})`  
+- `get_block_dag_info_call(None, GetBlockDagInfoRequest {})`  
+- `get_sync_status_call(None, GetSyncStatusRequest {})`  
+- `get_current_network_call(None, GetCurrentNetworkRequest {})`  
+- `get_info_call(None, GetInfoRequest {})`  
+- `get_connected_peer_info_call(None, GetConnectedPeerInfoRequest {})`  
+
+All above are state-query/read-only and suitable for first-connectivity checks.
+
+### Recommended first live step (single call only)
+
+- Use **one call only**: `get_server_info`.
+- No wallet.
+- No faucet.
+- No signing.
+- No broadcast/submission.
+- Capture raw response to:
+  - `spikes/tn12-minimal-covenant/artifacts/env-030-readonly-rpc-connectivity-log.jsonl`
+
+Exact conservative API call:
+
+```rust
+rpc_client.get_server_info_call(None, GetServerInfoRequest {})
+```
+
+### Required information before executing
+
+1. endpoint URL (or local node command/path)
+2. network selector / name from response
+3. TN12/Toccata confirmation from response fields
+4. exact API call string
+5. artifact/log destination path
+6. explicit operator approval before execution
+
+### Stop conditions
+
+- stop if endpoint is unknown
+- stop if network cannot be confirmed as TN12/testnet
+- stop if command is not clearly read-only
+- stop before wallet/key creation
+- stop before faucet request
+- stop before signing
+- stop before broadcast
+
+Conservative conclusion:
+
+- First safe action is to identify endpoint and run the approved read-only `getServerInfo` call only (or equivalent), then stop.
 
 ## env-029 TN12 prerequisite planning
 

@@ -34,7 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-029 TN12 prerequisite planning completed and documented in `findings.md`.
+- Status: env-030 TN12 read-only RPC connectivity planning added (after env-029); all live actions remain pending in `findings.md`.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
 - repo-owned local fixtures pass.
@@ -81,6 +81,51 @@ Manual approval gates:
 
 Conservative conclusion:
 - The next safe move is read-only TN12 connectivity/discovery, not transaction creation.
+
+## Env-030 TN12 read-only RPC connectivity planning
+
+- **Scope:** planning-only documentation update; no live RPC call executed yet.
+
+### Candidate connectivity options
+
+- local TN12 node, if available
+- public/community TN12 RPC endpoint, if documented
+- Rusty Kaspa CLI/RPC client path, if available
+- custom tiny Rust RPC client (later fallback)
+
+### Candidate safe read-only calls
+
+- getServerInfo
+- getBlockDagInfo
+- getSyncStatus
+- getCurrentNetwork
+- getInfo
+- getConnectedPeerInfo
+
+### Recommended first live step
+
+- one read-only RPC call only: getServerInfo
+- no wallet, faucet, signing, submit, or broadcast
+- log output to spikes/tn12-minimal-covenant/artifacts/env-030-readonly-rpc-connectivity-log.jsonl
+
+### Required before executing
+
+- endpoint URL or local node command/path
+- TN12/testnet network confirmation
+- expected TN12/Toccata status
+- exact read-only command
+- artifact path
+- explicit manual approval
+
+### Stop conditions
+
+- stop if endpoint is unknown
+- stop if network is not clearly TN12/testnet
+- stop if command is not clearly read-only
+- stop before wallet/key creation
+- stop before faucet request
+- stop before signing
+- stop before broadcast
 
 ## Env-028 local feasibility conclusion
 
