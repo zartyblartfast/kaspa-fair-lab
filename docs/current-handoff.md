@@ -10,49 +10,45 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - no mainnet usage.
 
 ## Current status
-- Working path is `external/silverscript` (isolated clone, uncommitted and git-ignored).
-- `env-008` validated: clone/build/probe baseline succeeded for SilverScript.
-- `env-009` completed: command inventory + artefact-path discovery.
-- `spikes/tn12-minimal-covenant/findings.md` now contains verified command/help/probe evidence including a minimum compile-to-artifact path.
-- `spikes/tn12-minimal-covenant/README.md` updated to make compile-to-artifact as the next-step minimum.
-- No transaction create/spend/inspect has been claimed or executed in code-path yet.
-- `command -v silverscript`, `command -v silver`, `command -v ssc` remain unavailable on PATH (as of last probe), which is handled by using the repository crate build.
-
-## Current evidence anchors
-- Clone URL: `https://github.com/kaspanet/silverscript`
-- Commit checked: `faaa074915edd1e885e4dd552051e348d1854c87`
-- Confirmed command/help probes:
-  - `cargo run -p silverscript-lang -- --help`
-  - `cargo run -p cli-debugger -- --help`
-- Confirmed compile path:
-  - `cargo run -p silverscript-lang -- <example>.sil` writes `<example>.json`
-  - Verified path: `external/silverscript/silverscript-lang/tests/examples/num2bin.json`
-- Example pool:
-  - 81 `.sil` files in `silverscript-lang/tests/examples`
-  - Includes covenant-related examples such as `simple_covenant.sil`.
-
-## Active constraints (enforced)
-- Do not install new dependencies.
-- Do not clone additional repositories.
-- Do not submit any Kaspa transaction.
-- Do not use mainnet.
-- Do not implement covenant logic yet.
-- Do not claim transaction create/spend/inspect works until observed and documented with outputs.
-
-## Branch / git context
-- Branch: `main`
-- Last commit: `75d7a12` — "Document SilverScript artefact path discovery"
-- Working tree currently dirty with:
+- `simple_covenant.sil` compiles successfully to `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`.
+- The artifact contains `covenant()` as entrypoint, `require(tx.version == 2)`, and a compiled script byte array (`"script": [178,82,156,105]`).
+- `env-011` identified SilverScript's local debugger/test-fixture workflow.
+- `env-012` executed:
+  - `/root/.cargo/bin/cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all`
+- `env-012` failed only because inferred fixture path was missing:
+  - `silverscript-lang/tests/examples/simple_covenant.test.json`.
+- No TN12 transaction create/spend/inspect has been attempted.
+- Working tree currently includes only repo-doc updates:
   - `spikes/tn12-minimal-covenant/findings.md`
   - `spikes/tn12-minimal-covenant/README.md`
 
-## Suggested next step after /new
-Continue from env-009 and run one constrained SilverScript step:
-- compile one upstream `.sil` example to JSON with
-  - `cargo run -p silverscript-lang -- <example>.sil`
-- record outputs in `findings.md`, then proceed only to command discovery/inspection prep.
+## Current evidence anchors
+- Source path: `external/silverscript` in-repo clone (no dependency installs, no new repos).
+- Confirmed docs/tests inspected:
+  - `external/silverscript/debugger/cli/README.md`
+  - `external/silverscript/debugger/cli/tests/cli_tests.rs`
+  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.sil`
+  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
 
-## Unverified / must-do next
-- No verified TN12 create/spend/inspect command chain yet.
-- No live transaction inspection output yet.
-- Artifact provenance for a covenant-relevant `.sil` in TN12 context is still pending.
+## Active constraints (enforced)
+- Do not install dependencies.
+- Do not clone repositories.
+- Do not submit Kaspa transactions.
+- Do not use mainnet.
+- Do not modify external SilverScript source.
+- Do not implement a web app.
+
+## Branch / git context
+- Branch: `main` (tracking `origin/main`)
+- Local changes since last clean state are documentation-only in this repo.
+
+## Suggested first prompt after /new
+- Inspect upstream embedded fixture examples in local SilverScript tests/docs.
+- Design a minimal local fixture for `simple_covenant.sil` in our repo (not in `external/silverscript` source).
+- Run the local simulation with:
+  - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file <path-to-local-fixture>`
+- Keep work simulation-only (no broadcast / no network tx chain).
+
+## Unverified / next
+- No live TN12 create/spend/inspect path is verified yet.
+- No local covenant transition PASS/FAIL exists yet for `simple_covenant.sil` due to missing fixture.
