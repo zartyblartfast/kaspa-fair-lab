@@ -1847,3 +1847,69 @@ Scope confirmations:
 - Nothing was broadcast.
 - No mainnet usage.
 ```
+
+## env-037 local TN12 read-only getServerInfo retry
+
+```text
+Run ID: env-037
+Date/time: 2026-06-23T22:59:41Z
+Network: TN12/testnet-12
+
+Files changed:
+- spikes/tn12-minimal-covenant/artifacts/env-037-kaspad-startup.log
+- spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+
+Exact startup command used:
+- cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+
+Localhost-only listen check:
+- P2P listen: 127.0.0.1:16311
+- gRPC listen: 127.0.0.1:16210
+- wRPC Borsh listen: 127.0.0.1:17210
+- all approved listen addresses were localhost-only: true
+- no 0.0.0.0 listen flag was used
+
+Node log path:
+- spikes/tn12-minimal-covenant/artifacts/env-037-kaspad-startup.log
+
+RPC readiness evidence:
+- startup log shows:
+  - `GRPC Server starting on: 127.0.0.1:16210`
+  - `P2P Server starting on: 127.0.0.1:16311`
+  - `WRPC Server starting on: 127.0.0.1:17210`
+- `ss -ltnp` confirmed listeners on:
+  - `127.0.0.1:16210`
+  - `127.0.0.1:16311`
+  - `127.0.0.1:17210`
+
+Exact read-only RPC call used:
+- one gRPC `getServerInfo` call against `grpc://127.0.0.1:16210`
+- getServerInfo artifact path: `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`
+
+Returned network/server fields:
+- `rpcApiVersion`: `1`
+- `rpcApiRevision`: `0`
+- `serverVersion`: `1.1.1-toc.1`
+- `networkId`: `testnet-12`
+- `hasUtxoIndex`: `false`
+- `isSynced`: `false`
+- `virtualDaaScore`: `0`
+
+Pass/fail result:
+- node_startup_succeeded=true
+- get_server_info_succeeded=true
+- rpc_call_count=1
+
+Scope confirmations:
+- whether wallet/key was created: false
+- whether faucet request was made: false
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- stop condition reached: stopped immediately after the single read-only `getServerInfo` result was captured
+
+Notes:
+- env-036 prerequisite resolution was sufficient for the retry: `protoc` was present and the preserved bindgen workaround allowed the local `kaspad` build/start path to complete.
+- The node was still in early sync state at call time (`isSynced=false`, `virtualDaaScore=0`), but the approved RPC readiness requirement for one read-only `getServerInfo` check was satisfied.
+```

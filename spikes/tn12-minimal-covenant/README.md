@@ -42,12 +42,58 @@ Before implementing roulette, we need confidence that base primitives actually w
 - local `Transaction` construction, `RpcTransaction` conversion, `SubmitTransactionRequest` construction, RPC serializer artifact production, and RPC serializer round-trip verification are all documented in `findings.md`.
 - deterministic local Borsh artifact production is documented, but consensus-wire equivalence remains unverified.
 - Target network remains TN12/testnet only.
-- No RPC client was called.
+- One read-only local TN12 `getServerInfo` call succeeded in env-037, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-037 local TN12 read-only getServerInfo retry
+
+- **Scope:** approved localhost-only TN12 node startup retry, capture startup logs, run exactly one read-only `getServerInfo` call once RPC was reachable, capture the output, and stop before any wallet/key/faucet/signing/submission/broadcast action.
+
+### Exact startup command used
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only bind check
+
+- P2P listen: `127.0.0.1:16311`
+- gRPC listen: `127.0.0.1:16210`
+- wRPC Borsh listen: `127.0.0.1:17210`
+- No `0.0.0.0` listen flag was used.
+
+### RPC/read-only result
+
+- Exact read-only RPC call used: one gRPC `getServerInfo` call against `grpc://127.0.0.1:16210`.
+- Returned server/network fields:
+  - `serverVersion`: `1.1.1-toc.1`
+  - `networkId`: `testnet-12`
+  - `rpcApiVersion`: `1`
+  - `rpcApiRevision`: `0`
+  - `hasUtxoIndex`: `false`
+  - `isSynced`: `false`
+  - `virtualDaaScore`: `0`
+
+### Artifacts
+
+- startup log: `spikes/tn12-minimal-covenant/artifacts/env-037-kaspad-startup.log`
+- read-only result: `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`
+
+### Result
+
+- Node startup succeeded to the point of exposing the approved localhost-only RPC surfaces.
+- Exactly one read-only `getServerInfo` call succeeded.
+- The node was then stopped without any wallet/key/faucet/signing/submission/broadcast activity.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- stop condition reached: stopped immediately after capturing the single read-only `getServerInfo` result
 
 ## Env-036 local build prerequisite resolution
 
