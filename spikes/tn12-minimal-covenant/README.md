@@ -34,11 +34,12 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-016/017 no-broadcast workflow validation completed and documented in `findings.md`.
+- Status: env-016/017/018 no-broadcast workflow + API discovery completed and documented in `findings.md`.
 - env-013 fixture creation and local `cli-debugger --run-all` checks passed.
 - env-014/015 added deeper local verifier passes and moved temporary fixture concepts into repo-owned fixtures.
 - env-016 introduced `run_no_broadcast_checks.sh`.
 - env-017 executed `run_no_broadcast_checks.sh` and confirmed all three checks pass, with output logs captured in `spikes/tn12-minimal-covenant/artifacts/`.
+- env-018 validated the Rust tx-construction API route (no-broadcast): `Transaction::new`, `PopulatedTransaction::new`, `sign_with_multiple_v2`, and version-aware serde paths are present in repo-owned sources.
 - Target network: TN12/testnet.
 - No live submit/broadcast steps yet.
 

@@ -587,6 +587,46 @@ Notes:
 - This run reconfirms env-015 with durable repo-owned logging and avoids `/tmp` files.
 - This remains a local verifier-only path (no wallet, faucet, or broadcast).
 
+## env-018 no-broadcast tx-construction API discovery (repo-owned code-path inspection)
+
+- **Run ID:** env-018
+- **Date/time:** 2026-06-23T15:47:41Z
+- **Network:** TN12/testnet (analysis-only, no network or submission side effects)
+
+Observed (factual):
+
+- Commands run:
+  - `read_file` on:
+    - `/root/kaspa-fair-lab/external/silverscript/debugger/cli/src/main.rs`
+    - `/root/kaspa-fair-lab/external/silverscript/debugger/session/src/test_runner.rs`
+    - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/tests/silverc_tests.rs`
+    - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/tests/common.rs`
+  - `read_file` on:
+    - `/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/tx.rs`
+    - `/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/sign.rs`
+    - `/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/tx/serde_impl.rs`
+    - `/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/config/params.rs`
+
+- API route evidence:
+  - `Transaction::new(...)` is called from the SilverScript CLI test-path in `debugger/cli/src/main.rs` and passes the fixture `tx.version` through to `kaspa_consensus_core::Transaction`.
+  - `PopulatedTransaction::new(...)` is then used with populated UTXOs in the same path, before covenant VM execution.
+  - `sign_with_multiple_v2(...)`, `sign(...)`, and `sign_input(...)` are available in `consensus/core/src/sign.rs` for signing assembled mutable transactions.
+  - `Transaction::new`/inputs/outputs serialization is version-aware in `consensus/core/src/tx/serde_impl.rs` (v0 uses `sig_op_count`, v1+ uses `compute_budget`, and v1+ outputs include `covenant`).
+  - `TX_VERSION_TOCCATA` is `1` and TN12 params (`TESTNET12_PARAMS`) set both `crescendo_activation` and `covenants_activation` to always.
+  - Repo fixtures already exercise explicit `tx.version: 2` (`simple_covenant.test.json` and `simple_covenant_tx_structured.test.json`).
+
+Success/failure: **PASS** for API-route discovery.
+
+What remains unverified:
+
+- No actual signed tx payload artifacts (raw tx hex / payload file / witness payload file) were written yet.
+- No funded live create/spend/inspect sequence was executed.
+- No wallet/faucet/network broadcast was performed.
+
+Notes:
+
+- This run transitions the spike from pure verifier checks to explicit, source-anchored no-broadcast tx-construction path validation and identifies the minimal Rust functions to use for a follow-up artifact-producing spike.
+
 ### Route evidence snapshot
 
 - **SilverScript local verifier route:** confirmed via `external/silverscript/debugger/cli/README.md` that `--run-all` plus explicit `--test-file` is supported; `debugger/session/src/test_runner.rs` shows the fixture contract for `tx` context (`version`, `active_input_index`, `inputs`, `outputs`, `covenant_id`).
