@@ -946,3 +946,58 @@ What remains unverified:
 - No signing path was exercised.
 - No live TN12 create/spend/inspect flow was attempted.
 ```
+
+## env-023 Kaspa transaction encoding boundary investigation
+
+```text
+Run ID: env-023
+Date/time: manual source-search result documentation pass
+Network: TN12/testnet scope only (source-only; no live network access attempted)
+
+Files/source areas inspected:
+- pinned `rusty-kaspa` checkout
+- `rpc/core`
+- `rpc/grpc`
+- integration tests
+- rpc conversion code
+
+Searches run:
+- `submit_transaction`
+- `SubmitTransaction`
+- `RpcTransaction`
+- `Transaction::serialize`
+- `TransactionHex`
+- `consensus_encode`
+- `serialize_to_vec`
+
+Key findings:
+- Integration tests submit transactions with:
+  - `rpc_client.submit_transaction((&transaction).into(), false)`
+- RPC API boundary accepts:
+  - `submit_transaction(transaction: RpcTransaction, allow_orphan: bool)`
+- `SubmitTransactionRequest` wraps:
+  - `transaction: RpcTransaction`
+  - `allow_orphan: bool`
+- Protobuf RPC boundary defines `SubmitTransactionRequestMessage` with:
+  - `RpcTransaction transaction = 1`
+- Conversion paths exist from consensus `Transaction` to `RpcTransaction`:
+  - `From<Transaction> for RpcTransaction`
+  - `From<&Transaction> for RpcTransaction`
+- `RpcTransaction` has its own `Serializer` implementation.
+
+Conclusion:
+- The authoritative submission boundary appears to be `RpcTransaction`, not raw transaction hex.
+- `borsh::to_vec(&Transaction)` remains a deterministic local object artifact only.
+- Borsh is not confirmed as Kaspa transaction submission/wire encoding.
+- The next practical local no-broadcast artifact should be an `RpcTransaction` artifact created from the local `Transaction`.
+
+What remains unverified:
+- no signing
+- no live TN12 create/spend/inspect
+- no broadcast
+- no mainnet
+- no `RpcTransaction` artifact yet
+
+Recommended next action:
+- env-024 add pinned `kaspa-rpc-core` dependency, convert local `Transaction` into `RpcTransaction`, emit inspectable local `RpcTransaction` artifact, no broadcast.
+```

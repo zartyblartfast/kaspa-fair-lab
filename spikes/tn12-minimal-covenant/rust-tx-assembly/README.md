@@ -26,6 +26,11 @@ Serialization note:
   - no explicit consensus/raw wire transaction serialization API was identified from the allowed targeted searches (`consensus_encode`, `Transaction::serialize`, `serialize_to_vec`, `TransactionHex`).
 - conclusion for env-022: Borsh output is not confirmed as Kaspa consensus/raw wire serialization in this spike.
 
+env-023 note:
+
+- Source-only inspection indicates submission boundary is `RpcTransaction`, not raw transaction hex.
+- Next step is local no-broadcast `RpcTransaction` artifact.
+
 ## Reproducibility note
 
 `Cargo.toml` now uses a git-pinned `kaspa-consensus-core` dependency for reproducibility:
