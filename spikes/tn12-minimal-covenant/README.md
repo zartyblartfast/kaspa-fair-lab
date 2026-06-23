@@ -64,12 +64,36 @@ Goal for the next run: convert the current temporary-only evidence into a reposi
      - explicit tx-structured simple_covenant check
    - No external dependencies or broadcast steps.
 
-2. **Add a reproducible local command sequence** (README or tiny shell script):
-   - Use explicit absolute/relative paths in repo.
-   - Sequence should run `cli-debugger --run-all` for each repo-owned fixture and capture outputs in command output/docs.
-   - Keep the sequence strictly no-broadcast and TN12-scope.
+2. **Run this reproducible repo-owned workflow** (repo-only, no broadcast):
 
-3. **Only after the above is complete**, plan TN12 wallet/faucet/network prerequisites:
+   From the external clone:
+
+   ```bash
+   cd /root/kaspa-fair-lab/external/silverscript
+
+   /root/.cargo/bin/cargo run -p cli-debugger -- \
+     /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil \
+     --run-all \
+     --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json
+
+   /root/.cargo/bin/cargo run -p cli-debugger -- \
+     /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil \
+     --run-all \
+     --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json
+   ```
+
+   Optional explicit tx-version check (same contract):
+
+   ```bash
+   /root/.cargo/bin/cargo run -p cli-debugger -- \
+     /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil \
+     --run-all \
+     --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json
+   ```
+
+   Expected result: all tests in each fixture should report PASS locally with output entries like `RUN ...` and `PASS ...`.
+
+3. **After this**: plan TN12 wallet/faucet/network prerequisites:
    - document the wallet/tooling/network assumptions separately.
    - avoid execution or claims of live create/spend/inspect until those prerequisites are defined and evidence is collected.
 

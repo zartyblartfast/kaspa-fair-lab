@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "tn12_demo_transition_ok",
+      "function": "rebalance",
+      "constructor_args": [10],
+      "args": [5],
+      "expect": "pass",
+      "tx": {
+        "active_input_index": 0,
+        "inputs": [
+          {
+            "utxo_value": 5000,
+            "covenant_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "state": { "value": 10 }
+          }
+        ],
+        "outputs": [
+          {
+            "value": 5000,
+            "covenant_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "authorizing_input": 0,
+            "state": { "value": 15 }
+          }
+        ]
+      }
+    }
+  ]
+}

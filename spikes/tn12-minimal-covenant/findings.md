@@ -495,6 +495,45 @@ Notes:
 - No actual Kaspa transaction submission or broadcast was performed.
 - Recommended follow-up: move these temporary fixture concepts into repo-owned files under `spikes/tn12-minimal-covenant/fixtures/` and convert this into a reproducible local command sequence.
 
+## env-015 reproducible local no-broadcast workflow
+
+- **Run ID:** env-015
+- **Date/time:** 2026-06-23T15:15:32Z
+- **Network:** TN12/testnet (local simulation-only)
+
+Observed (factual):
+
+- Commands run:
+  1. `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  2. `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
+  3. `cd /root/kaspa-fair-lab/external/silverscript && /root/.cargo/bin/cargo run -p cli-debugger -- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
+
+- Raw output excerpts:
+  - `version_2_pass` / `PASS`
+  - `tn12_demo_transition_ok` / `PASS`
+  - `version_2_with_tx_context` / `PASS`
+  - Summary lines in all three runs: `1 tests: 1 passed, 0 failed`
+
+Success/fail: **PASS** (all three fixtures executed locally with no-broadcast)
+
+What this proves:
+
+- Reproducible repo-owned fixture artifacts can drive `cli-debugger --run-all` for `simple_covenant` and a covenant state-transition contract without using `/tmp` files.
+- `simple_covenant` test fixture at `simple_covenant.test.json` includes explicit `tx.version: 2` and passes with `covenant` entrypoint.
+- A minimal local spend-like/state-transition fixture (`tn12_demo_transition.sil` + `.test.json`) is now tracked in-repo and also passes.
+- Commands are now deterministic and re-runnable from fixed repo paths.
+
+What remains unverified:
+
+- No live TN12 transaction has been created, spent, or inspected against a node.
+- No Kaspa transaction has been submitted or broadcast.
+- No mainnet usage.
+- Transaction payload fields beyond what the local debugger fixture checks (real tx serialization/signing/submission) remain untested.
+
+Notes:
+
+- Constraints were respected: no roulette, no web app, no dependencies installation, no clone operations, no external source edits, and no broadcast activity.
+
 ## Verification record
 
 To be updated after each run.

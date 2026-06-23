@@ -1,0 +1,10 @@
+pragma silverscript ^0.1.0;
+
+contract TN12Demo(int initial_value) {
+    int value = initial_value;
+
+    #[covenant(binding = auth, from = 1, to = 1, mode = transition)]
+    function rebalance(State prev_state, int delta) : (State) {
+        return({ value: prev_state.value + delta });
+    }
+}
