@@ -34,14 +34,48 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-016/017/018 no-broadcast workflow + API discovery completed and documented in `findings.md`.
-- env-013 fixture creation and local `cli-debugger --run-all` checks passed.
-- env-014/015 added deeper local verifier passes and moved temporary fixture concepts into repo-owned fixtures.
-- env-016 introduced `run_no_broadcast_checks.sh`.
-- env-017 executed `run_no_broadcast_checks.sh` and confirmed all three checks pass, with output logs captured in `spikes/tn12-minimal-covenant/artifacts/`.
-- env-018 validated the Rust tx-construction API route (no-broadcast): `Transaction::new`, `PopulatedTransaction::new`, `sign_with_multiple_v2`, and version-aware serde paths are present in repo-owned sources.
-- Target network: TN12/testnet.
-- No live submit/broadcast steps yet.
+- Status: env-028 local feasibility conclusion completed and documented in `findings.md`.
+- SilverScript builds locally.
+- `simple_covenant.sil` compiles locally.
+- repo-owned local fixtures pass.
+- `run_no_broadcast_checks.sh` passes, with output logs captured in `spikes/tn12-minimal-covenant/artifacts/`.
+- local `Transaction` construction, `RpcTransaction` conversion, `SubmitTransactionRequest` construction, RPC serializer artifact production, and RPC serializer round-trip verification are all documented in `findings.md`.
+- deterministic local Borsh artifact production is documented, but consensus-wire equivalence remains unverified.
+- Target network remains TN12/testnet only.
+- No RPC client was called.
+- No signing was performed.
+- No live submit/broadcast steps were attempted.
+- No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-028 local feasibility conclusion
+
+Local tooling is now credible enough to plan a controlled TN12 experiment, but not enough to claim live TN12 create/spend/inspect works.
+
+What is proven locally:
+- SilverScript builds.
+- simple covenant compiles.
+- repo-owned local fixtures pass.
+- `run_no_broadcast_checks.sh` passes.
+- local `Transaction` / `RpcTransaction` / `SubmitTransactionRequest` object paths work.
+- RPC serializer artifacts and local round-trip checks pass.
+
+What is still unproven:
+- signing,
+- real UTXO use,
+- faucet funding,
+- live TN12 RPC submission,
+- mempool acceptance,
+- spend/inspect lifecycle,
+- mainnet behaviour.
+
+Readiness checklist before any live TN12 step:
+- use test-only wallet/key,
+- isolate test funds,
+- identify TN12 RPC endpoint or local node,
+- confirm faucet process,
+- confirm transaction version/covenant expectations,
+- decide whether the first live step is read-only RPC connectivity or faucet/address setup,
+- require explicit manual approval before any broadcast.
 
 ## How results are recorded
 

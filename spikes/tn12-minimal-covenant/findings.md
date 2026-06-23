@@ -1256,3 +1256,66 @@ What remains unverified:
 - No transaction submission or broadcast was attempted.
 - No mainnet usage.
 ```
+
+## env-028 local feasibility conclusion and TN12 readiness checklist
+
+```text
+Run ID: env-028
+Date/time: 2026-06-23T21:05:36Z
+Network: TN12/testnet planning scope only (documentation-only update; no live network access attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Basis for this conclusion:
+- env-008 proved SilverScript builds locally.
+- env-010 proved `simple_covenant.sil` compiles.
+- env-017 proved `run_no_broadcast_checks.sh` passes against repo-owned local fixtures.
+- env-021/env-022 produced a deterministic local Borsh artifact, with consensus-wire equivalence still unverified.
+- env-024 proved local `RpcTransaction` conversion from `Transaction` works.
+- env-025 proved local `SubmitTransactionRequest` construction works.
+- env-026 produced local RPC serializer artifacts.
+- env-027 proved local RPC serializer round-trip passes for both `RpcTransaction` and `SubmitTransactionRequest`.
+
+What has been proven locally:
+- SilverScript builds.
+- simple covenant compiles.
+- repo-owned local fixtures pass.
+- `run_no_broadcast_checks.sh` passes.
+- Transaction object constructed.
+- deterministic local Borsh artifact produced, with consensus-wire equivalence unverified.
+- `RpcTransaction` conversion works.
+- `SubmitTransactionRequest` object constructed.
+- RPC serializer artifacts produced.
+- RPC serializer round-trip passes.
+
+What has not been proven:
+- signing.
+- real UTXO use.
+- faucet funding.
+- live TN12 RPC submission.
+- mempool acceptance.
+- spend/inspect lifecycle.
+- mainnet behaviour.
+
+Readiness checklist before live TN12:
+- use test-only wallet/key.
+- isolate test funds.
+- identify TN12 RPC endpoint or local node.
+- confirm faucet process.
+- confirm transaction version/covenant expectations.
+- decide whether first live step is read-only RPC connectivity or faucet/address setup.
+- explicitly require manual approval before any broadcast.
+
+Conservative conclusion:
+- Local tooling is now credible enough to plan a controlled TN12 experiment, but not enough to claim live TN12 create/spend/inspect works.
+
+Scope confirmations:
+- No RPC client was called.
+- Nothing was signed.
+- Nothing was broadcast.
+- No live TN12 create/spend/inspect was attempted.
+- No mainnet usage.
+```

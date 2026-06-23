@@ -11,37 +11,41 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Concise status update
 
-1) env-016 added the canonical helper script: `spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`.
+1) env-028 added the local feasibility conclusion and TN12 readiness checklist to the spike docs.
 
-2) env-017 re-ran the helper script successfully:
-- command: `cd /root/kaspa-fair-lab && ./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
-- result: PASS
-- output included: `PASS version_2_pass`, `PASS tn12_demo_transition_ok`, `PASS version_2_with_tx_context`, `[PASS] All local no-broadcast checks passed.`
-
-3) Repo-owned log paths:
-- `spikes/tn12-minimal-covenant/artifacts/simple-covenant-version2.log`
-- `spikes/tn12-minimal-covenant/artifacts/transition-demo.log`
-- `spikes/tn12-minimal-covenant/artifacts/simple-covenant-tx-structured.log`
-- these are generated artifacts and are not modified in this run; continue using them as the canonical local trail.
-
-4) Current evidence proves:
+2) Current repo-backed local evidence now covers:
 - SilverScript builds locally.
-- repo-owned local fixtures reproduce no-broadcast SilverScript checks.
-- local cli-debugger transaction-like simulation is working.
+- `simple_covenant.sil` compiles.
+- repo-owned local fixtures pass.
+- `run_no_broadcast_checks.sh` passes.
+- local `Transaction` construction is documented.
+- deterministic local Borsh artifact production is documented, with consensus-wire equivalence still unverified.
+- local `RpcTransaction` conversion works.
+- local `SubmitTransactionRequest` construction works.
+- local RPC serializer artifacts were produced.
+- local RPC serializer round-trip passes for both `RpcTransaction` and `SubmitTransactionRequest`.
 
-5) Current evidence does not prove:
-- live TN12 create/spend/inspect,
-- real transaction serialization/signing,
-- wallet/faucet usage,
-- broadcast,
-- mainnet behaviour.
+3) Scope limits still in force and still unproven:
+- no RPC client was called,
+- nothing was signed,
+- nothing was broadcast,
+- no live TN12 create/spend/inspect was attempted,
+- no real UTXO/faucet path was exercised,
+- no mainnet behaviour is known.
 
-6) Recommended next task after `/new`:
-- plan a Rust-based local transaction-assembly spike using mock/test keys only;
-- no real wallet seed,
-- no faucet funds,
-- no network broadcast,
-- inspect local Rusty Kaspa / SilverScript dependencies for `Transaction::new`, `PopulatedTransaction`, covenant outputs, serialization, and signing APIs.
+4) Conservative conclusion:
+- Local tooling is credible enough to plan a controlled TN12 experiment.
+- Local tooling is not yet sufficient to claim live TN12 create/spend/inspect works.
+
+5) Recommended next task after `/new`:
+- stay documentation-first and plan the first live TN12 prerequisite step only,
+- use a test-only wallet/key,
+- isolate test funds,
+- identify the TN12 RPC endpoint or local node,
+- confirm faucet process,
+- confirm transaction version/covenant expectations,
+- decide whether the first approved live step is read-only RPC connectivity or faucet/address setup,
+- require explicit manual approval before any broadcast.
 
 ## Branch / repo status
 
@@ -54,4 +58,4 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Suggested first prompt after /new
 
-`Plan env-019 as a no-broadcast Rust tx-assembly artifact step: generate a signed local tx payload from `spikes/tn12-minimal-covenant/fixtures`, save deterministic artifacts under repo-owned paths, and update `findings.md` with proof-only evidence.`
+`Plan the first live TN12 prerequisite step only: identify the TN12 RPC endpoint/local node path, confirm faucet/address setup expectations, keep the plan test-only, and require explicit manual approval before any broadcast.`
