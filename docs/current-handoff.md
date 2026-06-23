@@ -11,7 +11,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Concise status update
 
-1) env-034 refined the localhost-only TN12 startup command and expected ports; all live actions remain pending.
+1) env-035 attempted the approved localhost-only TN12 node startup, but the node never reached RPC readiness because the local release build is blocked by missing `protoc` (after an initial bindgen header-path issue was worked around); no live `getServerInfo` call was executed.
 
 2) Current repo-backed local evidence still covers:
 - SilverScript builds locally.
@@ -44,27 +44,31 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - no local `kaspad`/CLI executable is currently in PATH,
 - repository/docs scan confirms local node startup command exists but has no explicit public TN12 endpoint URL.
 
-5b) env-034 localhost-only node command refinement status:
-- current blocker:
-  - no public TN12 endpoint found in checked docs/source
-  - no local kaspad/kaspa CLI tooling installed in PATH
-  - no local kaspad process running
-  - read-only `getServerInfo` cannot be run yet
-- refined command conclusion:
-  - TN12 requires `--testnet --netsuffix=12`; `--testnet` alone is insufficient
-  - recommended minimal localhost-only command: `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
-  - `--utxoindex` is not required for the first read-only `getServerInfo` check
-  - optional only if needed later: `--utxoindex` and/or `--rpclisten-json=127.0.0.1:18210`
+5b) env-035 localhost-only node startup attempt status:
+- attempted command:
+  - `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+- localhost-only bind policy held:
+  - no `0.0.0.0` listen flags were used
+  - configured addresses stayed `127.0.0.1:16311`, `127.0.0.1:16210`, and `127.0.0.1:17210`
+- startup blockers observed:
+  - first failure: `librocksdb-sys` bindgen could not find `stdbool.h`
+  - retry with `LIBCLANG_PATH=/usr/lib/llvm-18/lib` and `BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"` got further
+  - final blocker: `kaspa-p2p-lib` protobuf compilation failed because `protoc` is not available in this environment
+- result:
+  - no local kaspad process reached RPC readiness
+  - no live `getServerInfo` call was executed
+  - artifacts: `spikes/tn12-minimal-covenant/artifacts/env-035-kaspad-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-035-get-server-info.txt`
 - conservative next action:
-  - prepare localhost-only startup + log capture plan, but do not start `kaspad` yet
-  - after explicit approval, run exactly one read-only `getServerInfo`, capture output, then stop before wallet/faucet/signing/broadcast
+  - resolve environment build prerequisites (`protoc`, and preserve bindgen header-path settings as needed)
+  - rerun the same approved localhost-only TN12 startup command only after the build blocker is cleared
 
 6) Information required before any live step:
 - approval to start a local testnet node,
 - confirmation of localhost-only bind vs any exposed listen address,
 - confirmed TN12 selector and ports (`--testnet --netsuffix=12`, `16311`, `16210`, `17210`, optional `18210`),
 - safe read-only RPC command/API path,
-- logging/artifact paths (`spikes/tn12-minimal-covenant/artifacts/env-034-kaspad-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-034-get-server-info.txt`),
+- logging/artifact paths (`spikes/tn12-minimal-covenant/artifacts/env-035-kaspad-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-035-get-server-info.txt`),
+- environment build prerequisites for local startup (`protoc`, plus bindgen header-path settings if needed),
 - explicit stop condition before any state-changing action.
 
 7) Manual approval gates:
@@ -87,4 +91,4 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Suggested first prompt after /new
 
-`Continue env-034 planning only: confirm the refined localhost-only TN12 local node startup command (--testnet --netsuffix=12), keep execution disabled, and require explicit manual approval before any node start or read-only RPC call.`
+`Continue env-035 from the recorded failed localhost-only TN12 startup attempt: keep the TN12 selector/ports unchanged, resolve the local build blockers (protoc and any required bindgen header-path environment), then rerun the same one-call read-only startup plan without adding wallet/faucet/signing/broadcast work.`

@@ -34,7 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-034 refined the localhost-only TN12 startup command and port plan; all live actions remain pending in `findings.md`.
+- Status: env-035 attempted localhost-only TN12 node startup, but the node never reached RPC readiness because the local release build is blocked by missing `protoc` (after an initial bindgen header-path issue was worked around); no live `getServerInfo` call was executed.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
 - repo-owned local fixtures pass.
@@ -294,6 +294,45 @@ Notes:
 ### Conservative conclusion
 
 - The later first live run should be a localhost-only TN12 node start plus one read-only `getServerInfo` check, with no `0.0.0.0`, no wallet flow, and no transaction activity.
+
+## Env-035 local TN12 read-only getServerInfo
+
+- **Scope:** approved live attempt to start a localhost-only TN12 node, capture startup logs, and stop after one read-only `getServerInfo` check if RPC became available.
+
+### Exact startup command attempted
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only binding check
+
+- P2P listen stayed configured as `127.0.0.1:16311`.
+- gRPC listen stayed configured as `127.0.0.1:16210`.
+- wRPC Borsh listen stayed configured as `127.0.0.1:17210`.
+- No `0.0.0.0` listen flag was used.
+
+### Artifacts
+
+- startup log: `spikes/tn12-minimal-covenant/artifacts/env-035-kaspad-startup.log`
+- read-only result record: `spikes/tn12-minimal-covenant/artifacts/env-035-get-server-info.txt`
+
+### Result
+
+- Node startup did not succeed.
+- The build first failed in `librocksdb-sys` because bindgen could not find `stdbool.h`.
+- After retrying with `LIBCLANG_PATH=/usr/lib/llvm-18/lib` and `BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"`, the build advanced further but failed in `kaspa-p2p-lib` because `protoc` is not available in this environment.
+- Because the node never exposed the approved local RPC surface, the single read-only `getServerInfo` call was not executed.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- stop condition reached: startup failed before RPC readiness
+
+### Conservative conclusion
+
+- The next blocking prerequisite is environment-level build support for `protoc` (and the bindgen header path if not exported), not TN12 flag selection.
 
 ## Env-028 local feasibility conclusion
 

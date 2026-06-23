@@ -1,0 +1,23 @@
+Run ID: env-035
+Status: not executed successfully
+Reason: local TN12 node did not reach RPC readiness, so the approved single read-only getServerInfo call was not performed.
+
+Intended read-only RPC call path:
+- protocol: wRPC Borsh
+- target: ws://127.0.0.1:17210
+- request: getServerInfo
+- helper: /tmp/env-035-get-server-info (verified with cargo check only)
+
+Blocking startup failures observed during the approved startup attempts:
+1. Initial process output showed librocksdb-sys bindgen could not find stdbool.h until LIBCLANG_PATH/BINDGEN_EXTRA_CLANG_ARGS were set.
+2. The final startup log at env-035-kaspad-startup.log shows kaspa-p2p-lib then failed because protoc was not available in this environment.
+
+Result:
+- node_startup_succeeded=false
+- get_server_info_succeeded=false
+- rpc_call_attempted=false
+- wallet_created=false
+- faucet_requested=false
+- anything_signed=false
+- anything_submitted_or_broadcast=false
+- stop_condition_reached=startup_failed_before_rpc_ready

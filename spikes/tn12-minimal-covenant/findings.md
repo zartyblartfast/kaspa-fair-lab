@@ -1573,6 +1573,77 @@ Observed (factual):
 
 - The next safe technical action is to prepare a local TN12 node startup command and log plan, but not run it until explicitly approved.
 
+## env-035 local TN12 read-only getServerInfo
+
+```text
+Run ID: env-035
+Date/time: 2026-06-23 (approved live attempt)
+Network: TN12/testnet-12 local-node startup attempt only
+
+Files changed:
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Exact startup command used:
+- cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+
+Localhost-only listen check:
+- P2P listen flag: 127.0.0.1:16311
+- gRPC listen flag: 127.0.0.1:16210
+- wRPC Borsh listen flag: 127.0.0.1:17210
+- 0.0.0.0 exposure requested: no
+- all configured listen addresses localhost-only: yes
+
+Node log path:
+- spikes/tn12-minimal-covenant/artifacts/env-035-kaspad-startup.log
+
+Startup attempts and blockers:
+1. Initial attempt used the approved command exactly from the pinned rusty-kaspa checkout.
+   - startup result: failed before RPC readiness
+   - first blocker from captured process output: librocksdb-sys bindgen could not find stdbool.h
+2. Retry used the same approved cargo command with environment-only build assistance:
+   - LIBCLANG_PATH=/usr/lib/llvm-18/lib
+   - BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"
+   - startup result: failed before RPC readiness
+   - second blocker from log: kaspa-p2p-lib protobuf compilation failed because protoc is not available in this environment
+
+Exact read-only RPC call used:
+- none executed
+- approved one-call target was a repo-external temporary helper at /tmp/env-035-get-server-info using wRPC Borsh against ws://127.0.0.1:17210 and request getServerInfo
+- helper status: cargo check passed, but no live call was made because the node never reached RPC readiness
+
+getServerInfo artifact path:
+- spikes/tn12-minimal-covenant/artifacts/env-035-get-server-info.txt
+
+Pass/fail result:
+- node_startup_succeeded=false
+- getServerInfo_succeeded=false
+- rpc_surface_reached=false
+- rpc_call_attempted=false
+
+Returned network/server fields:
+- none, because no live getServerInfo response was captured
+
+Scope confirmations:
+- whether a wallet/key was created: false
+- whether a faucet request was made: false
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- mainnet used: false
+
+Stop condition reached:
+- startup failed before the approved local RPC surface became reachable, so execution stopped without any read-only RPC call
+
+Artifacts produced:
+- startup log with failure details: spikes/tn12-minimal-covenant/artifacts/env-035-kaspad-startup.log
+- read-only result record / no-call summary: spikes/tn12-minimal-covenant/artifacts/env-035-get-server-info.txt
+
+Conservative conclusion:
+- TN12 flag selection and localhost-only bind settings remain correct.
+- The active blocker is environment build readiness (`protoc`, plus bindgen header-path handling), not TN12 network selection.
+```
+
 ## env-034 local TN12 node startup command refinement
 
 ```text
