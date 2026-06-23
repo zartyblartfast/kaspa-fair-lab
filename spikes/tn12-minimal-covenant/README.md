@@ -37,7 +37,8 @@ Before implementing roulette, we need confidence that base primitives actually w
 - Status: env-010 compile-to-artifact and env-011 local covenant-workflow discovery completed.
 - env-012 local `cli-debugger --run-all` check discovered no upstream `simple_covenant.test.json` fixture; run failed with missing test file.
 - Target network: TN12/testnet.
-- Next step: continue simulation-first by inspecting upstream covenant `.test.json` examples and then planning a local fixture for `simple_covenant.sil` in a follow-up step.
+- Status: env-013 fixture creation and local `cli-debugger` run completed with PASS; no live submit/broadcast steps yet.
+- Next step: proceed to no-broadcast TN12 transaction-construction planning (create/spend/inspect evidence flow).
 
 ## How results are recorded
 
@@ -55,21 +56,18 @@ Update `findings.md` with:
 
 Goal for the next run: use the documented local verifier path to validate `simple_covenant` semantics without network submission.
 
-1. **Next approved step (local simulation only):**
-   - Continue to inspect upstream covenant test examples for `--run-all` schema and `test` payloads (especially in `debugger/cli/tests/cli_tests.rs`) and then decide the `simple_covenant` fixture shape.
-   - Do not create `simple_covenant.test.json` in this turn.
-   - Once a valid fixture is available, run:
-     - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file <path-to-test-json>`
-   - Capture:
-     - full command line,
-     - PASS/FAIL summary,
-     - any failure context and the fixture inputs that drove it.
+1. **Next approved step completed (local simulation only):**
+   - Created `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`.
+   - Ran:
+     - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+   - Result captured in `spikes/tn12-minimal-covenant/findings.md`:
+     - `1 tests: 1 passed, 0 failed`
+
+2. **Failure handling for reproducibility (if needed):**
+   - If the command fails in a future attempt, re-run once in a clean shell context before changing route.
+
+3. **Planned next step (post-local fixture pass):**
+   - Move to no-broadcast TN12 transaction-construction planning for create/spend/inspect semantics, using simulator/fixtures as the evidence source.
    - Keep this strictly non-submitting and TN12-only.
 
-2. **Failure handling for reproducibility:**
-   - If the local command still fails once a fixture exists, re-run once in a clean shell context before changing route.
-
-3. **Fallback plan (after local sim failure only):**
-   - If SilverScript simulator tooling remains blocked, pivot to Rust-level constructs (`covenant_decl_sigscript`, `execute_input_with_covenants`) only for pure local spending validation before any live workflow.
-
-No path is treated as valid until a live command sequence is recorded in `findings.md` with outputs.
+No path is treated as valid until no-broadcast transaction construction evidence is recorded in `findings.md` with outputs.

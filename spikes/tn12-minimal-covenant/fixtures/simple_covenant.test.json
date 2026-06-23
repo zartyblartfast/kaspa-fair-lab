@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "version_2_pass",
+      "function": "covenant",
+      "expect": "pass",
+      "tx": {
+        "version": 2,
+        "inputs": [
+          {
+            "utxo_value": 5000
+          }
+        ],
+        "outputs": [
+          {
+            "value": 5000
+          }
+        ]
+      }
+    }
+  ]
+}

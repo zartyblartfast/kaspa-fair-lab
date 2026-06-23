@@ -409,6 +409,57 @@ What remains unverified:
 - no live TN12 transaction creation, broadcast, or inspect workflow
 - no end-to-end no-broadcast transaction construction planning has been executed yet
 
+## env-013 simple_covenant local fixture
+
+- **Run ID:** env-013
+- **Date/time:** 2026-06-23T14:54:50Z
+- **Network:** TN12/testnet (local simulation-only)
+
+Observed (factual):
+- Source fixture and command:
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  - `cargo run -p cli-debugger -- silverscript-lang/tests/examples/simple_covenant.sil --run-all --test-file /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  - Contract under test: `external/silverscript/silverscript-lang/tests/examples/simple_covenant.sil`
+  - Entrypoint: `covenant`
+  - `tx.version`: `2`
+
+Pass/fail:
+- **PASS** (exit code `0`)
+
+Observed output (tool-backed):
+- `RUN   version_2_pass`
+- `PASS  version_2_pass`
+- `1 tests: 1 passed, 0 failed`
+
+Minimum `.test.json` structure needed for this contract/check:
+- Root:
+  - `{"tests": [...]}`
+- Test entry (for local run):
+  - `name`
+  - `function`
+  - `expect` (`"pass"` / `"fail"`)
+  - `tx`
+- `tx` object:
+  - `version: 2` (required here to satisfy `require(tx.version == 2)`).
+  - `inputs` (non-empty)
+  - `outputs` (non-empty)
+- Input minimum fields used here:
+  - `utxo_value`
+- Output minimum fields used here:
+  - `value`
+- Optional context fields that can be omitted in this minimal local pass case: `lock_time`, `active_input_index`, `covenant_id`, `constructor_args`, `state`, `authorizing_input`, `sig script / utxo fields`.
+- Optional fixture defaults used by debugger when omitted:
+  - `tx.active_input_index` defaults to `0`
+  - `tx.lock_time` defaults to `0`
+
+What remains unverified:
+- No live TN12 create/spend/inspect path was run.
+- No actual Kaspa transaction submission or broadcast.
+
+Notes:
+- This is a strict local simulation validation of contract code path only.
+- Next follow-up should keep non-submitting constraints and focus on no-broadcast transaction-construction planning.
+
 ## Verification record
 
 To be updated after each run.
