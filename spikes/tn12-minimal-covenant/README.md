@@ -105,4 +105,15 @@ Goal for the next run: move from verification-only tests to explicit no-broadcas
 
 Recommended now: keep using this script-based local verifier path as the canonical baseline, and open a follow-up task that wires a Rust/tx-assembly path (e.g., `Transaction::new` + `PopulatedTransaction`) to generate and log concrete signed transaction blobs for future create/spend/inspect testing.
 
-No path is treated as valid until repo-owned no-broadcast evidence is recorded in `findings.md` with outputs.
+No path is considered valid until repo-owned no-broadcast evidence is recorded in `findings.md` with outputs.
+
+### Env-019 short next-step checklist
+
+- Keep `run_no_broadcast_checks.sh` as the canonical evidence baseline.
+- Add a Rust-only, local tx-assembly planning pass (no broadcast, no wallet/faucet/mainnet).
+- Capture in `findings.md`:
+  - tx assembly API route chosen,
+  - mock key strategy,
+  - transaction context fields emitted (version, inputs, outputs, covenant ids),
+  - serialization/signature output form.
+- After env-019 evidence is complete, update `README.md` + `findings.md` and request explicit go-ahead for env-020 (no-broadcast signed payload proof).

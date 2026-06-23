@@ -627,6 +627,51 @@ Notes:
 
 - This run transitions the spike from pure verifier checks to explicit, source-anchored no-broadcast tx-construction path validation and identifies the minimal Rust functions to use for a follow-up artifact-producing spike.
 
+## env-018 Rust transaction assembly planning
+
+Observed (factual):
+
+- Allowed-scope file reads/reads-backed evidence completed for planning inputs:
+  - `/root/kaspa-fair-lab/docs/current-handoff.md`
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/README.md`
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/findings.md`
+  - `/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
+  - `/root/kaspa-fair-lab/external/silverscript/Cargo.toml`
+  - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/Cargo.toml`
+  - `/root/kaspa-fair-lab/external/silverscript/Cargo.lock`
+  - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/tests/common.rs`
+  - `/root/kaspa-fair-lab/external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
+
+- Targeted symbol discovery (within `external/silverscript/silverscript-lang`, exact term search only):
+  - `Transaction::new`
+  - `PopulatedTransaction`
+  - `covenant_id`
+  - `TransactionOutput`
+  - `serialize`
+  - `sign`
+
+Findings:
+
+- `Transaction::new(...)` and `PopulatedTransaction::new(...)` are used by in-repo tests/helpers (`tests/silverc_tests.rs`, `tests/common.rs`) with direct UTXO population and covenant context.
+- `TransactionOutput` and covenant binding fields are exercised in helper builders (`covenant_output`, `covenant_utxo`, `plain_covenant_output`) in `tests/common.rs`.
+- `simple_covenant.json` includes compiled covenant bytecode and confirms `require(tx.version == 2)` in the fixture contract source/AST context.
+- Workspace `Cargo.toml` and lockfile show the Rust tx stack is available in-repo (`kaspa-consensus-core`, `kaspa-txscript`, `kaspa-addresses`, `kaspa-hashes`) for a local no-broadcast assembly experiment.
+- No additional external source modifications were required to establish viability from repository-owned files.
+
+Unknowns:
+
+- Exact output format for “signed tx payload” was not yet extracted in this run (no `txid`/`raw_hex`/`payload.hex` dump from a Rust constructor currently).
+- Exact deterministic mock key path for local signing remains to be chosen (test-only key derivation not yet fixed).
+- Whether additional fields are needed for TN12 covenant spend assertions from one minimal `simple_covenant` template is still unproven.
+
+Recommendation (conservative):
+
+- Continue with a no-broadcast Rust planning spike only:
+  - reuse `simple_covenant.json` script bytes and fixture tx contexts,
+  - construct `Transaction` + `PopulatedTransaction` in a Rust test binary,
+  - print structured debug artifacts to `spikes/tn12-minimal-covenant/artifacts/`,
+  - keep signing and submission claims strictly evidence-gated and out of scope until payload format and mock key handling are proven.
+
 ### Route evidence snapshot
 
 - **SilverScript local verifier route:** confirmed via `external/silverscript/debugger/cli/README.md` that `--run-all` plus explicit `--test-file` is supported; `debugger/session/src/test_runner.rs` shows the fixture contract for `tx` context (`version`, `active_input_index`, `inputs`, `outputs`, `covenant_id`).
