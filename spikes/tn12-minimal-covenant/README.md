@@ -34,7 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-030 TN12 read-only RPC connectivity planning added (after env-029); all live actions remain pending in `findings.md`.
+- Status: env-033 local TN12 node startup planning added; all live actions remain pending in `findings.md`.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
 - repo-owned local fixtures pass.
@@ -187,6 +187,53 @@ Conservative conclusion:
   2. explicit permission for one read-only call,
   3. confirmation of artifact path availability,
   4. stop gate for no wallet/faucet/signing/broadcast.
+
+## Env-033 local TN12 node startup plan
+
+- **Scope:** planning-only documentation update; no local node was started and no live RPC call was made.
+
+### Current blocker
+
+- no public TN12 endpoint found in checked docs/source
+- no local node installed/running
+- read-only `getServerInfo` cannot be run yet
+
+### Candidate local-node path
+
+- use existing `external/silverscript` / `rusty-kaspa` source if suitable
+- or use pinned `rusty-kaspa` source already in Cargo cache if suitable
+- command candidate from docs:
+  - `cargo run --release --bin kaspad -- --testnet --utxoindex`
+- `rpclisten` / `borsh` / wRPC flags and exact ports still need confirmation before execution
+
+### Risks / costs
+
+- full node sync time
+- disk usage
+- CPU/RAM use
+- long-running process management
+- port exposure
+- avoid `0.0.0.0` unless explicitly needed
+
+### Safer recommended first execution (later, only after approval)
+
+- start a local testnet node bound to localhost only
+- capture startup logs to `spikes/tn12-minimal-covenant/artifacts/env-033-node-startup.log`
+- wait only until server info is available
+- run exactly one read-only `getServerInfo` call
+- capture output to `spikes/tn12-minimal-covenant/artifacts/env-033-get-server-info.txt`
+- stop before wallet/faucet/signing/broadcast
+
+### Required manual approvals
+
+- approval to start a local testnet node
+- approval to expose/listen on any port
+- approval to run read-only `getServerInfo`
+- separate approval for any wallet/faucet/signing/broadcast later
+
+### Conservative conclusion
+
+- The next safe technical action is to prepare a local TN12 node startup command and log plan, but not run it until explicitly approved.
 
 ## Env-028 local feasibility conclusion
 

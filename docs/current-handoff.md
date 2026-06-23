@@ -11,7 +11,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Concise status update
 
-1) env-030 added TN12 read-only RPC connectivity planning to the spike docs (after env-029).
+1) env-033 added local TN12 node startup planning to the spike docs; all live actions remain pending.
 
 2) Current repo-backed local evidence still covers:
 - SilverScript builds locally.
@@ -44,28 +44,37 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - no local `kaspad`/CLI executable is currently in PATH,
 - repository/docs scan confirms local node startup command exists but has no explicit public TN12 endpoint URL.
 
-5b) env-032 execution-readiness status:
-- local availability checks complete:
-  - `command -v` for kaspad/kaspa-cli/kaspa-rpc/kaspa-grpc/kaspactl => NOT_FOUND
-  - no local kaspad process detected
-- endpoint candidate:
-  - local: start kaspad with `--utxoindex --rpclisten=0.0.0.0 --rpclisten-borsh=0.0.0.0` (preferred) then target `ws://127.0.0.1:17110`
-  - public TN12/testnet endpoint: not documented in checked docs/source for this spike
+5b) env-033 local node startup planning status:
+- current blocker:
+  - no public TN12 endpoint found in checked docs/source
+  - no local kaspad/kaspa CLI tooling installed in PATH
+  - no local kaspad process running
+  - read-only `getServerInfo` cannot be run yet
+- candidate local-node path:
+  - use existing `external/silverscript` / `rusty-kaspa` source if suitable
+  - or use pinned `rusty-kaspa` source already present in Cargo cache if suitable
+  - command candidate from docs: `cargo run --release --bin kaspad -- --testnet --utxoindex`
+  - `rpclisten` / `borsh` / wRPC flags and exact ports still require confirmation before execution
+- conservative next action:
+  - prepare localhost-only startup + log capture plan, but do not start `kaspad` yet
+  - after explicit approval, run exactly one read-only `getServerInfo`, capture output, then stop before wallet/faucet/signing/broadcast
 
 6) Information required before any live step:
-- TN12 RPC endpoint URL or confirmed local node command/path,
-- network selector/name,
-- expected node version/Toccata/TN12 status,
+- approval to start a local testnet node,
+- confirmation of localhost-only bind vs any exposed listen address,
+- confirmed `kaspad` flags/ports for wRPC / Borsh / RPC surfaces,
 - safe read-only RPC command/API path,
-- logging/artifact path (`spikes/tn12-minimal-covenant/artifacts/env-031-get-server-info.txt`),
+- logging/artifact paths (`spikes/tn12-minimal-covenant/artifacts/env-033-node-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-033-get-server-info.txt`),
 - explicit stop condition before any state-changing action.
 
 7) Manual approval gates:
+- approval to start a local testnet node,
+- approval to expose/listen on any port beyond localhost,
+- approval to run one read-only `getServerInfo`,
 - approval before wallet/key creation,
 - approval before faucet request,
 - approval before signing,
-- approval before broadcast,
-- additional approval required before env-031/032 execution itself (endpoint + read-only command).
+- approval before broadcast.
 
 ## Branch / repo status
 
@@ -78,4 +87,4 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 ## Suggested first prompt after /new
 
-`Plan the first live TN12 prerequisite step only: identify the TN12 RPC endpoint/local node path, confirm faucet/address setup expectations, keep the plan test-only, and require explicit manual approval before any broadcast.`
+`Continue env-033 planning only: confirm the safest localhost-only TN12 local node startup command candidate, identify unresolved wRPC/Borsh/listen flags and ports, keep execution disabled, and require explicit manual approval before any node start or read-only RPC call.`

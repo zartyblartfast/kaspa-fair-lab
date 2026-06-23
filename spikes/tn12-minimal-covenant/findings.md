@@ -1517,6 +1517,62 @@ Stop conditions:
 - Stop immediately after first successful/failing `getServerInfo` response parse.
 
 
+## env-033 local TN12 node startup plan
+
+- **Run ID:** env-033
+- **Date/time:** 2026-06-23 (planning-only)
+- **Network:** TN12/testnet (documentation-only; no live node/RPC activity)
+
+Observed (factual):
+
+- No public TN12 endpoint was found in checked docs/source for this spike.
+- No local node binary/CLI is currently installed in PATH for this environment.
+- No local `kaspad` process is running.
+- Because there is no approved/running local node and no public TN12 endpoint, read-only `getServerInfo` cannot be run yet.
+
+### Current blocker
+
+- no public TN12 endpoint found
+- no local node installed/running
+- read-only `getServerInfo` cannot be run yet
+
+### Candidate local-node path
+
+- Use existing `external/silverscript` / `rusty-kaspa` source if suitable.
+- Or use pinned `rusty-kaspa` source already in Cargo cache if suitable.
+- Command candidate from docs:
+  - `cargo run --release --bin kaspad -- --testnet --utxoindex`
+- `rpclisten` / `borsh` / wRPC flags and exact ports still need confirmation before execution.
+
+### Risks / costs
+
+- full node sync time
+- disk usage
+- CPU/RAM use
+- long-running process management
+- port exposure
+- avoid `0.0.0.0` unless explicitly needed
+
+### Safer recommended first execution (later only after approval)
+
+- start a local testnet node bound to localhost only
+- capture logs to `spikes/tn12-minimal-covenant/artifacts/env-033-node-startup.log`
+- wait only until server info is available
+- run exactly one read-only `getServerInfo` call
+- capture output to `spikes/tn12-minimal-covenant/artifacts/env-033-get-server-info.txt`
+- stop before wallet/faucet/signing/broadcast
+
+### Required manual approvals
+
+- approval to start local testnet node
+- approval to expose/listen on any port
+- approval to run read-only `getServerInfo`
+- separate approval for any wallet/faucet/signing/broadcast later
+
+### Conservative conclusion
+
+- The next safe technical action is to prepare a local TN12 node startup command and log plan, but not run it until explicitly approved.
+
 ## env-029 TN12 prerequisite planning
 
 ```text
