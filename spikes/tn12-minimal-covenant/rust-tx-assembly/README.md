@@ -8,8 +8,11 @@ Next step: prove a minimal signed payload artifact path in a follow-up after thi
 
 ## Reproducibility note
 
-`Cargo.toml` currently depends on `kaspa-consensus-core` using an absolute cargo-checkout path:
+`Cargo.toml` now uses a git-pinned `kaspa-consensus-core` dependency for reproducibility:
 
-- `path = "/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core"`
+- `git = "https://github.com/kaspanet/rusty-kaspa"`
+- `rev = "42b734f16e2e09078175028ab33158a9f75e91cf"`
 
-This is not reproducible across environments. A repo-local alternative is not obvious from this spike alone because there is no `rusty-kaspa` checkout checked into this repository tree. Until a local clone of `rusty-kaspa` is intentionally introduced (e.g. via a tracked subdir), the safest documented state is to treat this as a known portability gap and verify it explicitly before rebase/share.
+The revision was chosen to match the version already locked by `external/silverscript` (`source = "git+https://github.com/kaspanet/rusty-kaspa?branch=tn12#42b734f16e2e09078175028ab33158a9f75e91cf"` in `external/silverscript/Cargo.lock`).
+
+This avoids the previous absolute `/root/.cargo/git/checkouts/...` path and makes the scaffold dependency resolution deterministic for other environments that can fetch dependencies.

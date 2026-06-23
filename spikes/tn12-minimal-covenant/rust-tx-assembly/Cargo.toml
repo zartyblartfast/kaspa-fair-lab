@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-kaspa-consensus-core = { path = "/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core" }
+kaspa-consensus-core = { git = "https://github.com/kaspanet/rusty-kaspa", rev = "42b734f16e2e09078175028ab33158a9f75e91cf" }
