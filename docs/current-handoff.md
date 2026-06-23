@@ -53,14 +53,32 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - startup blockers observed:
   - first failure: `librocksdb-sys` bindgen could not find `stdbool.h`
   - retry with `LIBCLANG_PATH=/usr/lib/llvm-18/lib` and `BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"` got further
-  - final blocker: `kaspa-p2p-lib` protobuf compilation failed because `protoc` is not available in this environment
+  - final blocker before env-036: `kaspa-p2p-lib` protobuf compilation failed because `protoc` was not available in this environment
 - result:
   - no local kaspad process reached RPC readiness
   - no live `getServerInfo` call was executed
   - artifacts: `spikes/tn12-minimal-covenant/artifacts/env-035-kaspad-startup.log` and `spikes/tn12-minimal-covenant/artifacts/env-035-get-server-info.txt`
+
+5c) env-036 local build prerequisite resolution:
+- approved scope executed:
+  - checked `protoc --version`
+  - ran `apt-get update`
+  - installed minimum package `protobuf-compiler`
+  - rechecked `protoc --version`
+- observed result:
+  - `protoc` was missing before install (`command not found`)
+  - `protobuf-compiler` installed successfully
+  - `protoc --version` now returns `libprotoc 3.21.12`
+  - bindgen workaround should still be preserved for the next local build retry:
+    - `LIBCLANG_PATH=/usr/lib/llvm-18/lib`
+    - `BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"`
+- scope confirmations:
+  - `kaspad` was not started
+  - no RPC endpoint was called
+  - no wallet/key/faucet/signing/broadcast occurred
 - conservative next action:
-  - resolve environment build prerequisites (`protoc`, and preserve bindgen header-path settings as needed)
-  - rerun the same approved localhost-only TN12 startup command only after the build blocker is cleared
+  - rerun the same approved localhost-only TN12 startup command later with the bindgen workaround preserved
+  - stop again before any wallet/faucet/signing/broadcast work
 
 6) Information required before any live step:
 - approval to start a local testnet node,

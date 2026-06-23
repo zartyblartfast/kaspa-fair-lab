@@ -34,7 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
-- Status: env-035 attempted localhost-only TN12 node startup, but the node never reached RPC readiness because the local release build is blocked by missing `protoc` (after an initial bindgen header-path issue was worked around); no live `getServerInfo` call was executed.
+- Status: env-036 resolved the local `protoc` build prerequisite by installing `protobuf-compiler` and verifying `protoc --version` -> `libprotoc 3.21.12`; the bindgen workaround from env-035 remains needed for later `kaspad` build retries.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
 - repo-owned local fixtures pass.
@@ -48,6 +48,40 @@ Before implementing roulette, we need confidence that base primitives actually w
 - No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-036 local build prerequisite resolution
+
+- **Scope:** local build prerequisite resolution only; no node start, no RPC call, no wallet/key/faucet/signing/broadcast work.
+
+### Commands run
+
+- `protoc --version`
+- `apt-get update`
+- `apt-get install -y protobuf-compiler`
+- `protoc --version`
+
+### Result
+
+- `protoc` was not present before installation (`protoc: command not found`).
+- Installed package: `protobuf-compiler`.
+- Verified after install: `libprotoc 3.21.12`.
+- The env-035 bindgen workaround still remains relevant for later local `kaspad` build attempts:
+  - `LIBCLANG_PATH=/usr/lib/llvm-18/lib`
+  - `BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"`
+
+### Scope confirmations
+
+- `kaspad` was not started.
+- No RPC endpoint was called.
+- No wallet was created.
+- No keys were generated.
+- No faucet request was made.
+- Nothing was signed.
+- Nothing was submitted or broadcast.
+
+### Recommended next action
+
+- Rerun the same approved localhost-only TN12 node startup attempt later, with the bindgen workaround preserved, and stop again before any wallet/faucet/signing/broadcast activity.
 
 ## Env-029 prerequisite planning conclusion
 

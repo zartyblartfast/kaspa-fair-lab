@@ -1644,6 +1644,63 @@ Conservative conclusion:
 - The active blocker is environment build readiness (`protoc`, plus bindgen header-path handling), not TN12 network selection.
 ```
 
+## env-036 local build prerequisite resolution
+
+```text
+Run ID: env-036
+Date/time: 2026-06-23T22:29:08Z
+Network: local build prerequisite resolution only (no node start, no RPC activity)
+
+Files changed:
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Commands run:
+- protoc --version
+- apt-get update
+- apt-get install -y protobuf-compiler
+- protoc --version
+
+Observed (factual):
+- Before install, `protoc --version` failed with `protoc: command not found`.
+- Installed package: `protobuf-compiler`.
+- Installed dependency packages pulled by apt:
+  - libprotobuf-dev
+  - libprotobuf-lite32t64
+  - libprotobuf32t64
+  - libprotoc32t64
+- After install, `protoc --version` returned `libprotoc 3.21.12`.
+- The env-035 bindgen workaround still remains needed for the later local `kaspad` build retry:
+  - LIBCLANG_PATH=/usr/lib/llvm-18/lib
+  - BINDGEN_EXTRA_CLANG_ARGS="-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include"
+
+Success/failure: pass
+
+Scope confirmations:
+- kaspad started: false
+- any RPC endpoint called: false
+- getServerInfo executed: false
+- wallet created: false
+- keys generated: false
+- faucet requested: false
+- anything signed: false
+- anything submitted/broadcast: false
+- mainnet used: false
+
+What this proves:
+- The missing local protobuf compiler prerequisite from env-035 is now resolved.
+- The `protoc` executable is available for future local builds in this environment.
+
+What remains unverified:
+- Whether the later localhost-only `kaspad` build/run now succeeds end-to-end with `protoc` available.
+- Whether any additional build blockers remain after preserving the bindgen workaround.
+- RPC readiness and the read-only `getServerInfo` step remain untested because this run stopped before any node start.
+
+Recommended next action:
+- Rerun the same approved localhost-only TN12 node startup attempt later, preserving the bindgen workaround and stopping again before any wallet/faucet/signing/broadcast work.
+```
+
 ## env-034 local TN12 node startup command refinement
 
 ```text
