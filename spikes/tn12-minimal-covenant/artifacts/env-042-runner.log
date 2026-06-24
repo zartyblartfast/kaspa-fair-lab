@@ -1,0 +1,209 @@
+2026-06-24T13:09:20Z starting env-042 observation
+2026-06-24T13:09:20Z startup_command=cargo run --release --manifest-path /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/Cargo.toml --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+2026-06-24T13:09:20Z observation_seconds=1800
+2026-06-24T13:09:20Z kaspad_shell_pid=309584
+2026-06-24T13:09:21Z readiness confirmed
+LISTEN 0      128        127.0.0.1:16210      0.0.0.0:*    users:(("kaspad",pid=309584,fd=29))                    
+LISTEN 0      128        127.0.0.1:16311      0.0.0.0:*    users:(("kaspad",pid=309584,fd=30))                    
+LISTEN 0      1024       127.0.0.1:17210      0.0.0.0:*    users:(("kaspad",pid=309584,fd=35))                    
+2026-06-24T13:37:57Z kaspad exited during observation
+2026-06-24 13:29:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:29:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:29:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:29:35.170+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:29:35.170+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:29:35.170+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:29:35.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:29:35.278+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:29:35.310+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:29:41.079+00:00 [INFO ] Processed 0 blocks and 306 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.58 parents; 47.37 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:48.425+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:29:51.080+00:00 [INFO ] Processed 0 blocks and 603 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.36 parents; 54.79 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:01.081+00:00 [INFO ] Processed 0 blocks and 666 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.49 parents; 52.20 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:05.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:30:05.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:30:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:05.168+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:05.169+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:30:05.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:05.219+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:05.471+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:11.083+00:00 [INFO ] Processed 0 blocks and 1990 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.73 parents; 18.25 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:18.688+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:30:21.084+00:00 [INFO ] Processed 0 blocks and 4550 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.84 parents; 8.95 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:25.175+00:00 [INFO ] IBD: Processed 363640 block headers (33%) last block timestamp: 2026-06-23 12:26:09.000:+0000
+2026-06-24 13:30:31.084+00:00 [INFO ] Processed 0 blocks and 4229 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.81 parents; 9.19 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:30:35.164+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:30:35.164+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:30:35.164+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:35.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:35.219+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:35.308+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:35.580+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:41.086+00:00 [INFO ] Processed 0 blocks and 4468 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.66 parents; 12.53 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:49.395+00:00 [INFO ] IBD: Processed 373841 block headers (34%) last block timestamp: 2026-06-23 12:31:33.000:+0000
+2026-06-24 13:30:51.087+00:00 [INFO ] Processed 0 blocks and 4339 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.01 parents; 10.08 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:55.169+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:31:01.089+00:00 [INFO ] Processed 0 blocks and 3774 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 4.12 parents; 10.98 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:31:05.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:31:05.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:05.167+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:31:05.168+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:05.208+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:05.254+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:05.446+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:11.091+00:00 [INFO ] Processed 0 blocks and 2956 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.55 parents; 13.31 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:21.091+00:00 [INFO ] Processed 0 blocks and 1833 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.26 parents; 24.35 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:21.250+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:31:26.885+00:00 [INFO ] IBD: Processed 385092 block headers (35%) last block timestamp: 2026-06-23 12:42:07.000:+0000
+2026-06-24 13:31:31.093+00:00 [INFO ] Processed 0 blocks and 4014 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.18 parents; 6.32 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:31:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:31:35.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:35.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:31:35.172+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:35.205+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:35.252+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:41.093+00:00 [INFO ] Processed 0 blocks and 5003 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.97 parents; 3.23 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:47.607+00:00 [INFO ] IBD: Processed 396347 block headers (36%) last block timestamp: 2026-06-23 12:54:28.000:+0000
+2026-06-24 13:31:47.646+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:31:51.095+00:00 [INFO ] Processed 0 blocks and 6151 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.98 parents; 3.71 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:01.096+00:00 [INFO ] Processed 0 blocks and 5041 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.82 parents; 3.47 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:32:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:32:05.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:32:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:05.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:05.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:05.205+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:05.523+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:09.887+00:00 [INFO ] IBD: Processed 407603 block headers (37%) last block timestamp: 2026-06-23 13:08:45.000:+0000
+2026-06-24 13:32:11.099+00:00 [INFO ] Processed 0 blocks and 4786 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.79 parents; 3.34 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:18.665+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:32:21.100+00:00 [INFO ] Processed 0 blocks and 5511 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.72 parents; 3.29 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:29.305+00:00 [INFO ] IBD: Processed 417842 block headers (38%) last block timestamp: 2026-06-23 13:24:13.000:+0000
+2026-06-24 13:32:31.102+00:00 [INFO ] Processed 0 blocks and 5181 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.74 parents; 3.32 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:32:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:32:35.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:32:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:35.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:35.207+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:35.388+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:41.103+00:00 [INFO ] Processed 0 blocks and 4574 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.71 parents; 3.24 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:51.176+00:00 [INFO ] Processed 0 blocks and 509 headers in the last 10.06s (0 transactions; 0 UTXO-validated blocks; 2.65 parents; 3.13 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:55.224+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:33:01.692+00:00 [INFO ] Processed 0 blocks and 6 headers in the last 10.48s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 3.83 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:05.600+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:33:07.222+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:33:07.660+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:07.957+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:08.199+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:33:08.371+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:09.378+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:10.498+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:13.060+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:28.735+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:33:32.088+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 10.06s (0 transactions; 0 UTXO-validated blocks; 4.00 parents; 1.50 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:35.481+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:33:36.227+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:33:36.360+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:36.492+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:33:36.614+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:36.794+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:37.455+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:38.748+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:39.679+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:42.590+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 10.52s (0 transactions; 0 UTXO-validated blocks; 1.50 parents; 1.50 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:52.947+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.35s (0 transactions; 0 UTXO-validated blocks; 1.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:53.561+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:34:03.946+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 11.01s (0 transactions; 0 UTXO-validated blocks; 3.50 parents; 3.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:05.567+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:34:06.798+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:34:07.563+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:08.044+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:34:08.541+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:09.252+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:10.096+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:13.416+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:13.772+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:14.232+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.27s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:22.986+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:34:25.924+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 11.67s (0 transactions; 0 UTXO-validated blocks; 3.50 parents; 1.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:35.660+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:34:36.425+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:34:36.602+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:36.802+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.82s (0 transactions; 0 UTXO-validated blocks; 2.00 parents; 7.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:36.957+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:34:37.528+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:38.076+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:38.981+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:42.374+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:46.952+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:47.227+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.37s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:53.491+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:34:57.831+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.75s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 4.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:05.724+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:35:07.464+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:35:08.398+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.57s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 3.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:09.225+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:35:09.774+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:35:10.668+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:35:11.659+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:35:13.477+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:35:19.930+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 11.42s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:34.396+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:35:42.057+00:00 [WARN ] Error connecting to DNS seeder seeder1-tn12.kaspad.net: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:35:43.515+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:35:44.900+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 11.12s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:47.899+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:35:52.273+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:35:55.824+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:35:57.362+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:35:58.044+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:35:59.222+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:36:00.232+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 13.48s (0 transactions; 0 UTXO-validated blocks; 2.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:09.483+00:00 [INFO ] Retrieved 2 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:36:18.487+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:21.376+00:00 [WARN ] Error connecting to DNS seeder n-testnet-12.kaspa.ws: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:23.006+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.15s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 5.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:30.312+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:32.049+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:36:33.604+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:36:34.645+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:36:35.739+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:36:36.210+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:36:36.930+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:36:38.759+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 14.08s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:50.567+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 14.72s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:56.541+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:56.978+00:00 [WARN ] Error connecting to DNS seeder n-testnet-12.kaspa.ws: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:58.289+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:00.072+00:00 [WARN ] Error connecting to DNS seeder seeder1-tn12.kaspad.net: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:01.940+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 11.26s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:37:05.510+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:37:06.932+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:37:07.532+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:37:08.390+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:37:09.270+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:37:16.279+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 14.39s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:37:28.811+00:00 [WARN ] Error connecting to DNS seeder seeder1-tn12.kaspad.net: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:31.428+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:33.458+00:00 [WARN ] Error connecting to DNS seeder n-testnet-12.kaspa.ws: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:35.687+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:37.540+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 17.01s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:37:42.965+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:37:43.632+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:37:44.032+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:37:44.322+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:37:45.368+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa

@@ -1,439 +1,1391 @@
-    Finished `release` profile [optimized] target(s) in 1.94s
-     Running `target/release/kaspad --testnet --netsuffix=12 --disable-upnp '--listen=127.0.0.1:16311' '--rpclisten=127.0.0.1:16210' '--rpclisten-borsh=127.0.0.1:17210'`
-2026-06-24 10:13:55.638+00:00 [INFO ] kaspad v1.1.1-toc.1-42b734f1
-2026-06-24 10:13:55.641+00:00 [INFO ] Application directory: /root/.rusty-kaspa
-2026-06-24 10:13:55.641+00:00 [INFO ] Data directory: /root/.rusty-kaspa/kaspa-testnet-12/datadir
-2026-06-24 10:13:55.641+00:00 [INFO ] Logs directory: /root/.rusty-kaspa/kaspa-testnet-12/logs
-2026-06-24 10:13:55.768+00:00 [INFO ] GRPC Server starting on: 127.0.0.1:16210
-2026-06-24 10:13:55.770+00:00 [INFO ] P2P Server starting on: 127.0.0.1:16311
-2026-06-24 10:13:55.772+00:00 [INFO ] Connection manager: has 0/8 outgoing P2P connections, trying to obtain 3 additional connection(s)...
-2026-06-24 10:13:55.773+00:00 [INFO ] WRPC Server starting on: 127.0.0.1:17210
-2026-06-24 10:13:55.855+00:00 [INFO ] Registering p2p flows for peer 178.105.76.81:16311 for protocol version 9
-2026-06-24 10:13:55.856+00:00 [INFO ] P2P Connected to outgoing peer 178.105.76.81:16311 (outbound: 1)
-2026-06-24 10:13:56.024+00:00 [INFO ] Registering p2p flows for peer 86.48.24.208:16311 for protocol version 9
-2026-06-24 10:13:56.024+00:00 [INFO ] P2P Connected to outgoing peer 86.48.24.208:16311 (outbound: 2)
-2026-06-24 10:13:56.206+00:00 [INFO ] Registering p2p flows for peer 23.118.8.163:16311 for protocol version 9
-2026-06-24 10:13:56.206+00:00 [INFO ] Querying 4 DNS seeders
-2026-06-24 10:13:56.206+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:13:56.207+00:00 [INFO ] P2P Connected to outgoing peer 23.118.8.163:16311 (outbound: 3)
-2026-06-24 10:13:56.207+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
-2026-06-24 10:13:56.207+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:13:56.207+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:13:56.234+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:13:56.285+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:13:56.348+00:00 [INFO ] IBD started with peer 178.105.76.81:16311
-2026-06-24 10:13:56.586+00:00 [INFO ] Starting IBD with headers proof with peer 178.105.76.81:16311
-2026-06-24 10:13:57.738+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:13:59.729+00:00 [INFO ] Received headers proof with overall 61960 headers (18758 unique)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 250 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 249 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 248 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 247 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 246 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 245 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 244 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 243 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 242 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 241 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 240 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 239 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 238 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 237 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 236 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 235 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 234 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 233 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.124+00:00 [INFO ] Validating level 232 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 231 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 230 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 229 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 228 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 227 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 226 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 225 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 224 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 223 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 222 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 221 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 220 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 219 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 218 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 217 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 216 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 215 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 214 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 213 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 212 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 211 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 210 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 209 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 208 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 207 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 206 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 205 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.125+00:00 [INFO ] Validating level 204 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 203 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 202 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 201 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 200 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 199 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 198 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 197 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 196 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 195 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 194 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 193 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 192 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 191 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 190 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 189 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 188 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 187 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 186 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 185 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 184 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 183 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 182 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 181 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 180 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 179 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 178 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 177 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.126+00:00 [INFO ] Validating level 176 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 175 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 174 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 173 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 172 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 171 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 170 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 169 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 168 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 167 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 166 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 165 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 164 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 163 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 162 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 161 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 160 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 159 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 158 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 157 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 156 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 155 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 154 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 153 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 152 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 151 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 150 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 149 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 148 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.127+00:00 [INFO ] Validating level 147 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 146 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 145 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 144 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 143 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 142 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 141 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 140 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 139 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 138 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 137 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 136 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 135 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 134 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 133 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 132 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 131 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 130 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 129 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 128 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 127 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 126 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 125 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 124 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 123 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 122 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 121 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 120 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 119 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 118 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 117 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 116 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 115 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.128+00:00 [INFO ] Validating level 114 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 113 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 112 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 111 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 110 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 109 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 108 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 107 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 106 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 105 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 104 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 103 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 102 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 101 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 100 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 99 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 98 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 97 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 96 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 95 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 94 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 93 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 92 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 91 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 90 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 89 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 88 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 87 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.129+00:00 [INFO ] Validating level 86 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 85 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 84 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 83 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 82 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 81 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 80 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 79 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 78 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 77 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 76 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 75 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 74 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 73 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 72 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 71 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 70 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 69 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 68 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 67 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 66 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 65 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 64 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 63 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 62 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 61 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 60 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 59 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 58 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 57 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.130+00:00 [INFO ] Validating level 56 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 55 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 54 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 53 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 52 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 51 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 50 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 49 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 48 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 47 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 46 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 45 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 44 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 43 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 42 from the pruning point proof (1 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 41 from the pruning point proof (2 headers)
-2026-06-24 10:14:00.131+00:00 [INFO ] Validating level 40 from the pruning point proof (3 headers)
-2026-06-24 10:14:00.132+00:00 [INFO ] Validating level 39 from the pruning point proof (4 headers)
-2026-06-24 10:14:00.132+00:00 [INFO ] Validating level 38 from the pruning point proof (4 headers)
-2026-06-24 10:14:00.132+00:00 [INFO ] Validating level 37 from the pruning point proof (5 headers)
-2026-06-24 10:14:00.133+00:00 [INFO ] Validating level 36 from the pruning point proof (10 headers)
-2026-06-24 10:14:00.134+00:00 [INFO ] Validating level 35 from the pruning point proof (16 headers)
-2026-06-24 10:14:00.136+00:00 [INFO ] Validating level 34 from the pruning point proof (40 headers)
-2026-06-24 10:14:00.141+00:00 [INFO ] Validating level 33 from the pruning point proof (76 headers)
-2026-06-24 10:14:00.153+00:00 [INFO ] Validating level 32 from the pruning point proof (148 headers)
-2026-06-24 10:14:00.182+00:00 [INFO ] Validating level 31 from the pruning point proof (295 headers)
-2026-06-24 10:14:00.262+00:00 [INFO ] Validating level 30 from the pruning point proof (558 headers)
-2026-06-24 10:14:00.460+00:00 [INFO ] Validating level 29 from the pruning point proof (1045 headers)
-2026-06-24 10:14:00.843+00:00 [INFO ] Validating level 28 from the pruning point proof (2060 headers)
-2026-06-24 10:14:01.669+00:00 [INFO ] Validating level 27 from the pruning point proof (2001 headers)
-2026-06-24 10:14:02.484+00:00 [INFO ] Validating level 26 from the pruning point proof (2001 headers)
-2026-06-24 10:14:03.253+00:00 [INFO ] Validating level 25 from the pruning point proof (2058 headers)
-2026-06-24 10:14:04.006+00:00 [INFO ] Validating level 24 from the pruning point proof (2001 headers)
-2026-06-24 10:14:04.728+00:00 [INFO ] Validating level 23 from the pruning point proof (2001 headers)
-2026-06-24 10:14:05.483+00:00 [INFO ] Validating level 22 from the pruning point proof (2022 headers)
-2026-06-24 10:14:05.775+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
-2026-06-24 10:14:06.256+00:00 [INFO ] Validating level 21 from the pruning point proof (2001 headers)
-2026-06-24 10:14:07.057+00:00 [INFO ] Validating level 20 from the pruning point proof (2098 headers)
-2026-06-24 10:14:07.844+00:00 [INFO ] Validating level 19 from the pruning point proof (2018 headers)
-2026-06-24 10:14:08.643+00:00 [INFO ] Validating level 18 from the pruning point proof (2024 headers)
-2026-06-24 10:14:09.525+00:00 [INFO ] Validating level 17 from the pruning point proof (2017 headers)
-2026-06-24 10:14:10.311+00:00 [INFO ] Validating level 16 from the pruning point proof (2005 headers)
-2026-06-24 10:14:11.103+00:00 [INFO ] Validating level 15 from the pruning point proof (2001 headers)
-2026-06-24 10:14:11.868+00:00 [INFO ] Validating level 14 from the pruning point proof (2001 headers)
-2026-06-24 10:14:12.631+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
-2026-06-24 10:14:12.632+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 5 additional connection(s)...
-2026-06-24 10:14:12.632+00:00 [INFO ] Validating level 13 from the pruning point proof (2001 headers)
-2026-06-24 10:14:13.401+00:00 [INFO ] Validating level 12 from the pruning point proof (2023 headers)
-2026-06-24 10:14:13.633+00:00 [INFO ] Querying 4 DNS seeders
-2026-06-24 10:14:13.633+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:14:13.635+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
-2026-06-24 10:14:13.636+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:14:13.637+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:14:13.670+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:14:13.672+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:14:13.970+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:14:14.220+00:00 [INFO ] Validating level 11 from the pruning point proof (2101 headers)
-2026-06-24 10:14:15.099+00:00 [INFO ] Validating level 10 from the pruning point proof (2101 headers)
-2026-06-24 10:14:15.875+00:00 [INFO ] Validating level 9 from the pruning point proof (2101 headers)
-2026-06-24 10:14:16.641+00:00 [INFO ] Validating level 8 from the pruning point proof (2101 headers)
-2026-06-24 10:14:17.443+00:00 [INFO ] Validating level 7 from the pruning point proof (2101 headers)
-2026-06-24 10:14:18.204+00:00 [INFO ] Validating level 6 from the pruning point proof (2101 headers)
-2026-06-24 10:14:19.031+00:00 [INFO ] Validating level 5 from the pruning point proof (2101 headers)
-2026-06-24 10:14:19.902+00:00 [INFO ] Validating level 4 from the pruning point proof (2101 headers)
-2026-06-24 10:14:20.720+00:00 [INFO ] Validating level 3 from the pruning point proof (2101 headers)
-2026-06-24 10:14:21.485+00:00 [INFO ] Validating level 2 from the pruning point proof (2101 headers)
-2026-06-24 10:14:22.290+00:00 [INFO ] Validating level 1 from the pruning point proof (2101 headers)
-2026-06-24 10:14:23.021+00:00 [INFO ] Validating level 0 from the pruning point proof (2101 headers)
-2026-06-24 10:14:23.767+00:00 [INFO ] Built headers proof with overall 251 headers (1 unique)
-2026-06-24 10:14:26.124+00:00 [INFO ] Finished downloading 0 blocks from the pruning point anticone
-2026-06-24 10:14:26.124+00:00 [INFO ] Starting to download the pruning point chain segment
-2026-06-24 10:14:26.718+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
-2026-06-24 10:14:26.720+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 5 additional connection(s)...
-2026-06-24 10:14:27.429+00:00 [INFO ] Downloaded 1000 headers from the pruning point chain segment
-2026-06-24 10:14:27.720+00:00 [INFO ] Querying 4 DNS seeders
-2026-06-24 10:14:27.722+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:14:27.722+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:14:27.723+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:14:27.725+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
-2026-06-24 10:14:27.757+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:14:27.761+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:14:28.220+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:14:29.043+00:00 [INFO ] Downloaded 2000 headers from the pruning point chain segment
-2026-06-24 10:14:30.851+00:00 [INFO ] Downloaded 3000 headers from the pruning point chain segment
-2026-06-24 10:14:32.367+00:00 [INFO ] Downloaded 4000 headers from the pruning point chain segment
-2026-06-24 10:14:33.849+00:00 [INFO ] Downloaded 5000 headers from the pruning point chain segment
-2026-06-24 10:14:35.476+00:00 [INFO ] Downloaded 6000 headers from the pruning point chain segment
-2026-06-24 10:14:37.406+00:00 [INFO ] Downloaded 7000 headers from the pruning point chain segment
-2026-06-24 10:14:38.946+00:00 [INFO ] Downloaded 8000 headers from the pruning point chain segment
-2026-06-24 10:14:40.520+00:00 [INFO ] Downloaded 9000 headers from the pruning point chain segment
-2026-06-24 10:14:42.480+00:00 [INFO ] Downloaded 10000 headers from the pruning point chain segment
-2026-06-24 10:14:42.775+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
-2026-06-24 10:14:43.779+00:00 [INFO ] Downloaded 11000 headers from the pruning point chain segment
-2026-06-24 10:14:45.649+00:00 [INFO ] Downloaded 12000 headers from the pruning point chain segment
-2026-06-24 10:14:47.361+00:00 [INFO ] Downloaded 13000 headers from the pruning point chain segment
-2026-06-24 10:14:48.615+00:00 [INFO ] Downloaded 14000 headers from the pruning point chain segment
-2026-06-24 10:14:50.062+00:00 [INFO ] Downloaded 15000 headers from the pruning point chain segment
-2026-06-24 10:14:51.480+00:00 [INFO ] Downloaded 16000 headers from the pruning point chain segment
-2026-06-24 10:14:52.879+00:00 [INFO ] Downloaded 17000 headers from the pruning point chain segment
-2026-06-24 10:14:54.359+00:00 [INFO ] Downloaded 18000 headers from the pruning point chain segment
-2026-06-24 10:14:55.791+00:00 [INFO ] Downloaded 19000 headers from the pruning point chain segment
-2026-06-24 10:14:56.720+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 5 additional connection(s)...
-2026-06-24 10:14:57.138+00:00 [INFO ] Downloaded 20000 headers from the pruning point chain segment
-2026-06-24 10:14:57.722+00:00 [INFO ] Querying 4 DNS seeders
-2026-06-24 10:14:57.722+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:14:57.725+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:14:57.725+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
-2026-06-24 10:14:57.725+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:14:57.758+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:14:57.762+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:14:57.976+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:14:58.523+00:00 [INFO ] Downloaded 21000 headers from the pruning point chain segment
-2026-06-24 10:14:59.635+00:00 [INFO ] Downloaded 22000 headers from the pruning point chain segment
-2026-06-24 10:15:00.706+00:00 [INFO ] Downloaded 23000 headers from the pruning point chain segment
-2026-06-24 10:15:01.808+00:00 [INFO ] Downloaded 24000 headers from the pruning point chain segment
-2026-06-24 10:15:02.917+00:00 [INFO ] Downloaded 25000 headers from the pruning point chain segment
-2026-06-24 10:15:03.980+00:00 [INFO ] Downloaded 26000 headers from the pruning point chain segment
-2026-06-24 10:15:05.053+00:00 [INFO ] Downloaded 27000 headers from the pruning point chain segment
-2026-06-24 10:15:06.549+00:00 [INFO ] Downloaded 28000 headers from the pruning point chain segment
-2026-06-24 10:15:07.578+00:00 [INFO ] Downloaded 29000 headers from the pruning point chain segment
-2026-06-24 10:15:08.864+00:00 [INFO ] Downloaded 30000 headers from the pruning point chain segment
-2026-06-24 10:15:09.906+00:00 [INFO ] Downloaded 31000 headers from the pruning point chain segment
-2026-06-24 10:15:10.831+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
-2026-06-24 10:15:10.919+00:00 [INFO ] Downloaded 32000 headers from the pruning point chain segment
-2026-06-24 10:15:11.946+00:00 [INFO ] Downloaded 33000 headers from the pruning point chain segment
-2026-06-24 10:15:12.981+00:00 [INFO ] Downloaded 34000 headers from the pruning point chain segment
-2026-06-24 10:15:14.234+00:00 [INFO ] Downloaded 35000 headers from the pruning point chain segment
-2026-06-24 10:15:15.494+00:00 [INFO ] Downloaded 36000 headers from the pruning point chain segment
-2026-06-24 10:15:16.488+00:00 [INFO ] Downloaded 37000 headers from the pruning point chain segment
-2026-06-24 10:15:17.690+00:00 [INFO ] Downloaded 38000 headers from the pruning point chain segment
-2026-06-24 10:15:18.683+00:00 [INFO ] Downloaded 39000 headers from the pruning point chain segment
-2026-06-24 10:15:19.685+00:00 [INFO ] Downloaded 40000 headers from the pruning point chain segment
-2026-06-24 10:15:20.711+00:00 [INFO ] Downloaded 41000 headers from the pruning point chain segment
-2026-06-24 10:15:21.717+00:00 [INFO ] Downloaded 42000 headers from the pruning point chain segment
-2026-06-24 10:15:22.710+00:00 [INFO ] Downloaded 43000 headers from the pruning point chain segment
-2026-06-24 10:15:23.677+00:00 [INFO ] Downloaded 44000 headers from the pruning point chain segment
-2026-06-24 10:15:24.872+00:00 [INFO ] Downloaded 45000 headers from the pruning point chain segment
-2026-06-24 10:15:26.080+00:00 [INFO ] Downloaded 46000 headers from the pruning point chain segment
-2026-06-24 10:15:26.721+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
-2026-06-24 10:15:26.726+00:00 [INFO ] Querying 4 DNS seeders
-2026-06-24 10:15:26.726+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
-2026-06-24 10:15:26.729+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:15:26.729+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:15:26.729+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:15:26.762+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:15:26.764+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:15:26.954+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:15:27.078+00:00 [INFO ] Downloaded 47000 headers from the pruning point chain segment
-2026-06-24 10:15:28.060+00:00 [INFO ] Downloaded 48000 headers from the pruning point chain segment
-2026-06-24 10:15:29.044+00:00 [INFO ] Downloaded 49000 headers from the pruning point chain segment
-2026-06-24 10:15:30.067+00:00 [INFO ] Downloaded 50000 headers from the pruning point chain segment
-2026-06-24 10:15:31.017+00:00 [INFO ] Downloaded 51000 headers from the pruning point chain segment
-2026-06-24 10:15:31.967+00:00 [INFO ] Downloaded 52000 headers from the pruning point chain segment
-2026-06-24 10:15:32.902+00:00 [INFO ] Downloaded 53000 headers from the pruning point chain segment
-2026-06-24 10:15:33.871+00:00 [INFO ] Downloaded 54000 headers from the pruning point chain segment
-2026-06-24 10:15:34.738+00:00 [INFO ] Downloaded 55000 headers from the pruning point chain segment
-2026-06-24 10:15:35.642+00:00 [INFO ] Downloaded 56000 headers from the pruning point chain segment
-2026-06-24 10:15:36.532+00:00 [INFO ] Downloaded 57000 headers from the pruning point chain segment
-2026-06-24 10:15:37.420+00:00 [INFO ] Downloaded 58000 headers from the pruning point chain segment
-2026-06-24 10:15:38.325+00:00 [INFO ] Downloaded 59000 headers from the pruning point chain segment
-2026-06-24 10:15:39.474+00:00 [INFO ] Downloaded 60000 headers from the pruning point chain segment
-2026-06-24 10:15:40.624+00:00 [INFO ] Downloaded 61000 headers from the pruning point chain segment
-2026-06-24 10:15:41.519+00:00 [INFO ] Downloaded 62000 headers from the pruning point chain segment
-2026-06-24 10:15:42.415+00:00 [INFO ] Downloaded 63000 headers from the pruning point chain segment
-2026-06-24 10:15:43.527+00:00 [INFO ] Downloaded 64000 headers from the pruning point chain segment
-2026-06-24 10:15:44.666+00:00 [INFO ] Downloaded 65000 headers from the pruning point chain segment
-2026-06-24 10:15:45.576+00:00 [INFO ] Downloaded 66000 headers from the pruning point chain segment
-2026-06-24 10:15:46.667+00:00 [INFO ] Downloaded 67000 headers from the pruning point chain segment
-2026-06-24 10:15:46.733+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
-2026-06-24 10:15:47.788+00:00 [INFO ] Downloaded 68000 headers from the pruning point chain segment
-2026-06-24 10:15:48.897+00:00 [INFO ] Downloaded 69000 headers from the pruning point chain segment
-2026-06-24 10:15:50.223+00:00 [INFO ] Downloaded 70000 headers from the pruning point chain segment
-2026-06-24 10:15:51.771+00:00 [INFO ] Downloaded 71000 headers from the pruning point chain segment
-2026-06-24 10:15:53.834+00:00 [INFO ] Downloaded 72000 headers from the pruning point chain segment
-2026-06-24 10:15:56.241+00:00 [INFO ] Downloaded 73000 headers from the pruning point chain segment
-2026-06-24 10:15:56.721+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
-2026-06-24 10:15:56.725+00:00 [INFO ] Querying 4 DNS seeders
-2026-06-24 10:15:56.725+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
-2026-06-24 10:15:56.727+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:15:56.728+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:15:56.728+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:15:56.808+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
-2026-06-24 10:15:56.968+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
-2026-06-24 10:15:57.151+00:00 [INFO ] Downloaded 74000 headers from the pruning point chain segment
-2026-06-24 10:15:58.032+00:00 [INFO ] Downloaded 75000 headers from the pruning point chain segment
-2026-06-24 10:15:58.733+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
-2026-06-24 10:15:58.909+00:00 [INFO ] Downloaded 76000 headers from the pruning point chain segment
-2026-06-24 10:15:59.770+00:00 [INFO ] Downloaded 77000 headers from the pruning point chain segment
-2026-06-24 10:16:00.617+00:00 [INFO ] Downloaded 78000 headers from the pruning point chain segment
-2026-06-24 10:16:01.480+00:00 [INFO ] Downloaded 79000 headers from the pruning point chain segment
-2026-06-24 10:16:02.354+00:00 [INFO ] Downloaded 80000 headers from the pruning point chain segment
-2026-06-24 10:16:03.263+00:00 [INFO ] Downloaded 81000 headers from the pruning point chain segment
-2026-06-24 10:16:04.157+00:00 [INFO ] Downloaded 82000 headers from the pruning point chain segment
-2026-06-24 10:16:05.887+00:00 [INFO ] Downloaded 83000 headers from the pruning point chain segment
-2026-06-24 10:16:06.928+00:00 [INFO ] Downloaded 84000 headers from the pruning point chain segment
-2026-06-24 10:16:07.788+00:00 [INFO ] Downloaded 85000 headers from the pruning point chain segment
-2026-06-24 10:16:09.053+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
-2026-06-24 10:16:09.393+00:00 [INFO ] Downloaded 86000 headers from the pruning point chain segment
-2026-06-24 10:16:11.635+00:00 [INFO ] Downloaded 87000 headers from the pruning point chain segment
-2026-06-24 10:16:12.485+00:00 [INFO ] Downloaded 88000 headers from the pruning point chain segment
-2026-06-24 10:16:13.501+00:00 [INFO ] Downloaded 89000 headers from the pruning point chain segment
-2026-06-24 10:16:14.895+00:00 [INFO ] Downloaded 90000 headers from the pruning point chain segment
-2026-06-24 10:16:15.696+00:00 [INFO ] Downloaded 91000 headers from the pruning point chain segment
-2026-06-24 10:16:16.143+00:00 [INFO ] GRPC, new incoming connection 4a80fa5a-5bfb-4cd6-b7c1-edd6435e4829@127.0.0.1:47902 #1
-2026-06-24 10:16:16.152+00:00 [INFO ] GRPC, incoming stream ended by client 4a80fa5a-5bfb-4cd6-b7c1-edd6435e4829@127.0.0.1:47902
-2026-06-24 10:16:16.152+00:00 [INFO ] GRPC, end connection 4a80fa5a-5bfb-4cd6-b7c1-edd6435e4829@127.0.0.1:47902 #1
-2026-06-24 10:16:16.545+00:00 [INFO ] Downloaded 92000 headers from the pruning point chain segment
-2026-06-24 10:16:17.394+00:00 [INFO ] Downloaded 93000 headers from the pruning point chain segment
-2026-06-24 10:16:18.412+00:00 [INFO ] Downloaded 94000 headers from the pruning point chain segment
-2026-06-24 10:16:19.259+00:00 [INFO ] Downloaded 95000 headers from the pruning point chain segment
-2026-06-24 10:16:20.049+00:00 [INFO ] Downloaded 96000 headers from the pruning point chain segment
-^SIGTERM - shutting down...
-2026-06-24 10:16:20.783+00:00 [INFO ] P2P Server stopped: 127.0.0.1:16311
-2026-06-24 10:16:20.787+00:00 [INFO ] WRPC Server stopped on: 127.0.0.1:17210
-2026-06-24 10:16:20.787+00:00 [INFO ] GRPC Server stopped on: 127.0.0.1:16210
-2026-06-24 10:16:20.832+00:00 [WARN ] IBD with headers proof from 178.105.76.81:16311 was unsuccessful (peer connection is closed)
-2026-06-24 10:16:20.833+00:00 [INFO ] IBD with peer 178.105.76.81:16311 completed with error: peer connection is closed
-2026-06-24 10:16:21.330+00:00 [INFO ] Kaspad has stopped...
+    Finished `release` profile [optimized] target(s) in 0.46s
+     Running `/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/target/release/kaspad --testnet --netsuffix=12 --disable-upnp '--listen=127.0.0.1:16311' '--rpclisten=127.0.0.1:16210' '--rpclisten-borsh=127.0.0.1:17210'`
+2026-06-24 13:09:20.875+00:00 [INFO ] kaspad v1.1.1-toc.1-42b734f1
+2026-06-24 13:09:20.875+00:00 [INFO ] Application directory: /root/.rusty-kaspa
+2026-06-24 13:09:20.875+00:00 [INFO ] Data directory: /root/.rusty-kaspa/kaspa-testnet-12/datadir
+2026-06-24 13:09:20.875+00:00 [INFO ] Logs directory: /root/.rusty-kaspa/kaspa-testnet-12/logs
+2026-06-24 13:09:20.920+00:00 [INFO ] GRPC Server starting on: 127.0.0.1:16210
+2026-06-24 13:09:20.920+00:00 [INFO ] P2P Server starting on: 127.0.0.1:16311
+2026-06-24 13:09:20.920+00:00 [INFO ] WRPC Server starting on: 127.0.0.1:17210
+2026-06-24 13:09:20.920+00:00 [INFO ] Connection manager: has 0/8 outgoing P2P connections, trying to obtain 4 additional connection(s)...
+2026-06-24 13:09:20.998+00:00 [INFO ] Registering p2p flows for peer 178.105.76.81:16311 for protocol version 9
+2026-06-24 13:09:20.999+00:00 [INFO ] P2P Connected to outgoing peer 178.105.76.81:16311 (outbound: 1)
+2026-06-24 13:09:21.081+00:00 [INFO ] IBD started with peer 178.105.76.81:16311
+2026-06-24 13:09:21.123+00:00 [INFO ] Starting IBD with headers proof with peer 178.105.76.81:16311
+2026-06-24 13:09:21.224+00:00 [INFO ] Registering p2p flows for peer 86.48.24.208:16311 for protocol version 9
+2026-06-24 13:09:21.224+00:00 [INFO ] P2P Connected to outgoing peer 86.48.24.208:16311 (outbound: 2)
+2026-06-24 13:09:21.355+00:00 [INFO ] Registering p2p flows for peer 23.118.8.163:16311 for protocol version 9
+2026-06-24 13:09:21.355+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:09:21.355+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:09:21.356+00:00 [INFO ] P2P Connected to outgoing peer 23.118.8.163:16311 (outbound: 3)
+2026-06-24 13:09:21.358+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:09:21.361+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:09:21.362+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:09:21.405+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:09:21.492+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:09:21.995+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:09:23.930+00:00 [INFO ] Received headers proof with overall 61960 headers (18758 unique)
+2026-06-24 13:09:24.369+00:00 [INFO ] Validating level 250 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.369+00:00 [INFO ] Validating level 249 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 248 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 247 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 246 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 245 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 244 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 243 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 242 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 241 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 240 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 239 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 238 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 237 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 236 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 235 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 234 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 233 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 232 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 231 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 230 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 229 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 228 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 227 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 226 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 225 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 224 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 223 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 222 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 221 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 220 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.370+00:00 [INFO ] Validating level 219 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 218 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 217 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 216 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 215 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 214 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 213 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 212 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 211 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 210 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 209 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 208 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 207 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 206 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 205 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 204 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 203 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 202 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 201 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 200 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 199 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 198 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 197 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 196 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 195 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.371+00:00 [INFO ] Validating level 194 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 193 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 192 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 191 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 190 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 189 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 188 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 187 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 186 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 185 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 184 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 183 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 182 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 181 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 180 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 179 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 178 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 177 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 176 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 175 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 174 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 173 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 172 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 171 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 170 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 169 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.372+00:00 [INFO ] Validating level 168 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 167 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 166 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 165 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 164 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 163 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 162 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 161 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 160 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 159 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 158 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 157 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 156 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 155 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 154 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 153 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 152 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 151 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 150 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 149 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 148 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.373+00:00 [INFO ] Validating level 147 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 146 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 145 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 144 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 143 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 142 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 141 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 140 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 139 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 138 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 137 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 136 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 135 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 134 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 133 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 132 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 131 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 130 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 129 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 128 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 127 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 126 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 125 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 124 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 123 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.374+00:00 [INFO ] Validating level 122 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 121 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 120 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 119 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 118 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 117 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 116 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 115 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 114 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 113 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 112 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 111 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 110 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 109 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 108 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 107 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 106 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 105 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 104 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 103 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 102 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 101 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 100 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 99 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 98 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 97 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 96 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.375+00:00 [INFO ] Validating level 95 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 94 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 93 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 92 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 91 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 90 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 89 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 88 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 87 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 86 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 85 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 84 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 83 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 82 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 81 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 80 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 79 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 78 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 77 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 76 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 75 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 74 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 73 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 72 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 71 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 70 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 69 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 68 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 67 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 66 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 65 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 64 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 63 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.376+00:00 [INFO ] Validating level 62 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 61 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 60 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 59 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 58 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 57 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 56 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 55 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 54 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 53 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 52 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 51 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 50 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 49 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 48 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 47 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 46 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 45 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 44 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 43 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 42 from the pruning point proof (1 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 41 from the pruning point proof (2 headers)
+2026-06-24 13:09:24.377+00:00 [INFO ] Validating level 40 from the pruning point proof (3 headers)
+2026-06-24 13:09:24.378+00:00 [INFO ] Validating level 39 from the pruning point proof (4 headers)
+2026-06-24 13:09:24.378+00:00 [INFO ] Validating level 38 from the pruning point proof (4 headers)
+2026-06-24 13:09:24.378+00:00 [INFO ] Validating level 37 from the pruning point proof (5 headers)
+2026-06-24 13:09:24.379+00:00 [INFO ] Validating level 36 from the pruning point proof (10 headers)
+2026-06-24 13:09:24.379+00:00 [INFO ] Validating level 35 from the pruning point proof (16 headers)
+2026-06-24 13:09:24.381+00:00 [INFO ] Validating level 34 from the pruning point proof (40 headers)
+2026-06-24 13:09:24.385+00:00 [INFO ] Validating level 33 from the pruning point proof (76 headers)
+2026-06-24 13:09:24.397+00:00 [INFO ] Validating level 32 from the pruning point proof (148 headers)
+2026-06-24 13:09:24.428+00:00 [INFO ] Validating level 31 from the pruning point proof (295 headers)
+2026-06-24 13:09:24.510+00:00 [INFO ] Validating level 30 from the pruning point proof (558 headers)
+2026-06-24 13:09:24.680+00:00 [INFO ] Validating level 29 from the pruning point proof (1045 headers)
+2026-06-24 13:09:25.080+00:00 [INFO ] Validating level 28 from the pruning point proof (2060 headers)
+2026-06-24 13:09:25.903+00:00 [INFO ] Validating level 27 from the pruning point proof (2001 headers)
+2026-06-24 13:09:26.666+00:00 [INFO ] Validating level 26 from the pruning point proof (2001 headers)
+2026-06-24 13:09:27.371+00:00 [INFO ] Validating level 25 from the pruning point proof (2058 headers)
+2026-06-24 13:09:28.200+00:00 [INFO ] Validating level 24 from the pruning point proof (2001 headers)
+2026-06-24 13:09:29.087+00:00 [INFO ] Validating level 23 from the pruning point proof (2001 headers)
+2026-06-24 13:09:29.874+00:00 [INFO ] Validating level 22 from the pruning point proof (2022 headers)
+2026-06-24 13:09:30.636+00:00 [INFO ] Validating level 21 from the pruning point proof (2001 headers)
+2026-06-24 13:09:30.922+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:09:31.425+00:00 [INFO ] Validating level 20 from the pruning point proof (2098 headers)
+2026-06-24 13:09:32.193+00:00 [INFO ] Validating level 19 from the pruning point proof (2018 headers)
+2026-06-24 13:09:33.016+00:00 [INFO ] Validating level 18 from the pruning point proof (2024 headers)
+2026-06-24 13:09:33.828+00:00 [INFO ] Validating level 17 from the pruning point proof (2017 headers)
+2026-06-24 13:09:34.673+00:00 [INFO ] Validating level 16 from the pruning point proof (2005 headers)
+2026-06-24 13:09:35.152+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:09:35.152+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 5 additional connection(s)...
+2026-06-24 13:09:35.465+00:00 [INFO ] Validating level 15 from the pruning point proof (2001 headers)
+2026-06-24 13:09:36.154+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:09:36.154+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:09:36.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:09:36.157+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:09:36.160+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:09:36.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:09:36.223+00:00 [INFO ] Validating level 14 from the pruning point proof (2001 headers)
+2026-06-24 13:09:36.303+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:09:37.057+00:00 [INFO ] Validating level 13 from the pruning point proof (2001 headers)
+2026-06-24 13:09:37.600+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:09:37.815+00:00 [INFO ] Validating level 12 from the pruning point proof (2023 headers)
+2026-06-24 13:09:38.629+00:00 [INFO ] Validating level 11 from the pruning point proof (2101 headers)
+2026-06-24 13:09:39.447+00:00 [INFO ] Validating level 10 from the pruning point proof (2101 headers)
+2026-06-24 13:09:40.192+00:00 [INFO ] Validating level 9 from the pruning point proof (2101 headers)
+2026-06-24 13:09:40.992+00:00 [INFO ] Validating level 8 from the pruning point proof (2101 headers)
+2026-06-24 13:09:41.771+00:00 [INFO ] Validating level 7 from the pruning point proof (2101 headers)
+2026-06-24 13:09:42.585+00:00 [INFO ] Validating level 6 from the pruning point proof (2101 headers)
+2026-06-24 13:09:43.457+00:00 [INFO ] Validating level 5 from the pruning point proof (2101 headers)
+2026-06-24 13:09:44.204+00:00 [INFO ] Validating level 4 from the pruning point proof (2101 headers)
+2026-06-24 13:09:44.973+00:00 [INFO ] Validating level 3 from the pruning point proof (2101 headers)
+2026-06-24 13:09:45.695+00:00 [INFO ] Validating level 2 from the pruning point proof (2101 headers)
+2026-06-24 13:09:46.464+00:00 [INFO ] Validating level 1 from the pruning point proof (2101 headers)
+2026-06-24 13:09:47.207+00:00 [INFO ] Validating level 0 from the pruning point proof (2101 headers)
+2026-06-24 13:09:47.969+00:00 [INFO ] Built headers proof with overall 251 headers (1 unique)
+2026-06-24 13:09:49.648+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:09:49.802+00:00 [INFO ] Finished downloading 0 blocks from the pruning point anticone
+2026-06-24 13:09:49.802+00:00 [INFO ] Starting to download the pruning point chain segment
+2026-06-24 13:09:51.182+00:00 [INFO ] Downloaded 1000 headers from the pruning point chain segment
+2026-06-24 13:09:52.548+00:00 [INFO ] Downloaded 2000 headers from the pruning point chain segment
+2026-06-24 13:09:53.918+00:00 [INFO ] Downloaded 3000 headers from the pruning point chain segment
+2026-06-24 13:09:55.256+00:00 [INFO ] Downloaded 4000 headers from the pruning point chain segment
+2026-06-24 13:09:56.550+00:00 [INFO ] Downloaded 5000 headers from the pruning point chain segment
+2026-06-24 13:09:57.840+00:00 [INFO ] Downloaded 6000 headers from the pruning point chain segment
+2026-06-24 13:09:59.077+00:00 [INFO ] Downloaded 7000 headers from the pruning point chain segment
+2026-06-24 13:10:00.334+00:00 [INFO ] Downloaded 8000 headers from the pruning point chain segment
+2026-06-24 13:10:01.550+00:00 [INFO ] Downloaded 9000 headers from the pruning point chain segment
+2026-06-24 13:10:02.800+00:00 [INFO ] Downloaded 10000 headers from the pruning point chain segment
+2026-06-24 13:10:03.972+00:00 [INFO ] Downloaded 11000 headers from the pruning point chain segment
+2026-06-24 13:10:05.121+00:00 [INFO ] Downloaded 12000 headers from the pruning point chain segment
+2026-06-24 13:10:05.152+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 5 additional connection(s)...
+2026-06-24 13:10:06.154+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:10:06.154+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:10:06.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:10:06.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:10:06.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:10:06.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:10:06.256+00:00 [INFO ] Downloaded 13000 headers from the pruning point chain segment
+2026-06-24 13:10:06.313+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:10:06.411+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:10:07.396+00:00 [INFO ] Downloaded 14000 headers from the pruning point chain segment
+2026-06-24 13:10:08.556+00:00 [INFO ] Downloaded 15000 headers from the pruning point chain segment
+2026-06-24 13:10:09.700+00:00 [INFO ] Downloaded 16000 headers from the pruning point chain segment
+2026-06-24 13:10:10.792+00:00 [INFO ] Downloaded 17000 headers from the pruning point chain segment
+2026-06-24 13:10:11.921+00:00 [INFO ] Downloaded 18000 headers from the pruning point chain segment
+2026-06-24 13:10:13.079+00:00 [INFO ] Downloaded 19000 headers from the pruning point chain segment
+2026-06-24 13:10:14.228+00:00 [INFO ] Downloaded 20000 headers from the pruning point chain segment
+2026-06-24 13:10:15.341+00:00 [INFO ] Downloaded 21000 headers from the pruning point chain segment
+2026-06-24 13:10:16.446+00:00 [INFO ] Downloaded 22000 headers from the pruning point chain segment
+2026-06-24 13:10:17.508+00:00 [INFO ] Downloaded 23000 headers from the pruning point chain segment
+2026-06-24 13:10:18.570+00:00 [INFO ] Downloaded 24000 headers from the pruning point chain segment
+2026-06-24 13:10:19.639+00:00 [INFO ] Downloaded 25000 headers from the pruning point chain segment
+2026-06-24 13:10:20.693+00:00 [INFO ] Downloaded 26000 headers from the pruning point chain segment
+2026-06-24 13:10:21.726+00:00 [INFO ] Downloaded 27000 headers from the pruning point chain segment
+2026-06-24 13:10:22.786+00:00 [INFO ] Downloaded 28000 headers from the pruning point chain segment
+2026-06-24 13:10:23.829+00:00 [INFO ] Downloaded 29000 headers from the pruning point chain segment
+2026-06-24 13:10:24.532+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:10:24.895+00:00 [INFO ] Downloaded 30000 headers from the pruning point chain segment
+2026-06-24 13:10:25.922+00:00 [INFO ] Downloaded 31000 headers from the pruning point chain segment
+2026-06-24 13:10:26.974+00:00 [INFO ] Downloaded 32000 headers from the pruning point chain segment
+2026-06-24 13:10:28.030+00:00 [INFO ] Downloaded 33000 headers from the pruning point chain segment
+2026-06-24 13:10:29.053+00:00 [INFO ] Downloaded 34000 headers from the pruning point chain segment
+2026-06-24 13:10:30.082+00:00 [INFO ] Downloaded 35000 headers from the pruning point chain segment
+2026-06-24 13:10:31.129+00:00 [INFO ] Downloaded 36000 headers from the pruning point chain segment
+2026-06-24 13:10:32.134+00:00 [INFO ] Downloaded 37000 headers from the pruning point chain segment
+2026-06-24 13:10:33.175+00:00 [INFO ] Downloaded 38000 headers from the pruning point chain segment
+2026-06-24 13:10:34.227+00:00 [INFO ] Downloaded 39000 headers from the pruning point chain segment
+2026-06-24 13:10:35.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 5 additional connection(s)...
+2026-06-24 13:10:35.271+00:00 [INFO ] Downloaded 40000 headers from the pruning point chain segment
+2026-06-24 13:10:36.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:10:36.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:10:36.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:10:36.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:10:36.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:10:36.190+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:10:36.197+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:10:36.270+00:00 [INFO ] Downloaded 41000 headers from the pruning point chain segment
+2026-06-24 13:10:36.454+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:10:37.257+00:00 [INFO ] Downloaded 42000 headers from the pruning point chain segment
+2026-06-24 13:10:38.270+00:00 [INFO ] Downloaded 43000 headers from the pruning point chain segment
+2026-06-24 13:10:39.305+00:00 [INFO ] Downloaded 44000 headers from the pruning point chain segment
+2026-06-24 13:10:40.306+00:00 [INFO ] Downloaded 45000 headers from the pruning point chain segment
+2026-06-24 13:10:41.311+00:00 [INFO ] Downloaded 46000 headers from the pruning point chain segment
+2026-06-24 13:10:42.325+00:00 [INFO ] Downloaded 47000 headers from the pruning point chain segment
+2026-06-24 13:10:43.307+00:00 [INFO ] Downloaded 48000 headers from the pruning point chain segment
+2026-06-24 13:10:44.356+00:00 [INFO ] Downloaded 49000 headers from the pruning point chain segment
+2026-06-24 13:10:45.436+00:00 [INFO ] Downloaded 50000 headers from the pruning point chain segment
+2026-06-24 13:10:46.449+00:00 [INFO ] Downloaded 51000 headers from the pruning point chain segment
+2026-06-24 13:10:47.406+00:00 [INFO ] Downloaded 52000 headers from the pruning point chain segment
+2026-06-24 13:10:48.407+00:00 [INFO ] Downloaded 53000 headers from the pruning point chain segment
+2026-06-24 13:10:49.459+00:00 [INFO ] Downloaded 54000 headers from the pruning point chain segment
+2026-06-24 13:10:49.781+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:10:50.450+00:00 [INFO ] Downloaded 55000 headers from the pruning point chain segment
+2026-06-24 13:10:51.422+00:00 [INFO ] Downloaded 56000 headers from the pruning point chain segment
+2026-06-24 13:10:52.402+00:00 [INFO ] Downloaded 57000 headers from the pruning point chain segment
+2026-06-24 13:10:53.378+00:00 [INFO ] Downloaded 58000 headers from the pruning point chain segment
+2026-06-24 13:10:54.332+00:00 [INFO ] Downloaded 59000 headers from the pruning point chain segment
+2026-06-24 13:10:55.288+00:00 [INFO ] Downloaded 60000 headers from the pruning point chain segment
+2026-06-24 13:10:56.288+00:00 [INFO ] Downloaded 61000 headers from the pruning point chain segment
+2026-06-24 13:10:57.313+00:00 [INFO ] Downloaded 62000 headers from the pruning point chain segment
+2026-06-24 13:10:58.295+00:00 [INFO ] Downloaded 63000 headers from the pruning point chain segment
+2026-06-24 13:10:59.282+00:00 [INFO ] Downloaded 64000 headers from the pruning point chain segment
+2026-06-24 13:11:00.269+00:00 [INFO ] Downloaded 65000 headers from the pruning point chain segment
+2026-06-24 13:11:01.234+00:00 [INFO ] Downloaded 66000 headers from the pruning point chain segment
+2026-06-24 13:11:02.174+00:00 [INFO ] Downloaded 67000 headers from the pruning point chain segment
+2026-06-24 13:11:03.119+00:00 [INFO ] Downloaded 68000 headers from the pruning point chain segment
+2026-06-24 13:11:04.111+00:00 [INFO ] Downloaded 69000 headers from the pruning point chain segment
+2026-06-24 13:11:05.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:11:05.156+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:11:05.156+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:11:05.156+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:11:05.156+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:11:05.156+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:11:05.188+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:11:05.289+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:11:05.547+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:11:05.593+00:00 [INFO ] Downloaded 70000 headers from the pruning point chain segment
+2026-06-24 13:11:06.517+00:00 [INFO ] Downloaded 71000 headers from the pruning point chain segment
+2026-06-24 13:11:07.441+00:00 [INFO ] Downloaded 72000 headers from the pruning point chain segment
+2026-06-24 13:11:08.368+00:00 [INFO ] Downloaded 73000 headers from the pruning point chain segment
+2026-06-24 13:11:09.336+00:00 [INFO ] Downloaded 74000 headers from the pruning point chain segment
+2026-06-24 13:11:11.199+00:00 [INFO ] Downloaded 75000 headers from the pruning point chain segment
+2026-06-24 13:11:12.137+00:00 [INFO ] Downloaded 76000 headers from the pruning point chain segment
+2026-06-24 13:11:14.073+00:00 [INFO ] Downloaded 77000 headers from the pruning point chain segment
+2026-06-24 13:11:14.969+00:00 [INFO ] Downloaded 78000 headers from the pruning point chain segment
+2026-06-24 13:11:15.904+00:00 [INFO ] Downloaded 79000 headers from the pruning point chain segment
+2026-06-24 13:11:16.878+00:00 [INFO ] Downloaded 80000 headers from the pruning point chain segment
+2026-06-24 13:11:17.811+00:00 [INFO ] Downloaded 81000 headers from the pruning point chain segment
+2026-06-24 13:11:18.616+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:11:18.759+00:00 [INFO ] Downloaded 82000 headers from the pruning point chain segment
+2026-06-24 13:11:19.649+00:00 [INFO ] Downloaded 83000 headers from the pruning point chain segment
+2026-06-24 13:11:21.357+00:00 [INFO ] Downloaded 84000 headers from the pruning point chain segment
+2026-06-24 13:11:22.243+00:00 [INFO ] Downloaded 85000 headers from the pruning point chain segment
+2026-06-24 13:11:23.122+00:00 [INFO ] Downloaded 86000 headers from the pruning point chain segment
+2026-06-24 13:11:24.048+00:00 [INFO ] Downloaded 87000 headers from the pruning point chain segment
+2026-06-24 13:11:24.992+00:00 [INFO ] Downloaded 88000 headers from the pruning point chain segment
+2026-06-24 13:11:25.981+00:00 [INFO ] Downloaded 89000 headers from the pruning point chain segment
+2026-06-24 13:11:26.941+00:00 [INFO ] Downloaded 90000 headers from the pruning point chain segment
+2026-06-24 13:11:27.878+00:00 [INFO ] Downloaded 91000 headers from the pruning point chain segment
+2026-06-24 13:11:29.944+00:00 [INFO ] Downloaded 92000 headers from the pruning point chain segment
+2026-06-24 13:11:30.823+00:00 [INFO ] Downloaded 93000 headers from the pruning point chain segment
+2026-06-24 13:11:31.739+00:00 [INFO ] Downloaded 94000 headers from the pruning point chain segment
+2026-06-24 13:11:32.608+00:00 [INFO ] Downloaded 95000 headers from the pruning point chain segment
+2026-06-24 13:11:33.477+00:00 [INFO ] Downloaded 96000 headers from the pruning point chain segment
+2026-06-24 13:11:34.589+00:00 [INFO ] Downloaded 97000 headers from the pruning point chain segment
+2026-06-24 13:11:35.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:11:35.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:11:35.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:11:35.156+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:11:35.156+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:11:35.156+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:11:35.188+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:11:35.296+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:11:35.373+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:11:35.456+00:00 [INFO ] Downloaded 98000 headers from the pruning point chain segment
+2026-06-24 13:11:36.346+00:00 [INFO ] Downloaded 99000 headers from the pruning point chain segment
+2026-06-24 13:11:37.270+00:00 [INFO ] Downloaded 100000 headers from the pruning point chain segment
+2026-06-24 13:11:38.156+00:00 [INFO ] Downloaded 101000 headers from the pruning point chain segment
+2026-06-24 13:11:39.061+00:00 [INFO ] Downloaded 102000 headers from the pruning point chain segment
+2026-06-24 13:11:39.901+00:00 [INFO ] Downloaded 103000 headers from the pruning point chain segment
+2026-06-24 13:11:40.751+00:00 [INFO ] Downloaded 104000 headers from the pruning point chain segment
+2026-06-24 13:11:41.633+00:00 [INFO ] Downloaded 105000 headers from the pruning point chain segment
+2026-06-24 13:11:42.520+00:00 [INFO ] Downloaded 106000 headers from the pruning point chain segment
+2026-06-24 13:11:43.398+00:00 [INFO ] Downloaded 107000 headers from the pruning point chain segment
+2026-06-24 13:11:44.277+00:00 [INFO ] Downloaded 108000 headers from the pruning point chain segment
+2026-06-24 13:11:45.207+00:00 [INFO ] Downloaded 109000 headers from the pruning point chain segment
+2026-06-24 13:11:46.142+00:00 [INFO ] Downloaded 110000 headers from the pruning point chain segment
+2026-06-24 13:11:47.039+00:00 [INFO ] Downloaded 111000 headers from the pruning point chain segment
+2026-06-24 13:11:47.946+00:00 [INFO ] Downloaded 112000 headers from the pruning point chain segment
+2026-06-24 13:11:48.888+00:00 [INFO ] Downloaded 113000 headers from the pruning point chain segment
+2026-06-24 13:11:50.009+00:00 [INFO ] Downloaded 114000 headers from the pruning point chain segment
+2026-06-24 13:11:50.905+00:00 [INFO ] Downloaded 115000 headers from the pruning point chain segment
+2026-06-24 13:11:51.779+00:00 [INFO ] Downloaded 116000 headers from the pruning point chain segment
+2026-06-24 13:11:52.680+00:00 [INFO ] Downloaded 117000 headers from the pruning point chain segment
+2026-06-24 13:11:53.598+00:00 [INFO ] Downloaded 118000 headers from the pruning point chain segment
+2026-06-24 13:11:54.535+00:00 [INFO ] Downloaded 119000 headers from the pruning point chain segment
+2026-06-24 13:11:55.160+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:11:55.436+00:00 [INFO ] Downloaded 120000 headers from the pruning point chain segment
+2026-06-24 13:11:56.333+00:00 [INFO ] Downloaded 121000 headers from the pruning point chain segment
+2026-06-24 13:11:57.237+00:00 [INFO ] Downloaded 122000 headers from the pruning point chain segment
+2026-06-24 13:11:58.127+00:00 [INFO ] Downloaded 123000 headers from the pruning point chain segment
+2026-06-24 13:11:59.003+00:00 [INFO ] Downloaded 124000 headers from the pruning point chain segment
+2026-06-24 13:11:59.880+00:00 [INFO ] Downloaded 125000 headers from the pruning point chain segment
+2026-06-24 13:12:00.763+00:00 [INFO ] Downloaded 126000 headers from the pruning point chain segment
+2026-06-24 13:12:01.623+00:00 [INFO ] Downloaded 127000 headers from the pruning point chain segment
+2026-06-24 13:12:02.482+00:00 [INFO ] Downloaded 128000 headers from the pruning point chain segment
+2026-06-24 13:12:03.379+00:00 [INFO ] Downloaded 129000 headers from the pruning point chain segment
+2026-06-24 13:12:04.217+00:00 [INFO ] Downloaded 130000 headers from the pruning point chain segment
+2026-06-24 13:12:05.081+00:00 [INFO ] Downloaded 131000 headers from the pruning point chain segment
+2026-06-24 13:12:05.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:12:05.156+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:12:05.156+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:12:05.157+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:12:05.157+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:12:05.158+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:12:05.342+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:12:05.416+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:12:05.583+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:12:05.923+00:00 [INFO ] Downloaded 132000 headers from the pruning point chain segment
+2026-06-24 13:12:06.750+00:00 [INFO ] Downloaded 133000 headers from the pruning point chain segment
+2026-06-24 13:12:07.586+00:00 [INFO ] Downloaded 134000 headers from the pruning point chain segment
+2026-06-24 13:12:08.411+00:00 [INFO ] Downloaded 135000 headers from the pruning point chain segment
+2026-06-24 13:12:09.209+00:00 [INFO ] Downloaded 136000 headers from the pruning point chain segment
+2026-06-24 13:12:10.046+00:00 [INFO ] Downloaded 137000 headers from the pruning point chain segment
+2026-06-24 13:12:10.903+00:00 [INFO ] Downloaded 138000 headers from the pruning point chain segment
+2026-06-24 13:12:11.786+00:00 [INFO ] Downloaded 139000 headers from the pruning point chain segment
+2026-06-24 13:12:12.653+00:00 [INFO ] Downloaded 140000 headers from the pruning point chain segment
+2026-06-24 13:12:13.456+00:00 [INFO ] Downloaded 141000 headers from the pruning point chain segment
+2026-06-24 13:12:14.297+00:00 [INFO ] Downloaded 142000 headers from the pruning point chain segment
+2026-06-24 13:12:15.338+00:00 [INFO ] Downloaded 143000 headers from the pruning point chain segment
+2026-06-24 13:12:16.186+00:00 [INFO ] Downloaded 144000 headers from the pruning point chain segment
+2026-06-24 13:12:16.995+00:00 [INFO ] Downloaded 145000 headers from the pruning point chain segment
+2026-06-24 13:12:17.656+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:12:17.807+00:00 [INFO ] Downloaded 146000 headers from the pruning point chain segment
+2026-06-24 13:12:18.608+00:00 [INFO ] Downloaded 147000 headers from the pruning point chain segment
+2026-06-24 13:12:19.425+00:00 [INFO ] Downloaded 148000 headers from the pruning point chain segment
+2026-06-24 13:12:20.267+00:00 [INFO ] Downloaded 149000 headers from the pruning point chain segment
+2026-06-24 13:12:21.068+00:00 [INFO ] Downloaded 150000 headers from the pruning point chain segment
+2026-06-24 13:12:21.871+00:00 [INFO ] Downloaded 151000 headers from the pruning point chain segment
+2026-06-24 13:12:22.948+00:00 [INFO ] Downloaded 152000 headers from the pruning point chain segment
+2026-06-24 13:12:23.795+00:00 [INFO ] Downloaded 153000 headers from the pruning point chain segment
+2026-06-24 13:12:24.622+00:00 [INFO ] Downloaded 154000 headers from the pruning point chain segment
+2026-06-24 13:12:25.454+00:00 [INFO ] Downloaded 155000 headers from the pruning point chain segment
+2026-06-24 13:12:26.309+00:00 [INFO ] Downloaded 156000 headers from the pruning point chain segment
+2026-06-24 13:12:27.163+00:00 [INFO ] Downloaded 157000 headers from the pruning point chain segment
+2026-06-24 13:12:27.982+00:00 [INFO ] Downloaded 158000 headers from the pruning point chain segment
+2026-06-24 13:12:28.841+00:00 [INFO ] Downloaded 159000 headers from the pruning point chain segment
+2026-06-24 13:12:29.678+00:00 [INFO ] Downloaded 160000 headers from the pruning point chain segment
+2026-06-24 13:12:30.501+00:00 [INFO ] Downloaded 161000 headers from the pruning point chain segment
+2026-06-24 13:12:31.310+00:00 [INFO ] Downloaded 162000 headers from the pruning point chain segment
+2026-06-24 13:12:32.130+00:00 [INFO ] Downloaded 163000 headers from the pruning point chain segment
+2026-06-24 13:12:32.948+00:00 [INFO ] Downloaded 164000 headers from the pruning point chain segment
+2026-06-24 13:12:33.769+00:00 [INFO ] Downloaded 165000 headers from the pruning point chain segment
+2026-06-24 13:12:34.549+00:00 [INFO ] Downloaded 166000 headers from the pruning point chain segment
+2026-06-24 13:12:35.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:12:35.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:12:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:12:35.156+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:12:35.156+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:12:35.156+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:12:35.190+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:12:35.299+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:12:35.335+00:00 [INFO ] Downloaded 167000 headers from the pruning point chain segment
+2026-06-24 13:12:35.459+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:12:36.118+00:00 [INFO ] Downloaded 168000 headers from the pruning point chain segment
+2026-06-24 13:12:36.975+00:00 [INFO ] Downloaded 169000 headers from the pruning point chain segment
+2026-06-24 13:12:37.834+00:00 [INFO ] Downloaded 170000 headers from the pruning point chain segment
+2026-06-24 13:12:38.684+00:00 [INFO ] Downloaded 171000 headers from the pruning point chain segment
+2026-06-24 13:12:39.518+00:00 [INFO ] Downloaded 172000 headers from the pruning point chain segment
+2026-06-24 13:12:40.360+00:00 [INFO ] Downloaded 173000 headers from the pruning point chain segment
+2026-06-24 13:12:41.167+00:00 [INFO ] Downloaded 174000 headers from the pruning point chain segment
+2026-06-24 13:12:41.975+00:00 [INFO ] Downloaded 175000 headers from the pruning point chain segment
+2026-06-24 13:12:42.803+00:00 [INFO ] Downloaded 176000 headers from the pruning point chain segment
+2026-06-24 13:12:43.597+00:00 [INFO ] Downloaded 177000 headers from the pruning point chain segment
+2026-06-24 13:12:44.384+00:00 [INFO ] Downloaded 178000 headers from the pruning point chain segment
+2026-06-24 13:12:45.204+00:00 [INFO ] Downloaded 179000 headers from the pruning point chain segment
+2026-06-24 13:12:45.979+00:00 [INFO ] Downloaded 180000 headers from the pruning point chain segment
+2026-06-24 13:12:46.766+00:00 [INFO ] Downloaded 181000 headers from the pruning point chain segment
+2026-06-24 13:12:47.530+00:00 [INFO ] Downloaded 182000 headers from the pruning point chain segment
+2026-06-24 13:12:48.304+00:00 [INFO ] Downloaded 183000 headers from the pruning point chain segment
+2026-06-24 13:12:49.120+00:00 [INFO ] Downloaded 184000 headers from the pruning point chain segment
+2026-06-24 13:12:49.482+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:12:49.943+00:00 [INFO ] Downloaded 185000 headers from the pruning point chain segment
+2026-06-24 13:12:50.719+00:00 [INFO ] Downloaded 186000 headers from the pruning point chain segment
+2026-06-24 13:12:51.534+00:00 [INFO ] Downloaded 187000 headers from the pruning point chain segment
+2026-06-24 13:12:52.347+00:00 [INFO ] Downloaded 188000 headers from the pruning point chain segment
+2026-06-24 13:12:53.213+00:00 [INFO ] Downloaded 189000 headers from the pruning point chain segment
+2026-06-24 13:12:53.991+00:00 [INFO ] Downloaded 190000 headers from the pruning point chain segment
+2026-06-24 13:12:54.743+00:00 [INFO ] Downloaded 191000 headers from the pruning point chain segment
+2026-06-24 13:12:55.539+00:00 [INFO ] Downloaded 192000 headers from the pruning point chain segment
+2026-06-24 13:12:56.401+00:00 [INFO ] Downloaded 193000 headers from the pruning point chain segment
+2026-06-24 13:12:57.211+00:00 [INFO ] Downloaded 194000 headers from the pruning point chain segment
+2026-06-24 13:12:58.079+00:00 [INFO ] Downloaded 195000 headers from the pruning point chain segment
+2026-06-24 13:12:58.921+00:00 [INFO ] Downloaded 196000 headers from the pruning point chain segment
+2026-06-24 13:12:59.756+00:00 [INFO ] Downloaded 197000 headers from the pruning point chain segment
+2026-06-24 13:13:00.596+00:00 [INFO ] Downloaded 198000 headers from the pruning point chain segment
+2026-06-24 13:13:01.385+00:00 [INFO ] Downloaded 199000 headers from the pruning point chain segment
+2026-06-24 13:13:02.182+00:00 [INFO ] Downloaded 200000 headers from the pruning point chain segment
+2026-06-24 13:13:02.951+00:00 [INFO ] Downloaded 201000 headers from the pruning point chain segment
+2026-06-24 13:13:03.701+00:00 [INFO ] Downloaded 202000 headers from the pruning point chain segment
+2026-06-24 13:13:04.487+00:00 [INFO ] Downloaded 203000 headers from the pruning point chain segment
+2026-06-24 13:13:05.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:13:05.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:13:05.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:13:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:13:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:13:05.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:13:05.214+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:13:05.281+00:00 [INFO ] Downloaded 204000 headers from the pruning point chain segment
+2026-06-24 13:13:05.413+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:13:05.429+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:13:06.105+00:00 [INFO ] Downloaded 205000 headers from the pruning point chain segment
+2026-06-24 13:13:06.892+00:00 [INFO ] Downloaded 206000 headers from the pruning point chain segment
+2026-06-24 13:13:07.708+00:00 [INFO ] Downloaded 207000 headers from the pruning point chain segment
+2026-06-24 13:13:08.512+00:00 [INFO ] Downloaded 208000 headers from the pruning point chain segment
+2026-06-24 13:13:09.265+00:00 [INFO ] Downloaded 209000 headers from the pruning point chain segment
+2026-06-24 13:13:10.055+00:00 [INFO ] Downloaded 210000 headers from the pruning point chain segment
+2026-06-24 13:13:10.847+00:00 [INFO ] Downloaded 211000 headers from the pruning point chain segment
+2026-06-24 13:13:11.744+00:00 [INFO ] Downloaded 212000 headers from the pruning point chain segment
+2026-06-24 13:13:12.512+00:00 [INFO ] Downloaded 213000 headers from the pruning point chain segment
+2026-06-24 13:13:13.276+00:00 [INFO ] Downloaded 214000 headers from the pruning point chain segment
+2026-06-24 13:13:14.026+00:00 [INFO ] Downloaded 215000 headers from the pruning point chain segment
+2026-06-24 13:13:14.812+00:00 [INFO ] Downloaded 216000 headers from the pruning point chain segment
+2026-06-24 13:13:15.585+00:00 [INFO ] Downloaded 217000 headers from the pruning point chain segment
+2026-06-24 13:13:16.386+00:00 [INFO ] Downloaded 218000 headers from the pruning point chain segment
+2026-06-24 13:13:17.189+00:00 [INFO ] Downloaded 219000 headers from the pruning point chain segment
+2026-06-24 13:13:17.260+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:13:17.968+00:00 [INFO ] Downloaded 220000 headers from the pruning point chain segment
+2026-06-24 13:13:18.766+00:00 [INFO ] Downloaded 221000 headers from the pruning point chain segment
+2026-06-24 13:13:19.542+00:00 [INFO ] Downloaded 222000 headers from the pruning point chain segment
+2026-06-24 13:13:20.333+00:00 [INFO ] Downloaded 223000 headers from the pruning point chain segment
+2026-06-24 13:13:21.118+00:00 [INFO ] Downloaded 224000 headers from the pruning point chain segment
+2026-06-24 13:13:21.908+00:00 [INFO ] Downloaded 225000 headers from the pruning point chain segment
+2026-06-24 13:13:22.671+00:00 [INFO ] Downloaded 226000 headers from the pruning point chain segment
+2026-06-24 13:13:23.468+00:00 [INFO ] Downloaded 227000 headers from the pruning point chain segment
+2026-06-24 13:13:24.214+00:00 [INFO ] Downloaded 228000 headers from the pruning point chain segment
+2026-06-24 13:13:24.950+00:00 [INFO ] Downloaded 229000 headers from the pruning point chain segment
+2026-06-24 13:13:25.738+00:00 [INFO ] Downloaded 230000 headers from the pruning point chain segment
+2026-06-24 13:13:26.521+00:00 [INFO ] Downloaded 231000 headers from the pruning point chain segment
+2026-06-24 13:13:27.263+00:00 [INFO ] Downloaded 232000 headers from the pruning point chain segment
+2026-06-24 13:13:28.003+00:00 [INFO ] Downloaded 233000 headers from the pruning point chain segment
+2026-06-24 13:13:28.730+00:00 [INFO ] Downloaded 234000 headers from the pruning point chain segment
+2026-06-24 13:13:29.492+00:00 [INFO ] Downloaded 235000 headers from the pruning point chain segment
+2026-06-24 13:13:31.189+00:00 [INFO ] Downloaded 236000 headers from the pruning point chain segment
+2026-06-24 13:13:31.926+00:00 [INFO ] Downloaded 237000 headers from the pruning point chain segment
+2026-06-24 13:13:33.850+00:00 [INFO ] Downloaded 238000 headers from the pruning point chain segment
+2026-06-24 13:13:34.581+00:00 [INFO ] Downloaded 239000 headers from the pruning point chain segment
+2026-06-24 13:13:35.152+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:13:35.154+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:13:35.154+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:13:35.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:13:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:13:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:13:35.191+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:13:35.195+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:13:35.295+00:00 [INFO ] Downloaded 240000 headers from the pruning point chain segment
+2026-06-24 13:13:35.462+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:13:36.028+00:00 [INFO ] Downloaded 241000 headers from the pruning point chain segment
+2026-06-24 13:13:36.798+00:00 [INFO ] Downloaded 242000 headers from the pruning point chain segment
+2026-06-24 13:13:37.646+00:00 [INFO ] Downloaded 243000 headers from the pruning point chain segment
+2026-06-24 13:13:38.463+00:00 [INFO ] Downloaded 244000 headers from the pruning point chain segment
+2026-06-24 13:13:39.271+00:00 [INFO ] Downloaded 245000 headers from the pruning point chain segment
+2026-06-24 13:13:40.070+00:00 [INFO ] Downloaded 246000 headers from the pruning point chain segment
+2026-06-24 13:13:40.856+00:00 [INFO ] Downloaded 247000 headers from the pruning point chain segment
+2026-06-24 13:13:41.652+00:00 [INFO ] Downloaded 248000 headers from the pruning point chain segment
+2026-06-24 13:13:43.386+00:00 [INFO ] Downloaded 249000 headers from the pruning point chain segment
+2026-06-24 13:13:44.149+00:00 [INFO ] Downloaded 250000 headers from the pruning point chain segment
+2026-06-24 13:13:44.946+00:00 [INFO ] Downloaded 251000 headers from the pruning point chain segment
+2026-06-24 13:13:45.672+00:00 [INFO ] Downloaded 252000 headers from the pruning point chain segment
+2026-06-24 13:13:46.383+00:00 [INFO ] Downloaded 253000 headers from the pruning point chain segment
+2026-06-24 13:13:47.067+00:00 [INFO ] Downloaded 254000 headers from the pruning point chain segment
+2026-06-24 13:13:47.822+00:00 [INFO ] Downloaded 255000 headers from the pruning point chain segment
+2026-06-24 13:13:48.543+00:00 [INFO ] Downloaded 256000 headers from the pruning point chain segment
+2026-06-24 13:13:49.258+00:00 [INFO ] Downloaded 257000 headers from the pruning point chain segment
+2026-06-24 13:13:51.303+00:00 [INFO ] Downloaded 258000 headers from the pruning point chain segment
+2026-06-24 13:13:52.014+00:00 [INFO ] Downloaded 259000 headers from the pruning point chain segment
+2026-06-24 13:13:52.748+00:00 [INFO ] Downloaded 260000 headers from the pruning point chain segment
+2026-06-24 13:13:53.478+00:00 [INFO ] Downloaded 261000 headers from the pruning point chain segment
+2026-06-24 13:13:55.164+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:13:56.749+00:00 [INFO ] Downloaded 262000 headers from the pruning point chain segment
+2026-06-24 13:13:57.494+00:00 [INFO ] Downloaded 263000 headers from the pruning point chain segment
+2026-06-24 13:13:58.212+00:00 [INFO ] Downloaded 264000 headers from the pruning point chain segment
+2026-06-24 13:13:58.941+00:00 [INFO ] Downloaded 265000 headers from the pruning point chain segment
+2026-06-24 13:13:59.687+00:00 [INFO ] Downloaded 266000 headers from the pruning point chain segment
+2026-06-24 13:14:00.400+00:00 [INFO ] Downloaded 267000 headers from the pruning point chain segment
+2026-06-24 13:14:01.171+00:00 [INFO ] Downloaded 268000 headers from the pruning point chain segment
+2026-06-24 13:14:01.851+00:00 [INFO ] Downloaded 269000 headers from the pruning point chain segment
+2026-06-24 13:14:02.572+00:00 [INFO ] Downloaded 270000 headers from the pruning point chain segment
+2026-06-24 13:14:03.286+00:00 [INFO ] Downloaded 271000 headers from the pruning point chain segment
+2026-06-24 13:14:04.005+00:00 [INFO ] Downloaded 272000 headers from the pruning point chain segment
+2026-06-24 13:14:04.741+00:00 [INFO ] Downloaded 273000 headers from the pruning point chain segment
+2026-06-24 13:14:05.152+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:14:05.154+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:14:05.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:14:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:14:05.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:14:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:14:05.208+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:14:05.402+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:14:05.417+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:14:05.494+00:00 [INFO ] Downloaded 274000 headers from the pruning point chain segment
+2026-06-24 13:14:06.262+00:00 [INFO ] Downloaded 275000 headers from the pruning point chain segment
+2026-06-24 13:14:07.018+00:00 [INFO ] Downloaded 276000 headers from the pruning point chain segment
+2026-06-24 13:14:07.762+00:00 [INFO ] Downloaded 277000 headers from the pruning point chain segment
+2026-06-24 13:14:08.479+00:00 [INFO ] Downloaded 278000 headers from the pruning point chain segment
+2026-06-24 13:14:09.143+00:00 [INFO ] Downloaded 279000 headers from the pruning point chain segment
+2026-06-24 13:14:09.885+00:00 [INFO ] Downloaded 280000 headers from the pruning point chain segment
+2026-06-24 13:14:10.619+00:00 [INFO ] Downloaded 281000 headers from the pruning point chain segment
+2026-06-24 13:14:11.394+00:00 [INFO ] Downloaded 282000 headers from the pruning point chain segment
+2026-06-24 13:14:12.110+00:00 [INFO ] Downloaded 283000 headers from the pruning point chain segment
+2026-06-24 13:14:12.817+00:00 [INFO ] Downloaded 284000 headers from the pruning point chain segment
+2026-06-24 13:14:13.529+00:00 [INFO ] Downloaded 285000 headers from the pruning point chain segment
+2026-06-24 13:14:14.248+00:00 [INFO ] Downloaded 286000 headers from the pruning point chain segment
+2026-06-24 13:14:14.970+00:00 [INFO ] Downloaded 287000 headers from the pruning point chain segment
+2026-06-24 13:14:15.684+00:00 [INFO ] Downloaded 288000 headers from the pruning point chain segment
+2026-06-24 13:14:16.379+00:00 [INFO ] Downloaded 289000 headers from the pruning point chain segment
+2026-06-24 13:14:17.071+00:00 [INFO ] Downloaded 290000 headers from the pruning point chain segment
+2026-06-24 13:14:17.683+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:14:17.783+00:00 [INFO ] Downloaded 291000 headers from the pruning point chain segment
+2026-06-24 13:14:18.511+00:00 [INFO ] Downloaded 292000 headers from the pruning point chain segment
+2026-06-24 13:14:19.249+00:00 [INFO ] Downloaded 293000 headers from the pruning point chain segment
+2026-06-24 13:14:19.948+00:00 [INFO ] Downloaded 294000 headers from the pruning point chain segment
+2026-06-24 13:14:20.683+00:00 [INFO ] Downloaded 295000 headers from the pruning point chain segment
+2026-06-24 13:14:21.393+00:00 [INFO ] Downloaded 296000 headers from the pruning point chain segment
+2026-06-24 13:14:22.131+00:00 [INFO ] Downloaded 297000 headers from the pruning point chain segment
+2026-06-24 13:14:22.847+00:00 [INFO ] Downloaded 298000 headers from the pruning point chain segment
+2026-06-24 13:14:23.574+00:00 [INFO ] Downloaded 299000 headers from the pruning point chain segment
+2026-06-24 13:14:24.263+00:00 [INFO ] Downloaded 300000 headers from the pruning point chain segment
+2026-06-24 13:14:24.987+00:00 [INFO ] Downloaded 301000 headers from the pruning point chain segment
+2026-06-24 13:14:25.745+00:00 [INFO ] Downloaded 302000 headers from the pruning point chain segment
+2026-06-24 13:14:26.481+00:00 [INFO ] Downloaded 303000 headers from the pruning point chain segment
+2026-06-24 13:14:27.215+00:00 [INFO ] Downloaded 304000 headers from the pruning point chain segment
+2026-06-24 13:14:27.941+00:00 [INFO ] Downloaded 305000 headers from the pruning point chain segment
+2026-06-24 13:14:28.658+00:00 [INFO ] Downloaded 306000 headers from the pruning point chain segment
+2026-06-24 13:14:29.404+00:00 [INFO ] Downloaded 307000 headers from the pruning point chain segment
+2026-06-24 13:14:30.142+00:00 [INFO ] Downloaded 308000 headers from the pruning point chain segment
+2026-06-24 13:14:30.870+00:00 [INFO ] Downloaded 309000 headers from the pruning point chain segment
+2026-06-24 13:14:31.589+00:00 [INFO ] Downloaded 310000 headers from the pruning point chain segment
+2026-06-24 13:14:32.342+00:00 [INFO ] Downloaded 311000 headers from the pruning point chain segment
+2026-06-24 13:14:33.082+00:00 [INFO ] Downloaded 312000 headers from the pruning point chain segment
+2026-06-24 13:14:33.788+00:00 [INFO ] Downloaded 313000 headers from the pruning point chain segment
+2026-06-24 13:14:34.530+00:00 [INFO ] Downloaded 314000 headers from the pruning point chain segment
+2026-06-24 13:14:35.152+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:14:35.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:14:35.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:14:35.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:14:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:14:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:14:35.190+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:14:35.197+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:14:35.246+00:00 [INFO ] Downloaded 315000 headers from the pruning point chain segment
+2026-06-24 13:14:35.477+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:14:35.986+00:00 [INFO ] Downloaded 316000 headers from the pruning point chain segment
+2026-06-24 13:14:36.703+00:00 [INFO ] Downloaded 317000 headers from the pruning point chain segment
+2026-06-24 13:14:37.452+00:00 [INFO ] Downloaded 318000 headers from the pruning point chain segment
+2026-06-24 13:14:38.228+00:00 [INFO ] Downloaded 319000 headers from the pruning point chain segment
+2026-06-24 13:14:38.928+00:00 [INFO ] Downloaded 320000 headers from the pruning point chain segment
+2026-06-24 13:14:39.645+00:00 [INFO ] Downloaded 321000 headers from the pruning point chain segment
+2026-06-24 13:14:40.374+00:00 [INFO ] Downloaded 322000 headers from the pruning point chain segment
+2026-06-24 13:14:41.188+00:00 [INFO ] Downloaded 323000 headers from the pruning point chain segment
+2026-06-24 13:14:41.941+00:00 [INFO ] Downloaded 324000 headers from the pruning point chain segment
+2026-06-24 13:14:42.650+00:00 [INFO ] Downloaded 325000 headers from the pruning point chain segment
+2026-06-24 13:14:43.389+00:00 [INFO ] Downloaded 326000 headers from the pruning point chain segment
+2026-06-24 13:14:44.150+00:00 [INFO ] Downloaded 327000 headers from the pruning point chain segment
+2026-06-24 13:14:44.894+00:00 [INFO ] Downloaded 328000 headers from the pruning point chain segment
+2026-06-24 13:14:45.651+00:00 [INFO ] Downloaded 329000 headers from the pruning point chain segment
+2026-06-24 13:14:46.400+00:00 [INFO ] Downloaded 330000 headers from the pruning point chain segment
+2026-06-24 13:14:47.138+00:00 [INFO ] Downloaded 331000 headers from the pruning point chain segment
+2026-06-24 13:14:47.939+00:00 [INFO ] Downloaded 332000 headers from the pruning point chain segment
+2026-06-24 13:14:48.640+00:00 [INFO ] Downloaded 333000 headers from the pruning point chain segment
+2026-06-24 13:14:49.330+00:00 [INFO ] Downloaded 334000 headers from the pruning point chain segment
+2026-06-24 13:14:50.043+00:00 [INFO ] Downloaded 335000 headers from the pruning point chain segment
+2026-06-24 13:14:50.754+00:00 [INFO ] Downloaded 336000 headers from the pruning point chain segment
+2026-06-24 13:14:51.506+00:00 [INFO ] Downloaded 337000 headers from the pruning point chain segment
+2026-06-24 13:14:52.266+00:00 [INFO ] Downloaded 338000 headers from the pruning point chain segment
+2026-06-24 13:14:53.032+00:00 [INFO ] Downloaded 339000 headers from the pruning point chain segment
+2026-06-24 13:14:53.793+00:00 [INFO ] Downloaded 340000 headers from the pruning point chain segment
+2026-06-24 13:14:54.572+00:00 [INFO ] Downloaded 341000 headers from the pruning point chain segment
+2026-06-24 13:14:55.163+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:14:55.288+00:00 [INFO ] Downloaded 342000 headers from the pruning point chain segment
+2026-06-24 13:14:56.033+00:00 [INFO ] Downloaded 343000 headers from the pruning point chain segment
+2026-06-24 13:14:56.745+00:00 [INFO ] Downloaded 344000 headers from the pruning point chain segment
+2026-06-24 13:14:57.476+00:00 [INFO ] Downloaded 345000 headers from the pruning point chain segment
+2026-06-24 13:14:58.243+00:00 [INFO ] Downloaded 346000 headers from the pruning point chain segment
+2026-06-24 13:14:59.035+00:00 [INFO ] Downloaded 347000 headers from the pruning point chain segment
+2026-06-24 13:14:59.804+00:00 [INFO ] Downloaded 348000 headers from the pruning point chain segment
+2026-06-24 13:15:00.781+00:00 [INFO ] Downloaded 349000 headers from the pruning point chain segment
+2026-06-24 13:15:01.498+00:00 [INFO ] Downloaded 350000 headers from the pruning point chain segment
+2026-06-24 13:15:02.218+00:00 [INFO ] Downloaded 351000 headers from the pruning point chain segment
+2026-06-24 13:15:02.951+00:00 [INFO ] Downloaded 352000 headers from the pruning point chain segment
+2026-06-24 13:15:03.727+00:00 [INFO ] Downloaded 353000 headers from the pruning point chain segment
+2026-06-24 13:15:04.479+00:00 [INFO ] Downloaded 354000 headers from the pruning point chain segment
+2026-06-24 13:15:05.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:15:05.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:15:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:15:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:15:05.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:15:05.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:15:05.222+00:00 [INFO ] Downloaded 355000 headers from the pruning point chain segment
+2026-06-24 13:15:05.377+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:15:05.416+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:15:05.949+00:00 [INFO ] Downloaded 356000 headers from the pruning point chain segment
+2026-06-24 13:15:06.748+00:00 [INFO ] Downloaded 357000 headers from the pruning point chain segment
+2026-06-24 13:15:07.193+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:15:07.501+00:00 [INFO ] Downloaded 358000 headers from the pruning point chain segment
+2026-06-24 13:15:08.284+00:00 [INFO ] Downloaded 359000 headers from the pruning point chain segment
+2026-06-24 13:15:09.054+00:00 [INFO ] Downloaded 360000 headers from the pruning point chain segment
+2026-06-24 13:15:09.815+00:00 [INFO ] Downloaded 361000 headers from the pruning point chain segment
+2026-06-24 13:15:10.606+00:00 [INFO ] Downloaded 362000 headers from the pruning point chain segment
+2026-06-24 13:15:11.479+00:00 [INFO ] Downloaded 363000 headers from the pruning point chain segment
+2026-06-24 13:15:12.520+00:00 [INFO ] Downloaded 364000 headers from the pruning point chain segment
+2026-06-24 13:15:13.417+00:00 [INFO ] Downloaded 365000 headers from the pruning point chain segment
+2026-06-24 13:15:14.320+00:00 [INFO ] Downloaded 366000 headers from the pruning point chain segment
+2026-06-24 13:15:15.313+00:00 [INFO ] Downloaded 367000 headers from the pruning point chain segment
+2026-06-24 13:15:16.164+00:00 [INFO ] Downloaded 368000 headers from the pruning point chain segment
+2026-06-24 13:15:17.018+00:00 [INFO ] Downloaded 369000 headers from the pruning point chain segment
+2026-06-24 13:15:17.884+00:00 [INFO ] Downloaded 370000 headers from the pruning point chain segment
+2026-06-24 13:15:18.774+00:00 [INFO ] Downloaded 371000 headers from the pruning point chain segment
+2026-06-24 13:15:19.662+00:00 [INFO ] Downloaded 372000 headers from the pruning point chain segment
+2026-06-24 13:15:20.751+00:00 [INFO ] Downloaded 373000 headers from the pruning point chain segment
+2026-06-24 13:15:21.238+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:15:21.630+00:00 [INFO ] Downloaded 374000 headers from the pruning point chain segment
+2026-06-24 13:15:22.502+00:00 [INFO ] Downloaded 375000 headers from the pruning point chain segment
+2026-06-24 13:15:23.345+00:00 [INFO ] Downloaded 376000 headers from the pruning point chain segment
+2026-06-24 13:15:24.251+00:00 [INFO ] Downloaded 377000 headers from the pruning point chain segment
+2026-06-24 13:15:25.106+00:00 [INFO ] Downloaded 378000 headers from the pruning point chain segment
+2026-06-24 13:15:25.949+00:00 [INFO ] Downloaded 379000 headers from the pruning point chain segment
+2026-06-24 13:15:26.803+00:00 [INFO ] Downloaded 380000 headers from the pruning point chain segment
+2026-06-24 13:15:27.658+00:00 [INFO ] Downloaded 381000 headers from the pruning point chain segment
+2026-06-24 13:15:28.488+00:00 [INFO ] Downloaded 382000 headers from the pruning point chain segment
+2026-06-24 13:15:29.345+00:00 [INFO ] Downloaded 383000 headers from the pruning point chain segment
+2026-06-24 13:15:30.194+00:00 [INFO ] Downloaded 384000 headers from the pruning point chain segment
+2026-06-24 13:15:31.033+00:00 [INFO ] Downloaded 385000 headers from the pruning point chain segment
+2026-06-24 13:15:31.876+00:00 [INFO ] Downloaded 386000 headers from the pruning point chain segment
+2026-06-24 13:15:32.754+00:00 [INFO ] Downloaded 387000 headers from the pruning point chain segment
+2026-06-24 13:15:33.599+00:00 [INFO ] Downloaded 388000 headers from the pruning point chain segment
+2026-06-24 13:15:34.392+00:00 [INFO ] Downloaded 389000 headers from the pruning point chain segment
+2026-06-24 13:15:35.152+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:15:35.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:15:35.155+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:15:35.155+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:15:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:15:35.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:15:35.211+00:00 [INFO ] Downloaded 390000 headers from the pruning point chain segment
+2026-06-24 13:15:35.213+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:15:35.261+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:15:35.291+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:15:36.063+00:00 [INFO ] Downloaded 391000 headers from the pruning point chain segment
+2026-06-24 13:15:36.954+00:00 [INFO ] Downloaded 392000 headers from the pruning point chain segment
+2026-06-24 13:15:37.823+00:00 [INFO ] Downloaded 393000 headers from the pruning point chain segment
+2026-06-24 13:15:38.065+00:00 [INFO ] Finished downloading 393268 headers from the pruning point chain segment
+2026-06-24 13:15:47.639+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:16:05.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:16:05.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:16:05.155+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:16:05.156+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:16:05.157+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:16:05.159+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:16:05.191+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:16:05.191+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:16:05.483+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:16:18.657+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:16:35.153+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:16:35.155+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:16:35.156+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:16:35.160+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:16:35.161+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:16:35.161+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:16:35.196+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:16:35.197+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:16:35.382+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:16:53.429+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:17:05.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:17:05.164+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:17:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:17:05.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:17:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:17:05.170+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:17:05.203+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:17:05.475+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:17:06.241+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:17:10.280+00:00 [INFO ] Setting e85a96dc779b02eaa8999a313676a85f718cae555c9b1fabecac0314e1a0b571 as the staging pruning point
+2026-06-24 13:17:10.280+00:00 [INFO ] Building the proof which was just applied (sanity test)
+2026-06-24 13:17:25.178+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:17:31.754+00:00 [INFO ] Built headers proof with overall 61960 headers (18758 unique)
+2026-06-24 13:17:31.756+00:00 [INFO ] Proof was locally built successfully
+2026-06-24 13:17:31.878+00:00 [INFO ] Starting to process 26411 trusted blocks
+2026-06-24 13:17:32.878+00:00 [INFO ] Processed 6161 trusted blocks in the last 1.00s (total 6161)
+2026-06-24 13:17:33.878+00:00 [INFO ] Processed 6874 trusted blocks in the last 1.00s (total 13035)
+2026-06-24 13:17:34.878+00:00 [INFO ] Processed 6805 trusted blocks in the last 1.00s (total 19840)
+2026-06-24 13:17:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:17:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:17:35.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:17:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:17:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:17:35.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:17:35.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:17:35.218+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:17:35.264+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:17:35.878+00:00 [INFO ] Processed 6280 trusted blocks in the last 1.00s (total 26120)
+2026-06-24 13:17:35.925+00:00 [INFO ] Done processing trusted blocks
+2026-06-24 13:17:40.977+00:00 [INFO ] Processed 1 blocks and 26669 headers in the last 10.00s (1 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 1.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:17:47.654+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:17:50.978+00:00 [INFO ] Processed 0 blocks and 4867 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:00.980+00:00 [INFO ] Processed 0 blocks and 5125 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:18:05.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:18:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:18:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:18:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:18:05.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:18:05.183+00:00 [INFO ] IBD: Processed 11275 block headers (1%) last block timestamp: 2026-06-23 02:42:28.000:+0000
+2026-06-24 13:18:05.197+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:18:05.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:18:05.479+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:18:10.982+00:00 [INFO ] Processed 0 blocks and 3075 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:20.983+00:00 [INFO ] Processed 0 blocks and 3074 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:25.175+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:18:30.985+00:00 [INFO ] Processed 0 blocks and 4100 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:18:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:18:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:18:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:18:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:18:35.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:18:35.232+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:18:35.251+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:18:36.012+00:00 [INFO ] IBD: Processed 22549 block headers (2%) last block timestamp: 2026-06-23 03:01:33.000:+0000
+2026-06-24 13:18:37.217+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:18:40.986+00:00 [INFO ] Processed 0 blocks and 4917 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.02 parents; 1.02 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:47.478+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:18:50.987+00:00 [INFO ] Processed 0 blocks and 4308 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.02 parents; 1.02 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:18:58.920+00:00 [INFO ] IBD: Processed 33824 block headers (3%) last block timestamp: 2026-06-23 03:20:15.000:+0000
+2026-06-24 13:19:00.988+00:00 [INFO ] Processed 0 blocks and 5388 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:19:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:19:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:19:05.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:19:05.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:19:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:19:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:19:05.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:19:05.298+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:19:05.479+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:19:10.990+00:00 [INFO ] Processed 0 blocks and 5887 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:19:16.239+00:00 [INFO ] IBD: Processed 44074 block headers (4%) last block timestamp: 2026-06-23 03:37:23.000:+0000
+2026-06-24 13:19:20.992+00:00 [INFO ] Processed 0 blocks and 6369 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:19:23.570+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:19:30.993+00:00 [INFO ] Processed 0 blocks and 6956 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:19:32.560+00:00 [INFO ] IBD: Processed 55349 block headers (5%) last block timestamp: 2026-06-23 03:56:26.000:+0000
+2026-06-24 13:19:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:19:35.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:19:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:19:35.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:19:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:19:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:19:35.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:19:35.405+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:19:36.216+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:19:40.994+00:00 [INFO ] Processed 0 blocks and 7785 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:19:47.080+00:00 [INFO ] IBD: Processed 66623 block headers (6%) last block timestamp: 2026-06-23 04:14:48.000:+0000
+2026-06-24 13:19:50.995+00:00 [INFO ] Processed 0 blocks and 7999 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:19:53.442+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:20:00.006+00:00 [INFO ] IBD: Processed 77898 block headers (7%) last block timestamp: 2026-06-23 04:33:35.000:+0000
+2026-06-24 13:20:00.996+00:00 [INFO ] Processed 0 blocks and 8815 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:20:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:20:05.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:20:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:20:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:20:05.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:20:05.167+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:20:05.212+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:20:05.212+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:20:05.481+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:20:10.996+00:00 [INFO ] Processed 0 blocks and 8200 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:20:12.230+00:00 [INFO ] IBD: Processed 88148 block headers (8%) last block timestamp: 2026-06-23 04:50:26.000:+0000
+2026-06-24 13:20:18.466+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:20:20.998+00:00 [INFO ] Processed 0 blocks and 10283 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:20:22.717+00:00 [INFO ] IBD: Processed 99423 block headers (9%) last block timestamp: 2026-06-23 05:09:18.000:+0000
+2026-06-24 13:20:30.999+00:00 [INFO ] Processed 0 blocks and 9192 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:20:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:20:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:20:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:20:35.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:20:35.167+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:20:35.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:20:35.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:20:35.204+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:20:35.394+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:20:35.614+00:00 [INFO ] IBD: Processed 110698 block headers (10%) last block timestamp: 2026-06-23 05:28:22.000:+0000
+2026-06-24 13:20:41.000+00:00 [INFO ] Processed 0 blocks and 10991 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:20:43.630+00:00 [INFO ] IBD: Processed 120948 block headers (11%) last block timestamp: 2026-06-23 05:45:25.000:+0000
+2026-06-24 13:20:51.001+00:00 [INFO ] Processed 0 blocks and 12342 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:20:53.405+00:00 [INFO ] IBD: Processed 132223 block headers (12%) last block timestamp: 2026-06-23 06:04:01.000:+0000
+2026-06-24 13:20:55.171+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:21:01.003+00:00 [INFO ] Processed 0 blocks and 8872 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:21:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:21:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:21:05.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:21:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:21:05.173+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:21:05.176+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:21:05.281+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:21:05.417+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:21:07.170+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:21:08.440+00:00 [INFO ] IBD: Processed 143498 block headers (13%) last block timestamp: 2026-06-23 06:22:46.000:+0000
+2026-06-24 13:21:11.004+00:00 [INFO ] Processed 0 blocks and 6377 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.04 parents; 1.04 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:21:17.666+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:21:21.004+00:00 [INFO ] Processed 0 blocks and 7216 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:21:23.850+00:00 [INFO ] IBD: Processed 154773 block headers (14%) last block timestamp: 2026-06-23 06:41:39.000:+0000
+2026-06-24 13:21:31.006+00:00 [INFO ] Processed 0 blocks and 9617 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:21:33.443+00:00 [INFO ] IBD: Processed 165023 block headers (15%) last block timestamp: 2026-06-23 06:58:42.000:+0000
+2026-06-24 13:21:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:21:35.164+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:21:35.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:21:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:21:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:21:35.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:21:35.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:21:35.211+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:21:35.465+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:21:41.007+00:00 [INFO ] Processed 0 blocks and 13165 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:21:41.906+00:00 [INFO ] IBD: Processed 176298 block headers (16%) last block timestamp: 2026-06-23 07:17:37.000:+0000
+2026-06-24 13:21:51.009+00:00 [INFO ] Processed 0 blocks and 6083 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.38 parents; 3.20 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:21:53.454+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:22:01.011+00:00 [INFO ] Processed 0 blocks and 307 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 8.21 parents; 49.59 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:22:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:22:05.168+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:22:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:22:05.170+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:22:05.174+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:22:05.174+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:22:05.206+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:22:05.209+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:22:05.446+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:22:11.012+00:00 [INFO ] Processed 0 blocks and 267 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.11 parents; 50.22 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:22:19.615+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:22:21.014+00:00 [INFO ] Processed 0 blocks and 338 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.01 parents; 36.02 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:22:31.015+00:00 [INFO ] Processed 0 blocks and 302 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.19 parents; 32.18 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:22:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:22:35.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:22:35.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:22:35.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:22:35.174+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:22:35.176+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:22:35.204+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:22:35.219+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:22:35.468+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:22:41.015+00:00 [INFO ] Processed 0 blocks and 296 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.10 parents; 46.35 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:22:49.484+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:22:51.016+00:00 [INFO ] Processed 0 blocks and 299 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.13 parents; 41.27 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:01.017+00:00 [INFO ] Processed 0 blocks and 289 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 8.32 parents; 65.37 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:23:05.164+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:23:05.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:23:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:23:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:23:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:23:05.254+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:23:05.322+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:23:05.354+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:23:07.146+00:00 [INFO ] IBD: Processed 187539 block headers (17%) last block timestamp: 2026-06-23 07:30:43.000:+0000
+2026-06-24 13:23:11.019+00:00 [INFO ] Processed 0 blocks and 4607 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 8.77 parents; 17.78 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:17.524+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:23:21.021+00:00 [INFO ] Processed 0 blocks and 206 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 8.27 parents; 62.82 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:31.021+00:00 [INFO ] Processed 0 blocks and 309 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 8.93 parents; 50.23 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:23:35.164+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:23:35.164+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:23:35.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:23:35.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:23:35.167+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:23:35.197+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:23:35.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:23:35.477+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:23:41.023+00:00 [INFO ] Processed 0 blocks and 212 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 9.83 parents; 67.85 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:51.024+00:00 [INFO ] Processed 0 blocks and 187 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 10.01 parents; 76.72 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:23:53.450+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:24:01.026+00:00 [INFO ] Processed 0 blocks and 213 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 8.31 parents; 66.60 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:24:05.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:24:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:24:05.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:24:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:24:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:24:05.169+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:24:05.194+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:24:05.204+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:24:05.393+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:24:11.027+00:00 [INFO ] Processed 0 blocks and 234 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 9.15 parents; 99.81 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:24:21.028+00:00 [INFO ] Processed 0 blocks and 224 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 13.59 parents; 143.25 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:24:23.433+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:24:31.030+00:00 [INFO ] Processed 0 blocks and 199 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 13.41 parents; 154.81 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:24:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:24:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:24:35.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:24:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:24:35.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:24:35.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:24:35.199+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:24:35.210+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:24:35.473+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:24:41.030+00:00 [INFO ] Processed 0 blocks and 5857 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.94 parents; 11.37 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:24:45.605+00:00 [INFO ] IBD: Processed 198727 block headers (18%) last block timestamp: 2026-06-23 07:35:38.000:+0000
+2026-06-24 13:24:47.864+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:24:51.032+00:00 [INFO ] Processed 0 blocks and 6904 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.80 parents; 9.09 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:01.033+00:00 [INFO ] Processed 0 blocks and 5791 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 4.73 parents; 10.55 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:02.780+00:00 [INFO ] IBD: Processed 208949 block headers (19%) last block timestamp: 2026-06-23 07:39:52.000:+0000
+2026-06-24 13:25:05.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:25:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:25:05.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:25:05.184+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:25:05.187+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:25:05.197+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:25:05.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:25:05.224+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:25:05.431+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:25:11.034+00:00 [INFO ] Processed 0 blocks and 3788 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.53 parents; 14.34 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:21.036+00:00 [INFO ] Processed 0 blocks and 3075 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.24 parents; 19.48 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:25.195+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:25:31.038+00:00 [INFO ] Processed 0 blocks and 2342 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.25 parents; 23.28 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:25:35.167+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:25:35.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:25:35.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:25:35.168+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:25:35.176+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:25:35.212+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:25:35.212+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:25:35.273+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:25:41.039+00:00 [INFO ] Processed 0 blocks and 2017 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.35 parents; 22.21 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:45.698+00:00 [INFO ] IBD: Processed 220215 block headers (20%) last block timestamp: 2026-06-23 07:49:31.000:+0000
+2026-06-24 13:25:47.701+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:25:51.041+00:00 [INFO ] Processed 0 blocks and 4880 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.86 parents; 7.75 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:25:57.632+00:00 [INFO ] IBD: Processed 231480 block headers (21%) last block timestamp: 2026-06-23 08:04:16.000:+0000
+2026-06-24 13:26:01.042+00:00 [INFO ] Processed 0 blocks and 8573 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.67 parents; 3.75 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:26:05.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:26:05.167+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:26:05.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:26:05.167+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:26:05.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:26:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:26:05.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:26:05.216+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:26:05.498+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:26:09.719+00:00 [INFO ] IBD: Processed 242743 block headers (22%) last block timestamp: 2026-06-23 08:40:04.000:+0000
+2026-06-24 13:26:11.042+00:00 [INFO ] Processed 0 blocks and 11193 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.24 parents; 2.31 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:26:19.332+00:00 [INFO ] IBD: Processed 252992 block headers (23%) last block timestamp: 2026-06-23 09:33:11.000:+0000
+2026-06-24 13:26:21.044+00:00 [INFO ] Processed 0 blocks and 10705 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.01 parents; 1.01 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:26:25.178+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:26:29.346+00:00 [INFO ] IBD: Processed 264267 block headers (24%) last block timestamp: 2026-06-23 09:59:10.000:+0000
+2026-06-24 13:26:31.045+00:00 [INFO ] Processed 0 blocks and 11261 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:26:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:26:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:26:35.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:26:35.171+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:26:35.171+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:26:35.172+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:26:35.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:26:35.264+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:26:37.205+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:26:39.815+00:00 [INFO ] IBD: Processed 275541 block headers (25%) last block timestamp: 2026-06-23 10:13:41.000:+0000
+2026-06-24 13:26:41.047+00:00 [INFO ] Processed 0 blocks and 10430 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.04 parents; 1.04 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:26:47.643+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:26:51.049+00:00 [INFO ] Processed 0 blocks and 7942 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:26:52.451+00:00 [INFO ] IBD: Processed 285791 block headers (26%) last block timestamp: 2026-06-23 10:29:12.000:+0000
+2026-06-24 13:27:01.050+00:00 [INFO ] Processed 0 blocks and 7230 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:27:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:27:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:27:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:27:05.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:27:05.169+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:27:05.171+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:27:05.203+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:27:05.207+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:27:05.493+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:27:09.836+00:00 [INFO ] IBD: Processed 297065 block headers (27%) last block timestamp: 2026-06-23 10:47:40.000:+0000
+2026-06-24 13:27:11.051+00:00 [INFO ] Processed 0 blocks and 6043 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:27:21.052+00:00 [INFO ] Processed 0 blocks and 7241 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:27:23.430+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:27:25.613+00:00 [INFO ] IBD: Processed 308340 block headers (28%) last block timestamp: 2026-06-23 11:06:13.000:+0000
+2026-06-24 13:27:31.056+00:00 [INFO ] Processed 0 blocks and 5254 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:27:35.166+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:27:35.177+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:27:35.177+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:27:35.179+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:27:35.179+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:27:35.191+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:27:35.223+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:27:35.309+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:27:35.412+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:27:41.060+00:00 [INFO ] Processed 0 blocks and 1841 headers in the last 10.01s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:27:48.505+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:27:51.062+00:00 [INFO ] Processed 0 blocks and 4311 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:27:56.118+00:00 [INFO ] IBD: Processed 319615 block headers (29%) last block timestamp: 2026-06-23 11:24:54.000:+0000
+2026-06-24 13:28:01.062+00:00 [INFO ] Processed 0 blocks and 6688 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:28:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:28:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:28:05.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:28:05.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:28:05.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:28:05.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:28:05.204+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:28:05.293+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:28:05.463+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:28:11.064+00:00 [INFO ] Processed 0 blocks and 6748 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:28:11.065+00:00 [INFO ] IBD: Processed 329865 block headers (30%) last block timestamp: 2026-06-23 11:42:09.000:+0000
+2026-06-24 13:28:21.065+00:00 [INFO ] Processed 0 blocks and 6435 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:28:25.174+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:28:28.899+00:00 [INFO ] IBD: Processed 341140 block headers (31%) last block timestamp: 2026-06-23 12:00:55.000:+0000
+2026-06-24 13:28:31.066+00:00 [INFO ] Processed 0 blocks and 6047 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.03 parents; 1.03 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:28:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:28:35.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:28:35.167+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:28:35.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:28:35.168+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:28:35.169+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:28:35.207+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:28:35.260+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:28:35.407+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:28:41.067+00:00 [INFO ] Processed 0 blocks and 5692 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 1.86 parents; 1.93 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:28:47.665+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:28:51.069+00:00 [INFO ] Processed 0 blocks and 3919 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.48 parents; 5.01 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:01.070+00:00 [INFO ] Processed 0 blocks and 304 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.26 parents; 38.44 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:05.056+00:00 [INFO ] IBD: Processed 352409 block headers (32%) last block timestamp: 2026-06-23 12:19:36.000:+0000
+2026-06-24 13:29:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:29:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:29:05.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:29:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:29:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:29:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:29:05.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:29:05.295+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:29:05.469+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:29:11.076+00:00 [INFO ] Processed 0 blocks and 387 headers in the last 10.01s (0 transactions; 0 UTXO-validated blocks; 4.40 parents; 35.33 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:21.077+00:00 [INFO ] Processed 0 blocks and 503 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.52 parents; 30.76 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:25.174+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:29:31.078+00:00 [INFO ] Processed 0 blocks and 396 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.41 parents; 32.83 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:29:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:29:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:29:35.170+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:29:35.170+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:29:35.170+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:29:35.202+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:29:35.278+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:29:35.310+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:29:41.079+00:00 [INFO ] Processed 0 blocks and 306 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.58 parents; 47.37 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:29:48.425+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:29:51.080+00:00 [INFO ] Processed 0 blocks and 603 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.36 parents; 54.79 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:01.081+00:00 [INFO ] Processed 0 blocks and 666 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.49 parents; 52.20 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:05.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:30:05.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:30:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:05.168+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:05.169+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:30:05.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:05.219+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:05.471+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:11.083+00:00 [INFO ] Processed 0 blocks and 1990 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.73 parents; 18.25 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:18.688+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:30:21.084+00:00 [INFO ] Processed 0 blocks and 4550 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.84 parents; 8.95 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:25.175+00:00 [INFO ] IBD: Processed 363640 block headers (33%) last block timestamp: 2026-06-23 12:26:09.000:+0000
+2026-06-24 13:30:31.084+00:00 [INFO ] Processed 0 blocks and 4229 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.81 parents; 9.19 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:30:35.164+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:30:35.164+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:30:35.164+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:35.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:35.219+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:30:35.308+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:30:35.580+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:30:41.086+00:00 [INFO ] Processed 0 blocks and 4468 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 6.66 parents; 12.53 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:49.395+00:00 [INFO ] IBD: Processed 373841 block headers (34%) last block timestamp: 2026-06-23 12:31:33.000:+0000
+2026-06-24 13:30:51.087+00:00 [INFO ] Processed 0 blocks and 4339 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 5.01 parents; 10.08 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:30:55.169+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:31:01.089+00:00 [INFO ] Processed 0 blocks and 3774 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 4.12 parents; 10.98 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:31:05.166+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:31:05.167+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:05.167+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:05.168+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:31:05.168+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:05.208+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:05.254+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:05.446+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:11.091+00:00 [INFO ] Processed 0 blocks and 2956 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.55 parents; 13.31 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:21.091+00:00 [INFO ] Processed 0 blocks and 1833 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.26 parents; 24.35 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:21.250+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:31:26.885+00:00 [INFO ] IBD: Processed 385092 block headers (35%) last block timestamp: 2026-06-23 12:42:07.000:+0000
+2026-06-24 13:31:31.093+00:00 [INFO ] Processed 0 blocks and 4014 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 3.18 parents; 6.32 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:35.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:31:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:31:35.165+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:35.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:31:35.172+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:31:35.205+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:31:35.252+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:31:41.093+00:00 [INFO ] Processed 0 blocks and 5003 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.97 parents; 3.23 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:31:47.607+00:00 [INFO ] IBD: Processed 396347 block headers (36%) last block timestamp: 2026-06-23 12:54:28.000:+0000
+2026-06-24 13:31:47.646+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:31:51.095+00:00 [INFO ] Processed 0 blocks and 6151 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.98 parents; 3.71 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:01.096+00:00 [INFO ] Processed 0 blocks and 5041 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.82 parents; 3.47 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:05.163+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:32:05.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:32:05.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:32:05.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:05.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:05.166+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:05.200+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:05.205+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:05.523+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:09.887+00:00 [INFO ] IBD: Processed 407603 block headers (37%) last block timestamp: 2026-06-23 13:08:45.000:+0000
+2026-06-24 13:32:11.099+00:00 [INFO ] Processed 0 blocks and 4786 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.79 parents; 3.34 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:18.665+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:32:21.100+00:00 [INFO ] Processed 0 blocks and 5511 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.72 parents; 3.29 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:29.305+00:00 [INFO ] IBD: Processed 417842 block headers (38%) last block timestamp: 2026-06-23 13:24:13.000:+0000
+2026-06-24 13:32:31.102+00:00 [INFO ] Processed 0 blocks and 5181 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.74 parents; 3.32 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:35.162+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:32:35.165+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:32:35.165+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:35.165+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:35.166+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:32:35.166+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:35.201+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:32:35.207+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:32:35.388+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:32:41.103+00:00 [INFO ] Processed 0 blocks and 4574 headers in the last 10.00s (0 transactions; 0 UTXO-validated blocks; 2.71 parents; 3.24 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:51.176+00:00 [INFO ] Processed 0 blocks and 509 headers in the last 10.06s (0 transactions; 0 UTXO-validated blocks; 2.65 parents; 3.13 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:32:55.224+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:33:01.692+00:00 [INFO ] Processed 0 blocks and 6 headers in the last 10.48s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 3.83 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:05.600+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:33:07.222+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:33:07.660+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:07.957+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:08.199+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:33:08.371+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:09.378+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:10.498+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:13.060+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:28.735+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:33:32.088+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 10.06s (0 transactions; 0 UTXO-validated blocks; 4.00 parents; 1.50 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:35.481+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:33:36.227+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:33:36.360+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:36.492+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:33:36.614+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:36.794+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:37.455+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:33:38.748+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:33:39.679+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:33:42.590+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 10.52s (0 transactions; 0 UTXO-validated blocks; 1.50 parents; 1.50 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:52.947+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.35s (0 transactions; 0 UTXO-validated blocks; 1.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:33:53.561+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:34:03.946+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 11.01s (0 transactions; 0 UTXO-validated blocks; 3.50 parents; 3.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:05.567+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:34:06.798+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:34:07.563+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:08.044+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:34:08.541+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:09.252+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:10.096+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:13.416+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:13.772+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:14.232+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.27s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:22.986+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:34:25.924+00:00 [INFO ] Processed 0 blocks and 2 headers in the last 11.67s (0 transactions; 0 UTXO-validated blocks; 3.50 parents; 1.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:35.660+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:34:36.425+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:34:36.602+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:36.802+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.82s (0 transactions; 0 UTXO-validated blocks; 2.00 parents; 7.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:36.957+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:34:37.528+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:38.076+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:38.981+00:00 [INFO ] Retrieved 3 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:34:42.374+00:00 [INFO ] Retrieved 1 addresses from DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:34:46.952+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:34:47.227+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 10.37s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:34:53.491+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:34:57.831+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.75s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 4.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:05.724+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:35:07.464+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:35:08.398+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.57s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 3.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:09.225+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:35:09.774+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:35:10.668+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:35:11.659+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:35:13.477+00:00 [INFO ] Retrieved 3 addresses from DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:35:19.930+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 11.42s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:34.396+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:35:42.057+00:00 [WARN ] Error connecting to DNS seeder seeder1-tn12.kaspad.net: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:35:43.515+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:35:44.900+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 11.12s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:35:47.899+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:35:52.273+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:35:55.824+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:35:57.362+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:35:58.044+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:35:59.222+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:36:00.232+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 13.48s (0 transactions; 0 UTXO-validated blocks; 2.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:09.483+00:00 [INFO ] Retrieved 2 addresses from DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:36:18.487+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:21.376+00:00 [WARN ] Error connecting to DNS seeder n-testnet-12.kaspa.ws: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:23.006+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 10.15s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 5.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:30.312+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:32.049+00:00 [INFO ] Connection manager: has 3/8 outgoing P2P connections, trying to obtain 1 additional connection(s)...
+2026-06-24 13:36:33.604+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:36:34.645+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:36:35.739+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:36:36.210+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:36:36.930+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:36:38.759+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 14.08s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:50.567+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 14.72s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:36:56.541+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:56.978+00:00 [WARN ] Error connecting to DNS seeder n-testnet-12.kaspa.ws: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:36:58.289+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:00.072+00:00 [WARN ] Error connecting to DNS seeder seeder1-tn12.kaspad.net: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:01.940+00:00 [INFO ] Processed 0 blocks and 1 headers in the last 11.26s (0 transactions; 0 UTXO-validated blocks; 3.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:37:05.510+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:37:06.932+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:37:07.532+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
+2026-06-24 13:37:08.390+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:37:09.270+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:37:16.279+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 14.39s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:37:28.811+00:00 [WARN ] Error connecting to DNS seeder seeder1-tn12.kaspad.net: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:31.428+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kas.pa: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:33.458+00:00 [WARN ] Error connecting to DNS seeder n-testnet-12.kaspa.ws: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:35.687+00:00 [WARN ] Error connecting to DNS seeder tn12-dnsseed.kasia.fyi: failed to lookup address information: Temporary failure in name resolution
+2026-06-24 13:37:37.540+00:00 [INFO ] Processed 0 blocks and 0 headers in the last 17.01s (0 transactions; 0 UTXO-validated blocks; 0.00 parents; 0.00 mergeset; 0.00 TPB; mass: 0.0s/0.0c/0.0t; 0.0 lanes/mergeset)
+2026-06-24 13:37:42.965+00:00 [INFO ] Querying 4 DNS seeders
+2026-06-24 13:37:43.632+00:00 [INFO ] Querying DNS seeder n-testnet-12.kaspa.ws
+2026-06-24 13:37:44.032+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kasia.fyi
+2026-06-24 13:37:44.322+00:00 [INFO ] Querying DNS seeder seeder1-tn12.kaspad.net
+2026-06-24 13:37:45.368+00:00 [INFO ] Querying DNS seeder tn12-dnsseed.kas.pa
