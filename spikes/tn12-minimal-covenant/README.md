@@ -46,11 +46,74 @@ Before implementing roulette, we need confidence that base primitives actually w
 - One additional read-only local TN12 `getBlockDagInfo` call succeeded in env-038, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-038-get-blockdag-info.txt`.
 - One additional read-only local TN12 `getSyncStatus` call succeeded in env-039, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`.
 - One final additional read-only local TN12 `getCurrentNetwork` call succeeded in env-040, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`.
+- env-041 added a documentation-only feasibility summary and go/no-go assessment for the KaspaFair/Toccata showcase idea.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-041 feasibility summary and go/no-go assessment
+
+### Executive feasibility verdict
+
+- local Toccata/SilverScript feasibility: GREEN
+- local Rust transaction/RPC feasibility: GREEN
+- live TN12 readiness: AMBER
+- suitability for a future KaspaFair roulette PoC: AMBER
+
+### What has been proven
+
+- SilverScript build/compile/local simulation works locally.
+- repo-owned no-broadcast fixtures pass.
+- local `Transaction` construction works.
+- local `RpcTransaction` conversion works.
+- local `SubmitTransactionRequest` construction works.
+- RPC serializer artifacts are produced.
+- RPC serializer round-trip verification passes.
+- local TN12 node startup works.
+- read-only TN12 RPC connectivity works for `getServerInfo`, `getBlockDagInfo`, `getSyncStatus`, and `getCurrentNetwork`.
+
+### What has not been proven
+
+- signing
+- real UTXO usage
+- faucet funding
+- live transaction submission
+- mempool acceptance
+- covenant-bound create/spend/inspect lifecycle
+- wallet UX
+- roulette/game integration
+
+### Feasibility risks
+
+- node sync status and peer connectivity remain only partially characterized; reachability is proven more strongly than full sync/readiness.
+- TN12 tooling maturity beyond the current local simulation/object/RPC-shape work remains uncertain.
+- covenant transaction construction complexity may increase substantially once real UTXOs, fees, addresses, and network-valid transaction details are required.
+- signing/spend path complexity remains unproven.
+- there is still a gap between local simulation/object serialization success and live network acceptance.
+- a future roulette PoC still depends on first proving the covenant lifecycle itself.
+
+### Stop/continue criteria
+
+- Continue only if the next TN12 steps remain controlled, reproducible, and evidence-backed.
+- Stop or pause if signing/covenant spend work requires large undocumented Rusty Kaspa internals.
+- Stop or pause if the TN12 node cannot sync/connect reliably.
+- Stop or pause if a covenant-bound live transaction would require fragile custom code.
+
+### Recommended next technical milestone
+
+- Do not build roulette yet.
+- Safer next option: allow the local TN12 node to sync further and confirm stronger readiness.
+- Alternative later option: plan a test-only key/address/faucet workflow, still without broadcast.
+- Recommendation: choose the sync/readiness option first because it preserves the current no-wallet/no-key/no-faucet/no-signing posture while reducing network-readiness uncertainty.
+
+### Feasibility conclusion for the KaspaFair roulette PoC
+
+- The project is worth continuing as a constrained technical spike.
+- Roulette UI/app development should remain paused.
+- Before roulette work resumes, the project must still prove a controlled test-only key/address/faucet path, a real signing path, and a covenant-bound create/spend/inspect lifecycle that reaches live TN12 acceptance.
+- The real “wow” proof would be a reproducible TN12 test-only end-to-end create/spend/inspect demonstration with captured evidence.
 
 ## Env-040 local TN12 read-only getCurrentNetwork
 

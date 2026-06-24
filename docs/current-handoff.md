@@ -19,6 +19,8 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 1d) env-040 also succeeded for the final approved localhost-only follow-up: the local node again reached RPC readiness, exactly one read-only `getCurrentNetwork` call succeeded against `grpc://127.0.0.1:16210`, output was captured, and the node was stopped immediately afterward.
 
+1e) env-041 added a documentation-only feasibility summary and go/no-go assessment for the KaspaFair/Toccata showcase idea.
+
 2) Current repo-backed local evidence now covers:
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles.
@@ -44,8 +46,34 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 4) Conservative conclusion:
 - Local tooling is now sufficient to prove localhost-only TN12 node startup plus one read-only `getServerInfo` call, one read-only `getBlockDagInfo` call, one read-only `getSyncStatus` call, and one read-only `getCurrentNetwork` call.
+- env-041 rates local Toccata/SilverScript feasibility GREEN, local Rust transaction/RPC feasibility GREEN, live TN12 readiness AMBER, and future roulette-PoC suitability AMBER.
 - Local tooling is still not sufficient to claim live TN12 create/spend/inspect works.
+- Roulette/web-app work should remain paused until the covenant lifecycle is proven with live TN12 evidence.
 - Any next step beyond read-only connectivity still needs fresh explicit approval.
+
+4a) env-041 feasibility summary:
+- proven locally:
+  - SilverScript builds locally.
+  - simple covenant compiles locally.
+  - repo-owned local fixtures pass.
+  - `run_no_broadcast_checks.sh` passes.
+  - local `Transaction` construction works.
+  - local `RpcTransaction` conversion works.
+  - local `SubmitTransactionRequest` construction works.
+  - local RPC serializer artifacts are produced.
+  - local RPC serializer round-trip verification passes.
+  - localhost-only TN12 node startup works.
+  - read-only TN12 RPC connectivity works for `getServerInfo`, `getBlockDagInfo`, `getSyncStatus`, and `getCurrentNetwork`.
+- still unproven:
+  - signing
+  - real UTXO usage
+  - faucet funding
+  - live transaction submission / mempool acceptance
+  - covenant-bound create/spend/inspect lifecycle
+  - wallet UX
+  - roulette/game integration
+- recommended next milestone:
+  - safer option A: allow the local TN12 node to sync further and confirm stronger readiness before planning any test-only key/address/faucet workflow.
 
 5) env-040 localhost-only node startup + read-only RPC result:
 - exact startup command used:
@@ -154,15 +182,12 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 - Repo: `/root/kaspa-fair-lab`
 - Branch: `main` (`origin/main`)
-- Modified files:
+- Working tree items under review:
   - `docs/current-handoff.md`
   - `spikes/tn12-minimal-covenant/README.md`
   - `spikes/tn12-minimal-covenant/findings.md`
-  - `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`
-  - `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`
-  - `spikes/tn12-minimal-covenant/rpc-get-current-network/Cargo.toml`
-  - `spikes/tn12-minimal-covenant/rpc-get-current-network/src/main.rs`
+  - `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt` (still untracked / content consistency pending)
 
 ## Suggested first prompt after /new
 
-`Continue from env-040: treat localhost-only TN12 startup plus one read-only getServerInfo call, one read-only getBlockDagInfo call, one read-only getSyncStatus call, and one read-only getCurrentNetwork call as proven, keep the same constraints (no wallet/faucet/signing/broadcast), and propose the next smallest explicitly approvable TN12 step.`
+`Continue from env-041: treat local SilverScript/build/simulation, local Rust transaction/RPC object work, localhost-only TN12 startup, and one read-only call each for getServerInfo/getBlockDagInfo/getSyncStatus/getCurrentNetwork as proven; keep the same constraints (no wallet/faucet/signing/broadcast), keep roulette paused, and propose the next smallest explicitly approvable TN12 readiness step with option A (sync/readiness confirmation) preferred over option B (test-only key/address/faucet planning).`

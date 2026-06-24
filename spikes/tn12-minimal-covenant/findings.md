@@ -1848,6 +1848,91 @@ Scope confirmations:
 - No mainnet usage.
 ```
 
+## env-041 feasibility summary and go/no-go assessment
+
+```text
+Run ID: env-041
+Date/time: 2026-06-24T08:41:00Z
+Network: TN12/testnet planning scope only (documentation-only update; no live network action attempted)
+
+Files changed:
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Executive feasibility verdict:
+- local Toccata/SilverScript feasibility: GREEN
+- local Rust transaction/RPC feasibility: GREEN
+- live TN12 readiness: AMBER
+- suitability for a future KaspaFair roulette PoC: AMBER
+
+What has been proven:
+- SilverScript builds locally.
+- `simple_covenant.sil` compiles locally.
+- repo-owned local no-broadcast fixtures pass.
+- `run_no_broadcast_checks.sh` passes.
+- local `Transaction` construction works.
+- local `RpcTransaction` conversion works.
+- local `SubmitTransactionRequest` construction works.
+- local RPC serializer artifacts are produced.
+- local RPC serializer round-trip verification passes.
+- local TN12 node startup works with localhost-only binds.
+- read-only TN12 RPC connectivity has succeeded for `getServerInfo`, `getBlockDagInfo`, `getSyncStatus`, and `getCurrentNetwork`.
+
+What has not been proven:
+- signing.
+- real UTXO usage.
+- faucet funding.
+- live transaction submission.
+- mempool acceptance.
+- covenant-bound create/spend/inspect lifecycle.
+- wallet UX.
+- roulette/game integration.
+
+Feasibility risks:
+- node sync status and peer connectivity are still early/variable (`isSynced=false` in prior read-only checks), so reachability is proven more strongly than full readiness.
+- TN12 tooling maturity may still expose rough edges beyond the already-proven local compile/simulation/object-construction path.
+- covenant transaction construction complexity may increase materially once the flow must bind real UTXOs, fees, addresses, and network-valid payload details.
+- signing/spend path complexity remains unproven and may require deeper Rusty Kaspa internals than the current documentation-only and serializer-backed work has needed.
+- there is still a meaningful gap between local simulation / object serialization success and live network acceptance.
+- any future roulette PoC still depends on first proving the covenant-bound lifecycle itself, not just the local scaffolding around it.
+
+Stop/continue criteria:
+- continue only if the next TN12 steps remain small, controlled, reproducible, and evidence-backed.
+- stop or pause if signing or the covenant spend path requires large undocumented Rusty Kaspa internals.
+- stop or pause if the TN12 node cannot sync or connect reliably enough to support deterministic follow-up checks.
+- stop or pause if a covenant-bound live transaction cannot be produced without fragile custom code.
+
+Recommended next technical milestone:
+- do not build roulette yet.
+- option A: allow the local TN12 node to sync further and confirm stronger readiness before touching key/address/faucet planning.
+- option B: plan a test-only key/address/faucet workflow, still without broadcast.
+- recommendation: option A is safer.
+- rationale: option A preserves the current no-wallet/no-key/no-faucet/no-signing posture while reducing uncertainty about node readiness and peer/connectivity behavior; option B introduces more workflow surface area before the network-readiness layer is better understood.
+
+Feasibility conclusion for the KaspaFair roulette PoC:
+- the project is worth continuing as a constrained technical spike.
+- roulette UI/app development should remain paused until the covenant lifecycle risk is reduced by evidence.
+- before roulette work resumes, the project still must prove at least: a controlled test-only key/address/faucet plan, a real signed transaction path, and a covenant-bound create/spend/inspect lifecycle that reaches live TN12 acceptance.
+- the real “wow” proof would be a reproducible TN12 test-only demonstration in which a covenant-bound artifact is created, spent, and independently inspected end-to-end with captured evidence, while staying clearly separated from any production/mainnet path.
+
+Go/no-go assessment:
+- go for further narrow technical validation steps.
+- no-go for roulette implementation, web app work, or showcase UX work at this stage.
+
+Scope confirmations:
+- documentation-only update: true
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- whether any wallet/key was created: false
+- whether any faucet request was made: false
+- whether mainnet was used: false
+
+Notes:
+- env-041 supersedes the earlier env-028 readiness framing because it incorporates the later localhost-only TN12 read-only RPC evidence from env-037 through env-040.
+- The strongest current claim is feasibility for continued controlled TN12 investigation, not readiness for a public-facing roulette showcase.
+```
+
 ## env-040 local TN12 read-only getCurrentNetwork
 
 ```text
