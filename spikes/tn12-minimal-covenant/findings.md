@@ -2297,3 +2297,57 @@ Notes:
 - env-036 prerequisite resolution was sufficient for the retry: `protoc` was present and the preserved bindgen workaround allowed the local `kaspad` build/start path to complete.
 - The node was still in early sync state at call time (`isSynced=false`, `virtualDaaScore=0`), but the approved RPC readiness requirement for one read-only `getServerInfo` check was satisfied.
 ```
+
+## env-043 env-042 script hardening
+
+```text
+Run ID: env-043
+Date/time: 2026-06-24T12:56:53Z
+Network: TN12/testnet-12 (documentation/script-only; no node start)
+
+Files changed:
+- spikes/tn12-minimal-covenant/run_env_042_observation.sh
+- spikes/tn12-minimal-covenant/README.md
+- spikes/tn12-minimal-covenant/findings.md
+
+Scope:
+- harden the env-042 observation wrapper against an invalid rusty-kaspa working directory
+- add documentation notes only
+- do not execute the wrapper
+- do not start kaspad
+- do not call RPC
+
+Script changes:
+- added early validation that the configured `rusty-kaspa` source directory exists
+- added early validation that `Cargo.toml` exists at the expected workspace root
+- added a manifest-shape check so the file still looks like the intended rusty-kaspa checkout by matching a `kaspad` workspace/binary entry
+- added explicit failure text including:
+  - `ERROR: rusty-kaspa Cargo workspace not found. Expected Cargo.toml at: <path>`
+  - `Refusing to run cargo from repo root.`
+- replaced implicit working-directory dependence with `cargo run --manifest-path "$KASPA_MANIFEST_PATH" ...`
+- logged the resolved workspace and manifest paths before any possible `cargo run`
+
+Validation commands run:
+- `command -v shellcheck`
+- `shellcheck spikes/tn12-minimal-covenant/run_env_042_observation.sh` (only if installed)
+- `bash -n spikes/tn12-minimal-covenant/run_env_042_observation.sh`
+
+Pass/fail result:
+- script_hardening_applied=true
+- wrong_workdir_guard_present=true
+- manifest_path_launch_present=true
+- script_executed=false
+- kaspad_started=false
+- rpc_called=false
+
+Scope confirmations:
+- whether wallet/key was created: false
+- whether faucet request was made: false
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- whether mainnet was used: false
+
+Notes:
+- This run was script/docs only and intentionally did not execute `run_env_042_observation.sh`.
+- The durable fix is to validate the intended Rusty Kaspa workspace explicitly and to bind `cargo run` to that manifest instead of whichever directory invoked the wrapper.
+```

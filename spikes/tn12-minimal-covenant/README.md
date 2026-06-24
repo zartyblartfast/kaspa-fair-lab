@@ -48,6 +48,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 - One final additional read-only local TN12 `getCurrentNetwork` call succeeded in env-040, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`.
 - env-041 added a documentation-only feasibility summary and go/no-go assessment for the KaspaFair/Toccata showcase idea.
 - env-042 ran a longer localhost-only TN12 sync observation under the same no-wallet/no-faucet/no-signing/no-broadcast constraints. The cumulative observation window exceeded 30 minutes across two approved long-run attempts, sync progress was visible in the node logs, the final approved read-only artifacts were captured, and the node was stopped with post-stop listener verification.
+- env-043 hardened `run_env_042_observation.sh` so it validates the intended `rusty-kaspa` Cargo workspace before any `cargo run`, uses `--manifest-path`, and refuses to fall back to the repo root.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
@@ -74,6 +75,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 - Initial env-042 launch attempt failed immediately at `2026-06-24T09:01:31Z` before readiness because `run_env_042_observation.sh` was started from `/root/kaspa-fair-lab`, where Cargo could not find a `Cargo.toml`; the recorded error was: `error: could not find Cargo.toml in /root/kaspa-fair-lab or any parent directory`.
 - After that failure, the observation flow was corrected to start from the `rusty-kaspa` Cargo checkout rather than the repo root.
+- env-043 hardened the wrapper so it now validates the resolved `rusty-kaspa` workspace directory and `Cargo.toml` up front, checks that the manifest still looks like the expected checkout by matching `kaspad`, and runs `cargo` via `--manifest-path` instead of relying on the caller's current working directory.
 - Long-run attempt A reached readiness at `2026-06-24T09:02:13Z` and then exited unexpectedly during observation at `2026-06-24T09:23:54Z` (`21m41s` runtime after readiness).
 - Long-run attempt B reused the same approved command and remained running for at least `27` more minutes under process monitoring before the managed background process exited unexpectedly before the planned 30-minute endpoint.
 - Because the long-run attempts did not remain up continuously to the exact planned endpoint, the final approved read-only capture was taken after a short localhost-only restart using the same approved command. This kept the scope read-only and localhost-only, but the observation should be described as cumulative rather than one uninterrupted 30-minute run.
