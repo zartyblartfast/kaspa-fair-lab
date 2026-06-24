@@ -1,0 +1,10 @@
+target_url=grpc://127.0.0.1:16210
+response_json={
+  "rpcApiVersion": 1,
+  "rpcApiRevision": 0,
+  "serverVersion": "1.1.1-toc.1",
+  "networkId": "testnet-12",
+  "hasUtxoIndex": false,
+  "isSynced": false,
+  "virtualDaaScore": 0
+}

@@ -50,6 +50,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 - env-042 ran a longer localhost-only TN12 sync observation under the same no-wallet/no-faucet/no-signing/no-broadcast constraints. The cumulative observation window exceeded 30 minutes across two approved long-run attempts, sync progress was visible in the node logs, the final approved read-only artifacts were captured, and the node was stopped with post-stop listener verification.
 - env-043 hardened `run_env_042_observation.sh` so it validates the intended `rusty-kaspa` Cargo workspace before any `cargo run`, uses `--manifest-path`, and refuses to fall back to the repo root.
 - env-044 reran the hardened observation script from repo root. The hardening worked: startup succeeded via `--manifest-path` and no caller-cwd Cargo failure recurred. The observed runtime after readiness was `28m36s`, localhost-only listeners were confirmed on `127.0.0.1:16311`, `127.0.0.1:16210`, and `127.0.0.1:17210`, sync progress was visible in the node log, and the node stopped with no remaining listeners. However, `kaspad` exited during the observation loop before the script reached its final read-only RPC suite, so env-044 did not regenerate fresh end-state `getServerInfo` / `getBlockDagInfo` / `getSyncStatus` artifacts.
+- env-045 ran a shorter checkpointed localhost-only TN12 sync observation. Node startup succeeded, start and end read-only checkpoints were both captured, the observation window lasted about `10m57s`, log-level sync progress occurred during the window, and the node was stopped with no remaining approved listeners. The fresh start/end RPC-visible state still remained `blockCount=0`, `headerCount=0`, `virtualDaaScore=0`, and `isSynced=false`.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
@@ -135,6 +136,94 @@ Before implementing roulette, we need confidence that base primitives actually w
 - anything signed: false
 - anything submitted/broadcast: false
 - stop condition reached: true
+
+## Env-045 checkpointed TN12 sync observation
+
+- Scope: use the approved localhost-only TN12 startup command, capture one read-only checkpoint after RPC readiness, let the node continue syncing for about 10–15 minutes, capture a second read-only checkpoint, stop the node, and verify that no approved listeners remain.
+
+### Exact startup command used
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only bind check
+
+- P2P listen: `127.0.0.1:16311`
+- gRPC listen: `127.0.0.1:16210`
+- wRPC Borsh listen: `127.0.0.1:17210`
+- All approved listen addresses were localhost-only: true
+- No `0.0.0.0` listen flag was used.
+
+### Observation duration and log path
+
+- RPC readiness was visible in `spikes/tn12-minimal-covenant/artifacts/env-045-kaspad-sync.log` at `2026-06-24 13:52:39.555+00:00`.
+- End checkpoint artifacts were written at `2026-06-24 14:03:37Z`.
+- Approximate observation duration from readiness to end checkpoint: `657` seconds (`10m57s`).
+- Node log path: `spikes/tn12-minimal-covenant/artifacts/env-045-kaspad-sync.log`
+
+### Read-only RPC artifact paths
+
+- start checkpoint:
+  - `spikes/tn12-minimal-covenant/artifacts/env-045-start-server-info.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-045-start-blockdag-info.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-045-start-sync-status.txt`
+- end checkpoint:
+  - `spikes/tn12-minimal-covenant/artifacts/env-045-end-server-info.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-045-end-blockdag-info.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-045-end-sync-status.txt`
+
+### Start/end comparison
+
+- start:
+  - `blockCount=0`
+  - `headerCount=0`
+  - `virtualDaaScore=0`
+  - `isSynced=false`
+  - `networkId=testnet-12`
+  - `serverVersion=1.1.1-toc.1`
+  - `hasUtxoIndex=false`
+- end:
+  - `blockCount=0`
+  - `headerCount=0`
+  - `virtualDaaScore=0`
+  - `isSynced=false`
+  - `networkId=testnet-12`
+  - `serverVersion=1.1.1-toc.1`
+  - `hasUtxoIndex=false`
+- blockdag peer/sync-visible fields stayed structurally the same in the fresh start/end artifacts:
+  - `network=testnet-12`
+  - `difficulty=655360.625000596`
+  - `pastMedianTime=1633687894966`
+  - `tipHashes[0]=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `virtualParentHashes[0]=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `pruningPointHash=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+  - `sink=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a`
+
+### Sync progress outcome
+
+- Sync progress occurred in logs: true
+- Example log evidence from `env-045-kaspad-sync.log`:
+  - `IBD: Processed 11275 block headers (1%)`
+  - `IBD: Processed 55349 block headers (5%)`
+  - `IBD: Processed 99423 block headers (9%)`
+- Repeated `Processed 0 blocks and N headers` lines also showed ongoing header processing during the checkpoint window.
+- Final fresh RPC-visible improvement between the start/end checkpoints: false
+- Therefore: sync progress occurred in log-level evidence, but the fresh read-only start/end RPC state still remained at the same zero/false baseline counters.
+
+### Result
+
+- Node startup succeeded.
+- Both start and end read-only checkpoint suites succeeded.
+- Node stop succeeded after the end capture.
+- Final post-stop `ss -ltnp` verification showed no remaining listeners on `127.0.0.1:16210`, `127.0.0.1:16311`, or `127.0.0.1:17210`.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- node stopped cleanly: yes
+- listeners cleared: true
 
 ## Env-044 hardened TN12 30-minute sync observation rerun
 

@@ -1933,6 +1933,118 @@ Notes:
 - The strongest current claim is feasibility for continued controlled TN12 investigation, not readiness for a public-facing roulette showcase.
 ```
 
+## env-045 checkpointed TN12 sync observation
+
+```text
+Run ID: env-045
+Date/time: 2026-06-24T14:03:51Z
+Network: TN12/testnet-12
+
+Files changed:
+- spikes/tn12-minimal-covenant/artifacts/env-045-kaspad-sync.log
+- spikes/tn12-minimal-covenant/artifacts/env-045-start-server-info.txt
+- spikes/tn12-minimal-covenant/artifacts/env-045-start-blockdag-info.txt
+- spikes/tn12-minimal-covenant/artifacts/env-045-start-sync-status.txt
+- spikes/tn12-minimal-covenant/artifacts/env-045-end-server-info.txt
+- spikes/tn12-minimal-covenant/artifacts/env-045-end-blockdag-info.txt
+- spikes/tn12-minimal-covenant/artifacts/env-045-end-sync-status.txt
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+
+Exact startup command used:
+- cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210
+
+Environment used:
+- LIBCLANG_PATH=/usr/lib/llvm-18/lib
+- BINDGEN_EXTRA_CLANG_ARGS=-isystem /usr/lib/gcc/x86_64-linux-gnu/13/include -isystem /usr/include
+- PROTOC=/usr/bin/protoc
+
+Localhost-only listen check:
+- P2P listen: 127.0.0.1:16311
+- gRPC listen: 127.0.0.1:16210
+- wRPC Borsh listen: 127.0.0.1:17210
+- all approved listen addresses were localhost-only: true
+- no 0.0.0.0 listen flag was used
+
+Observation duration:
+- RPC readiness visible in the node log at 2026-06-24 13:52:39.555+00:00
+- end checkpoint artifacts written at 2026-06-24 14:03:37Z
+- observed duration from readiness to end checkpoint: 657 seconds (10m57s)
+
+Node log path:
+- spikes/tn12-minimal-covenant/artifacts/env-045-kaspad-sync.log
+
+Read-only RPC artifact paths:
+- start checkpoint:
+  - spikes/tn12-minimal-covenant/artifacts/env-045-start-server-info.txt
+  - spikes/tn12-minimal-covenant/artifacts/env-045-start-blockdag-info.txt
+  - spikes/tn12-minimal-covenant/artifacts/env-045-start-sync-status.txt
+- end checkpoint:
+  - spikes/tn12-minimal-covenant/artifacts/env-045-end-server-info.txt
+  - spikes/tn12-minimal-covenant/artifacts/env-045-end-blockdag-info.txt
+  - spikes/tn12-minimal-covenant/artifacts/env-045-end-sync-status.txt
+
+Start/end comparison:
+- start:
+  - blockCount=0
+  - headerCount=0
+  - virtualDaaScore=0
+  - isSynced=false
+  - networkId=testnet-12
+  - serverVersion=1.1.1-toc.1
+  - hasUtxoIndex=false
+- end:
+  - blockCount=0
+  - headerCount=0
+  - virtualDaaScore=0
+  - isSynced=false
+  - networkId=testnet-12
+  - serverVersion=1.1.1-toc.1
+  - hasUtxoIndex=false
+- blockdag peer/sync-visible fields visible in both start/end artifacts:
+  - network=testnet-12
+  - difficulty=655360.625000596
+  - pastMedianTime=1633687894966
+  - tipHashes[0]=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a
+  - virtualParentHashes[0]=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a
+  - pruningPointHash=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a
+  - sink=300fe02031119f6132f39ec03c5cf7ddf10cc23d6f5c3e5fe42d6391dc3d5c2a
+
+Sync progress outcome:
+- sync progress occurred: true
+- log evidence examples:
+  - `IBD: Processed 11275 block headers (1%)`
+  - `IBD: Processed 55349 block headers (5%)`
+  - `IBD: Processed 99423 block headers (9%)`
+- repeated `Processed 0 blocks and N headers` lines also showed ongoing header processing during the checkpoint window
+- fresh RPC-visible state improvement between start and end checkpoints: false
+- interpretation: log-level sync progress occurred, but the fresh read-only start/end RPC state remained at the same zero/false baseline counters
+
+Pass/fail result:
+- node_startup_succeeded=true
+- start_readonly_capture_succeeded=true
+- end_readonly_capture_succeeded=true
+- post_stop_listener_verification_succeeded=true
+
+Teardown result:
+- node stopped cleanly: yes
+- listeners were cleared: true
+- post-stop `ss -ltnp` showed no listeners on 127.0.0.1:16210, 127.0.0.1:16311, or 127.0.0.1:17210
+
+Scope confirmations:
+- whether wallet/key was created: false
+- whether faucet request was made: false
+- whether anything was signed: false
+- whether anything was submitted/broadcast: false
+- whether mainnet was used: false
+
+Notes:
+- This run achieved the goal that env-044 missed: fresh end-state read-only artifacts were captured before shutdown.
+- The strongest safe conclusion is that localhost-only TN12 startup plus checkpointed read-only capture is stable over about 11 minutes, while RPC-visible DAG/server counters still remain unchanged even though log-level sync progress is visible.
+- Recommended next action: one more explicitly approved localhost-only read-only sync characterization step that either extends the checkpoint window modestly or adds another checkpoint later in the same run to test when, if ever, the RPC-visible counters diverge from the zero/false baseline.
+```
+
 ## env-044 hardened TN12 30-minute sync observation rerun
 
 ```text

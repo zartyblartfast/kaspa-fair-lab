@@ -25,6 +25,8 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 1g) env-044 reran the hardened `run_env_042_observation.sh` from repo root. The env-043 hardening worked: `kaspad` launched via `--manifest-path`, the earlier caller-cwd Cargo failure did not recur, and localhost-only listeners were confirmed on `127.0.0.1:16311`, `127.0.0.1:16210`, and `127.0.0.1:17210`. The run stayed up for `28m36s` after readiness, showed additional sync progress in logs (`IBD: Processed 363640 block headers (33%)`, `IBD: Processed 417842 block headers (38%)`), and left no listeners behind after exit. However, `kaspad` exited during the observation loop before the script reached its final read-only RPC suite, so env-044 did not regenerate fresh end-state `getServerInfo` / `getBlockDagInfo` / `getSyncStatus` artifacts.
 
+1h) env-045 ran a shorter checkpointed localhost-only TN12 sync observation. Node startup succeeded, start and end read-only checkpoints were both captured, the observation lasted `10m57s` from readiness to end checkpoint, log-level sync progress occurred (`IBD: Processed 11275 block headers (1%)`, `55349 (5%)`, `99423 (9%)`), and the node was stopped with no remaining listeners on `127.0.0.1:16210`, `127.0.0.1:16311`, or `127.0.0.1:17210`. The fresh start/end RPC-visible state still remained `blockCount=0`, `headerCount=0`, `virtualDaaScore=0`, and `isSynced=false`.
+
 2) Current repo-backed local evidence now covers:
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles.
