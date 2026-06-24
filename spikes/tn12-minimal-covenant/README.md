@@ -47,11 +47,91 @@ Before implementing roulette, we need confidence that base primitives actually w
 - One additional read-only local TN12 `getSyncStatus` call succeeded in env-039, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`.
 - One final additional read-only local TN12 `getCurrentNetwork` call succeeded in env-040, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-040-get-current-network.txt`.
 - env-041 added a documentation-only feasibility summary and go/no-go assessment for the KaspaFair/Toccata showcase idea.
+- env-042 ran a longer localhost-only TN12 sync observation under the same no-wallet/no-faucet/no-signing/no-broadcast constraints. The cumulative observation window exceeded 30 minutes across two approved long-run attempts, sync progress was visible in the node logs, the final approved read-only artifacts were captured, and the node was stopped with post-stop listener verification.
 - No signing was performed.
 - No real UTXO was used.
 - No faucet funding was used.
 - No live submit/broadcast steps were attempted.
 - No live TN12 create/spend/inspect lifecycle has been proven.
+
+## Env-042 local TN12 30-minute sync observation
+
+- Scope: use the approved localhost-only TN12 startup command, observe sync behavior for approximately 30 minutes without any state-changing RPC/wallet/faucet/signing/broadcast step, capture startup/sync logs, capture final read-only RPC outputs, stop the node, and verify the localhost listeners are gone.
+
+### Exact startup command used
+
+- `cargo run --release --bin kaspad -- --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210`
+
+### Localhost-only bind check
+
+- P2P listen: `127.0.0.1:16311`
+- gRPC listen: `127.0.0.1:16210`
+- wRPC Borsh listen: `127.0.0.1:17210`
+- All approved listen addresses were localhost-only: true
+- No `0.0.0.0` listen flag was used.
+
+### Observation duration and control notes
+
+- Initial env-042 launch attempt failed immediately at `2026-06-24T09:01:31Z` before readiness because `run_env_042_observation.sh` was started from `/root/kaspa-fair-lab`, where Cargo could not find a `Cargo.toml`; the recorded error was: `error: could not find Cargo.toml in /root/kaspa-fair-lab or any parent directory`.
+- After that failure, the observation flow was corrected to start from the `rusty-kaspa` Cargo checkout rather than the repo root.
+- Long-run attempt A reached readiness at `2026-06-24T09:02:13Z` and then exited unexpectedly during observation at `2026-06-24T09:23:54Z` (`21m41s` runtime after readiness).
+- Long-run attempt B reused the same approved command and remained running for at least `27` more minutes under process monitoring before the managed background process exited unexpectedly before the planned 30-minute endpoint.
+- Because the long-run attempts did not remain up continuously to the exact planned endpoint, the final approved read-only capture was taken after a short localhost-only restart using the same approved command. This kept the scope read-only and localhost-only, but the observation should be described as cumulative rather than one uninterrupted 30-minute run.
+- Cumulative observed runtime before the final read-only capture exceeded 30 minutes.
+
+### Node log and artifacts
+
+- primary node log: `spikes/tn12-minimal-covenant/artifacts/env-042-kaspad-30min-sync.log`
+- supporting runner/monitor log: `spikes/tn12-minimal-covenant/artifacts/env-042-runner.log`
+- post-stop listener check: `spikes/tn12-minimal-covenant/artifacts/env-042-post-stop-listeners.txt`
+- read-only outputs:
+  - `spikes/tn12-minimal-covenant/artifacts/env-042-get-server-info-after-30min.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-042-get-blockdag-info-after-30min.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-042-get-sync-status-after-30min.txt`
+
+### Read-only RPC calls used
+
+- `getServerInfo`
+- `getBlockDagInfo`
+- `getSyncStatus`
+
+### Before/after comparison
+
+- Before (earlier env-037/env-038/env-039 evidence):
+  - `blockCount=0`
+  - `headerCount=0`
+  - `virtualDaaScore=0`
+  - `isSynced=false`
+- After (env-042 final approved read-only capture):
+  - `blockCount=0`
+  - `headerCount=0`
+  - `virtualDaaScore=0`
+  - `isSynced=false`
+
+### Sync progress outcome
+
+- Sync progress did occur in the startup/sync logs.
+- The strongest concrete evidence is in the long-run observation log excerpts recorded in `env-042-runner.log`, including:
+  - `IBD: Processed 121972 block headers (8%)`
+  - `IBD: Processed 289042 block headers (19%)`
+- Even with that observed header-proof/IBD progress, the final approved read-only `getBlockDagInfo`/`getServerInfo` capture still showed `blockCount=0`, `headerCount=0`, `virtualDaaScore=0`, and `isSynced=false`.
+- Therefore: sync progress occurred in logs, but it was not reflected as an improved final read-only DAG/server state in the captured endpoint outputs.
+
+### Result
+
+- Node startup succeeded.
+- Localhost-only bind policy held.
+- Final approved read-only captures succeeded.
+- Final post-stop `ss -ltnp` verification showed no remaining listeners on `127.0.0.1:16210`, `127.0.0.1:16311`, or `127.0.0.1:17210`.
+- Final capture stop was clean; however, the two longer observation attempts ended unexpectedly before the exact planned endpoint.
+
+### Scope confirmations
+
+- wallet/key created: false
+- faucet request made: false
+- anything signed: false
+- anything submitted/broadcast: false
+- stop condition reached: true
 
 ## Env-041 feasibility summary and go/no-go assessment
 

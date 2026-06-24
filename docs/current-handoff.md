@@ -21,6 +21,8 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 1e) env-041 added a documentation-only feasibility summary and go/no-go assessment for the KaspaFair/Toccata showcase idea.
 
+1f) env-042 performed a longer localhost-only TN12 sync observation. The long-run observation attempts did not stay up continuously through the exact planned endpoint, but cumulative observed runtime exceeded 30 minutes, sync progress was visible in node logs (`IBD: Processed ... block headers`), the final approved read-only `getServerInfo` / `getBlockDagInfo` / `getSyncStatus` artifacts were captured, and post-stop `ss -ltnp` verification showed no remaining listeners on `127.0.0.1:16210`, `127.0.0.1:16311`, or `127.0.0.1:17210`.
+
 2) Current repo-backed local evidence now covers:
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles.
@@ -36,6 +38,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 - one additional live read-only TN12 `getBlockDagInfo` call now succeeded with captured output.
 - one additional live read-only TN12 `getSyncStatus` call now succeeded with captured output.
 - one final additional live read-only TN12 `getCurrentNetwork` call now succeeded with captured output.
+- one longer localhost-only TN12 sync observation now exists with captured logs and final read-only artifacts; sync progress was visible in logs, but final read-only DAG/server counters still remained `blockCount=0`, `headerCount=0`, `virtualDaaScore=0`, `isSynced=false`.
 
 3) Scope limits still in force and still unproven for anything beyond read-only connectivity:
 - nothing was signed,
@@ -46,6 +49,7 @@ Continue TN12 minimal covenant spike route discovery with documentation-first ev
 
 4) Conservative conclusion:
 - Local tooling is now sufficient to prove localhost-only TN12 node startup plus one read-only `getServerInfo` call, one read-only `getBlockDagInfo` call, one read-only `getSyncStatus` call, and one read-only `getCurrentNetwork` call.
+- Local tooling is also sufficient to run a constrained localhost-only sync observation and capture node log evidence plus end-of-run read-only artifacts, though the current evidence still does not prove a stable fully-synced TN12 state.
 - env-041 rates local Toccata/SilverScript feasibility GREEN, local Rust transaction/RPC feasibility GREEN, live TN12 readiness AMBER, and future roulette-PoC suitability AMBER.
 - Local tooling is still not sufficient to claim live TN12 create/spend/inspect works.
 - Roulette/web-app work should remain paused until the covenant lifecycle is proven with live TN12 evidence.
