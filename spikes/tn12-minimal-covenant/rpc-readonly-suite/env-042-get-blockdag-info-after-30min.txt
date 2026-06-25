@@ -1,0 +1,19 @@
+target_url=grpc://127.0.0.1:16210
+response_json={
+  "network": "testnet-12",
+  "blockCount": 1235733,
+  "headerCount": 1235733,
+  "tipHashes": [
+    "d91b5552251c41b5d6d1a0e3be0de303ad3f667f8baad0a7e0d51c204f23437b",
+    "b4ed86142edbb3cc2e05309186d5985e9799e3ae1b5d5c557f036f67d1e14adb"
+  ],
+  "difficulty": 1.0000001192093038,
+  "pastMedianTime": 1782375120686,
+  "virtualParentHashes": [
+    "d91b5552251c41b5d6d1a0e3be0de303ad3f667f8baad0a7e0d51c204f23437b",
+    "b4ed86142edbb3cc2e05309186d5985e9799e3ae1b5d5c557f036f67d1e14adb"
+  ],
+  "pruningPointHash": "e85a96dc779b02eaa8999a313676a85f718cae555c9b1fabecac0314e1a0b571",
+  "virtualDaaScore": 46858621,
+  "sink": "d91b5552251c41b5d6d1a0e3be0de303ad3f667f8baad0a7e0d51c204f23437b"
+}

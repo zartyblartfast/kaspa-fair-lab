@@ -1,0 +1,25 @@
+ENV-046 TN12 synced node read-only RPC evidence
+
+Result: PASS
+
+Target:
+grpc://127.0.0.1:16210
+
+Observed:
+networkId: testnet-12
+serverVersion: 1.1.1-toc.1
+hasUtxoIndex: false
+isSynced: true
+blockCount: 1235733
+headerCount: 1235733
+virtualDaaScore: 46858621
+
+Notes:
+- Local kaspad TN12 node reached IBD 100%.
+- Node continued processing live relayed blocks/headers after IBD completion.
+- Earlier process exits were caused by Linux OOM killer.
+- Adding 8 GB swap allowed sync to complete.
+- No wallet was created.
+- No faucet funds were requested.
+- No signing was performed.
+- No transaction was broadcast.
