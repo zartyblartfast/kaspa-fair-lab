@@ -14,12 +14,22 @@ blockCount: 1235733
 headerCount: 1235733
 virtualDaaScore: 46858621
 
-Notes:
-- Local kaspad TN12 node reached IBD 100%.
-- Node continued processing live relayed blocks/headers after IBD completion.
-- Earlier process exits were caused by Linux OOM killer.
-- Adding 8 GB swap allowed sync to complete.
-- No wallet was created.
-- No faucet funds were requested.
-- No signing was performed.
-- No transaction was broadcast.
+Infrastructure finding:
+Earlier kaspad exits were caused by Linux OOM killer, not tmux and not primarily DNS.
+
+Evidence:
+dmesg showed repeated OOM killer entries for kaspad.
+
+Mitigation:
+8 GB swap was added on the VPS. After that, the local TN12 kaspad node completed IBD and continued processing live relayed blocks/headers.
+
+Node command used:
+target/release/kaspad --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210 --connect=178.105.76.81:16311 --connect=86.48.24.208:16311
+
+Safety boundary:
+No wallet was created.
+No faucet funds were requested.
+No signing was performed.
+No transaction was broadcast.
+No mainnet work was performed.
+Roulette PoC remains paused.

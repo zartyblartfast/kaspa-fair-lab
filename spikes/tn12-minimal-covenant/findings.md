@@ -2548,3 +2548,54 @@ Notes:
 - This run was script/docs only and intentionally did not execute `run_env_042_observation.sh`.
 - The durable fix is to validate the intended Rusty Kaspa workspace explicitly and to bind `cargo run` to that manifest instead of whichever directory invoked the wrapper.
 ```
+
+## env-046 synced-node read-only RPC evidence preservation
+
+```text
+Run ID: env-046
+Date/time: documentation/evidence-only follow-up
+Network: TN12/testnet-12
+
+Files changed:
+- spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/env-046-get-server-info-synced.txt
+- spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/env-046-get-blockdag-info-synced.txt
+- spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/env-046-get-sync-status-synced.txt
+- spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/env-046-summary.txt
+- spikes/tn12-minimal-covenant/findings.md
+- spikes/tn12-minimal-covenant/README.md
+- docs/current-handoff.md
+- docs/toccata-feasibility.md
+
+Verdict:
+- local TN12 full sync: GREEN (with RAM/swap caveat)
+- read-only RPC confirmation: GREEN
+- wallet/faucet/signing/broadcast/live covenant operations: NOT TESTED
+- roulette status: PAUSED
+
+Preserved evidence directory:
+- spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/
+
+Observed read-only RPC values:
+- networkId=testnet-12
+- serverVersion=1.1.1-toc.1
+- hasUtxoIndex=false
+- isSynced=true
+- blockCount=1235733
+- headerCount=1235733
+- virtualDaaScore=46858621
+
+Infrastructure finding:
+- earlier `kaspad` exits were caused by the Linux OOM killer, not tmux and not primarily DNS.
+- `dmesg` showed repeated OOM killer entries for `kaspad`.
+- adding 8 GB swap on the VPS allowed sync to complete.
+
+GitHub remote:
+- https://github.com/zartyblartfast/kaspa-fair-lab.git
+
+Scope confirmations:
+- no wallet was created
+- no faucet funds were requested
+- no signing was performed
+- no transaction was broadcast
+- no mainnet work was performed
+```
