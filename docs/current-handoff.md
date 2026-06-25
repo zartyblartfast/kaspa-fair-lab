@@ -15,8 +15,10 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - local Rust transaction/RPC path: GREEN
 - local TN12 synced node: GREEN (RAM/swap caveat)
 - local TN12 read-only RPC confirmation: GREEN
-- ENV-047 is planning-only and pending explicit approval before any execution
-- wallet/faucet/signing/broadcast/covenant lifecycle: NOT TESTED
+- ENV-047 is planning-only background context
+- ENV-049 Gate 1 key/address generation: COMPLETE
+- one TN12 test-only address has been generated
+- wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1: NOT TESTED
 - roulette remains PAUSED
 
 ## What has been proven
@@ -38,6 +40,9 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
   - `getCurrentNetwork`
 - Latest synced-node read-only values include `hasUtxoIndex=false`, `isSynced=true`, `blockCount=1235733`, `headerCount=1235733`, and `virtualDaaScore=46858621`.
 - Recent sync observation shows log-level header sync progress.
+- ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
+- Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
+- Private material for ENV-049, if needed, is stored only under ignored `spikes/tn12-minimal-covenant/local-secrets/`.
 
 ## What has not been proven / tested
 
@@ -69,11 +74,11 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## Recommended next step
 
-1. Treat ENV-046 as complete and as the current TN12 readiness baseline.
-2. Treat ENV-047 as planning-only background context.
-3. Treat ENV-048 as the active documentation/preflight step for safely fixing the future Gate 1 key/address route.
-4. Use `spikes/tn12-minimal-covenant/env-048-key-address-preflight.md` as the current preflight reference before any key/address approval.
-5. Keep all live-state actions gated behind explicit future approval.
+1. Treat ENV-046 as complete and as the TN12 readiness baseline.
+2. Treat ENV-047 and ENV-048 as planning/preflight background context.
+3. Treat ENV-049 Gate 1 as complete: one TN12 test-only address generated, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
+4. Keep private material restricted to ignored `spikes/tn12-minimal-covenant/local-secrets/`.
+5. Do not proceed to faucet funding, UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -84,10 +89,20 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## ENV-048 preflight status
 
-- Active step: documentation/preflight only
+- Active step: completed preflight reference
 - Discovery note: codex-spark completed the prior read-only discovery pass
 - Formal preflight doc: `spikes/tn12-minimal-covenant/env-048-key-address-preflight.md`
-- Execution state: no key/address/wallet/faucet/signing/broadcast action has been executed
+- Execution state during ENV-048: no key/address/wallet/faucet/signing/broadcast action was executed
+
+## ENV-049 Gate 1 status
+
+- Status: complete
+- One TN12 test-only address generated
+- Public evidence path: `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/env-049-summary.txt`
+- Helper path used: `spikes/tn12-minimal-covenant/env-049-key-address-helper/src/main.rs`
+- Private material, if any, stored only under ignored `spikes/tn12-minimal-covenant/local-secrets/`
+- Faucet/signing/broadcast/covenant lifecycle still NOT TESTED
+- Roulette remains PAUSED
 
 ## Suggested model/session guidance
 

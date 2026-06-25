@@ -38,3 +38,6 @@ spikes/tn12-minimal-covenant/local-secrets/
 spikes/tn12-minimal-covenant/**/*.secret
 spikes/tn12-minimal-covenant/**/*.private
 spikes/tn12-minimal-covenant/**/*.key
+
+# Rust build output from nested spike/helper crates
+**/target/

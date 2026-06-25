@@ -1,0 +1,12 @@
+Result: PASS
+Network: testnet-12 / TN12
+Public address generated: kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg
+Address prefix/type: kaspatest / PubKey
+Tool/helper path used: spikes/tn12-minimal-covenant/env-049-key-address-helper/src/main.rs
+Node contact required: no
+Faucet funds requested: no
+UTXO inspection performed: no
+Signing performed: no
+Transaction broadcast: no
+Private key/seed/mnemonic/wallet material committed: no
+Private material storage path: spikes/tn12-minimal-covenant/local-secrets/env-049-key-address/tn12-test-only-key.private
