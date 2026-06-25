@@ -19,6 +19,7 @@
 
 - No implementation of covenant logic exists in repo yet.
 - This spike is constrained to TN12/testnet exploration.
+- The working VPS TN12 node procedure is documented in `spikes/tn12-minimal-covenant/tn12-node-runbook.md`.
 
 ## Unknown
 

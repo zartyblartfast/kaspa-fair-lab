@@ -34,6 +34,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 
 ## Current status
 
+- Working VPS TN12 node procedure and synced-node evidence summary are recorded in `spikes/tn12-minimal-covenant/tn12-node-runbook.md`.
 - Status: env-036 resolved the local `protoc` build prerequisite by installing `protobuf-compiler` and verifying `protoc --version` -> `libprotoc 3.21.12`; the bindgen workaround from env-035 remains needed for later `kaspad` build retries.
 - SilverScript builds locally.
 - `simple_covenant.sil` compiles locally.
