@@ -70,8 +70,10 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 ## Recommended next step
 
 1. Treat ENV-046 as complete and as the current TN12 readiness baseline.
-2. Treat ENV-047 as planning-only pending explicit approval.
-3. Use `spikes/tn12-minimal-covenant/env-047-gated-plan.md` as the gate-by-gate checklist for any future live work.
+2. Treat ENV-047 as planning-only background context.
+3. Treat ENV-048 as the active documentation/preflight step for safely fixing the future Gate 1 key/address route.
+4. Use `spikes/tn12-minimal-covenant/env-048-key-address-preflight.md` as the current preflight reference before any key/address approval.
+5. Keep all live-state actions gated behind explicit future approval.
 
 ## ENV-047 planning status
 
@@ -79,6 +81,19 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Status: planning-only
 - Execution state: no wallet, no faucet, no signing, no broadcast, no mainnet
 - Any ENV-047 gate requires explicit approval before execution
+
+## ENV-048 preflight status
+
+- Active step: documentation/preflight only
+- Discovery note: codex-spark completed the prior read-only discovery pass
+- Formal preflight doc: `spikes/tn12-minimal-covenant/env-048-key-address-preflight.md`
+- Execution state: no key/address/wallet/faucet/signing/broadcast action has been executed
+
+## Suggested model/session guidance
+
+- use `gpt-5.4` for ENV-048 documentation and normal repo work
+- use `gpt-5.5` before any high-risk signing, broadcast, or covenant execution
+- use `gpt-5.3-codex-spark` only for small bounded tasks and refresh with `/new` regularly
 
 ## First prompt for new ChatGPT session
 

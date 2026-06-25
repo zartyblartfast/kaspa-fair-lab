@@ -32,3 +32,9 @@ build/
 dist/
 coverage/
 external/
+
+# kaspa-fair-lab local-only secret material
+spikes/tn12-minimal-covenant/local-secrets/
+spikes/tn12-minimal-covenant/**/*.secret
+spikes/tn12-minimal-covenant/**/*.private
+spikes/tn12-minimal-covenant/**/*.key
