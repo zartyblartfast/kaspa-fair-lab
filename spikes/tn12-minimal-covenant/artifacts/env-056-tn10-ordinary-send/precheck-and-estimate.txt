@@ -1,0 +1,13 @@
+ENV-056 precheck observations
+
+Wallet prerequisites verified:
+- /root/.kaspa/env052-tn10-test-only.wallet exists
+- /root/.kaspa/env052-tn10-test-only.password exists
+
+Safe recipient path discovered inside the same TN10 wallet/account:
+- address new
+- generated fresh recipient address: kaspatest:qpf0pc97d4vxtd99gppqtzhrjtna4t396lvu2t249p9f0rkh05pxxc5mj9yf2
+
+Estimate command result before send:
+- command: estimate 1 0
+- result: Estimate - Amount: 1 TKAS  Fees: 0.002036 TKAS  Total: 1.002036 TKAS  UTXOs: 1

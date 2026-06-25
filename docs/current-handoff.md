@@ -27,6 +27,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-053 TN10 faucet funding only: COMPLETE
 - ENV-054 TN10 read-only balance and UTXO inspection: COMPLETE
 - ENV-055 TN10 ordinary spend preflight / dry-run only: READY
+- ENV-056 TN10 live ordinary send of 1 TKAS: COMPLETE
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -58,6 +59,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Public ENV-054 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
 - ENV-055 completed ordinary TN10 spend preflight only and identified the future estimate/send command path without signing or broadcasting.
 - Public ENV-055 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
+- ENV-056 completed one live ordinary TN10 send of 1 TKAS to a fresh TN10 recipient address and confirmed the resulting recipient/change UTXOs.
+- Public ENV-056 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -111,7 +114,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 8. Treat ENV-053 as complete: TN10 faucet funding request succeeded for the ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-053-tn10-faucet-funding/`.
 9. Treat ENV-054 as complete: TN10 read-only balance and UTXO inspection passed for the funded ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
 10. Treat ENV-055 as ready-only preflight: TN10 ordinary spend syntax and estimate/send path were identified without signing or broadcasting, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
-11. Do not proceed to signing, broadcast, or covenant lifecycle work without explicit future approval.
+11. Treat ENV-056 as complete: one live ordinary TN10 send of 1 TKAS succeeded and was confirmed by read-only post-send checks, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
+12. Do not proceed to covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -313,3 +317,18 @@ No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
 - Recommended future tiny send command path: open wallet, run `estimate 1 0`, then `send <fresh-tn10-test-only-recipient-address> 1 0`
 - Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/env-055-summary.txt`
 - No signing, broadcast, covenant action, private-material exposure, or mainnet action was performed.
+
+## ENV-056 TN10 live ordinary send of 1 TKAS
+
+- Status: complete
+- Network: TN10 / `testnet-10`
+- Source wallet: `env052-tn10-test-only`
+- Source address: `kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx`
+- Recipient address: `kaspatest:qpf0pc97d4vxtd99gppqtzhrjtna4t396lvu2t249p9f0rkh05pxxc5mj9yf2`
+- Amount sent: `1 TKAS`
+- Priority fee: `0`
+- Estimate observed before send: fees `0.002036 TKAS`, total `1.002036 TKAS`, UTXOs `1`
+- Confirmed transaction id: `c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135`
+- Post-send read-only confirmation: source balance `0.0`, recipient balance `1.0`, wallet total `999.997964 TKAS`, change output `998.997964 TKAS`
+- Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/env-056-summary.txt`
+- No covenant action, mainnet action, or private-material exposure occurred.

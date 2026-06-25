@@ -1,0 +1,52 @@
+ENV-056 TN10 live ordinary send of 1 TKAS
+
+Result: PASS
+Network: testnet-10 / TN10
+Source wallet name: env052-tn10-test-only
+Source public address: kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+Recipient public address: kaspatest:qpf0pc97d4vxtd99gppqtzhrjtna4t396lvu2t249p9f0rkh05pxxc5mj9yf2
+Amount sent: 1 TKAS
+Priority fee: 0
+
+Carry-forward pre-send state from ENV-054 / ENV-055:
+- source balance before send: 1000.0 TKAS
+- source UTXO before send: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116:0
+
+Estimate result:
+- command: estimate 1 0
+- amount: 1 TKAS
+- estimated fees: 0.002036 TKAS
+- estimated total: 1.002036 TKAS
+- estimated UTXOs used: 1
+
+Live ordinary send result:
+- command: send kaspatest:qpf0pc97d4vxtd99gppqtzhrjtna4t396lvu2t249p9f0rkh05pxxc5mj9yf2 1 0
+- observed send summary: Send - Amount: 1 TKAS  Fees: 0.002036 TKAS  Total: 1.002036 TKAS  UTXOs: 1
+- transaction id/hash: c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135
+
+Post-send balance/UTXO summary from read-only confirmation:
+- wallet/account total after send: 999.997964 TKAS across 2 UTXOs
+- source address balance after send: 0.0
+- recipient address balance after send: 1.0
+- source address UTXOs after send: 0
+- recipient address UTXO after send: c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:0 amount 100000000 sompi
+- change address observed: kaspatest:qq6vyl023d5gkwu92jpg8vtcu9uhrpcnn8qwsxxm58thndgknxcpgmvr0q4xn
+- change UTXO observed: c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:1 amount 99899796400 sompi
+- wallet history marked the transaction as outgoing confirmed
+
+Attempt-count note:
+- One successful ordinary send was executed and confirmed.
+- Before that successful send, one earlier pre-sign automation mismatch reached a wallet-password prompt and stopped without signing or broadcasting; after that stop, the user explicitly approved one corrected send command.
+
+Artifacts:
+- precheck and estimate: spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/precheck-and-estimate.txt
+- send and postcheck: spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/send-and-postcheck.txt
+
+Safety confirmations:
+- Exactly 1 TKAS was sent in the successful live send.
+- Exactly one successful ordinary send was executed after explicit approval to retry the corrected send command.
+- No covenant create/spend action was performed.
+- No mainnet action was performed.
+- No private material was exposed or committed.
+- No mnemonic, seed, private key, wallet password, or wallet file contents were written to public artifacts.
+- No wallet files/password files/private material were committed.

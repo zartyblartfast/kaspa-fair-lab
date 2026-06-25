@@ -1,0 +1,28 @@
+ENV-056 send and post-send public evidence
+
+Successful send path:
+- network testnet-10
+- server public
+- connect
+- wallet open env052-tn10-test-only
+- send kaspatest:qpf0pc97d4vxtd99gppqtzhrjtna4t396lvu2t249p9f0rkh05pxxc5mj9yf2 1 0
+
+Observed send output:
+- Send - Amount: 1 TKAS  Fees: 0.002036 TKAS  Total: 1.002036 TKAS  UTXOs: 1
+- Sending 1 KAS to kaspatest:qpf0pc97d4vxtd99gppqtzhrjtna4t396lvu2t249p9f0rkh05pxxc5mj9yf2, tx ids:
+
+Observed transaction id from post-send confirmed wallet history / UTXO checks:
+- c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135
+
+Observed wallet history:
+- [70ca6817] c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135 @500,624,014 DAA - outgoing confirmed
+- Payment: 1  Used: 1,000  Fees: 0.002036  Change: 998.997964  UTXOs: [1↠2]
+
+Post-send read-only confirmation:
+- source address balance: 0.0
+- recipient address balance: 1.0
+- source address UTXOs: 0
+- recipient address UTXO: c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:0 amount 100000000 sompi
+- change address: kaspatest:qq6vyl023d5gkwu92jpg8vtcu9uhrpcnn8qwsxxm58thndgknxcpgmvr0q4xn
+- change balance: 998.997964
+- change UTXO: c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:1 amount 99899796400 sompi
