@@ -1,0 +1,47 @@
+ENV-051 TN10 public wRPC read-only proof
+
+Result: PASS
+
+Decision:
+Pivot live covenant lifecycle testing from TN12 to TN10.
+
+Reason:
+Official Rusty Kaspa releases show tn10-toc3 as the active Toccata testnet validation release.
+TN12 funding/mining path remained blocked or unclear.
+Official tn10-toc3 kaspa-wallet successfully connected to public resolver-backed TN10 wRPC.
+
+Tool:
+tools/rusty-kaspa-releases/tn10-toc3/bin/kaspa-wallet
+
+Connection sequence:
+network testnet-10
+server public
+connect
+
+Verified read-only RPC calls:
+rpc get-server-info
+rpc get-current-network
+rpc get-sync-status
+rpc get-block-dag-info
+
+Observed:
+server_version: 2.0.1
+network_id: Testnet suffix 10
+has_utxo_index: true
+is_synced: true
+
+Resolved public TN10 endpoint observed:
+wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh
+
+Safety:
+No wallet was created.
+No key/address was generated.
+No faucet funds were requested.
+No signing was performed.
+No transaction was broadcast.
+No covenant transaction was created or spent.
+No mainnet action was performed.
+
+Notes:
+get-current-network alone only proves Testnet class.
+Use get-server-info or get-block-dag-info to confirm suffix 10.

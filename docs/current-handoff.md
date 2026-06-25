@@ -21,6 +21,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-050 Gate 2 faucet funding: PENDING / BLOCKED FOR SAFETY REVIEW
 - ENV-050A funding-route discovery: COMPLETE (needs human follow-up)
 - ENV-050B TN12 mining preflight: COMPLETE
+- ENV-050C TN12 mining attempt: BLOCKED (miner binary unavailable)
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -49,6 +50,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Public ENV-050 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050-faucet-funding/`.
 - Public ENV-050A discovery evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050a-funding-route-discovery/`.
 - Public ENV-050B mining preflight evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050b-tn12-mining-preflight/`.
+- Public ENV-050C mining-attempt evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050c-tn12-mining-attempt/`.
 - Private material for ENV-049, if needed, is stored only under ignored `spikes/tn12-minimal-covenant/local-secrets/`.
 
 ## What has not been proven / tested
@@ -58,6 +60,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-050 Gate 2 funding completion.
 - ENV-050A still needs a human-verified TN12 funding route before any submission.
 - ENV-050B identified mining as the likely TN12 funding path if a later one-thread mining attempt is approved.
+- ENV-050C showed the immediate blocker: `kaspa-miner` is not installed/available locally, so no mining run occurred.
 - Gate 3 read-only UTXO inspection (not started).
 - Live TN12 transaction submission.
 - Mempool acceptance.
@@ -90,7 +93,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 4. Treat ENV-050 Gate 2 as still blocked pending a verified TN12/testnet-12 funding route.
 5. Treat ENV-050A as complete discovery-only: official Discord/community escalation was identified, but no automated funding route was verified strongly enough to use.
 6. Treat ENV-050B as complete preflight-only: direct TN12 mining against the existing synced node is the likely next funding path if explicitly approved later; no mining has started yet.
-7. Do not proceed to Gate 3 read-only UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
+7. Treat ENV-050C as blocked: the approved one-thread mining attempt could not start because `kaspa-miner` is not installed/available locally, and no install was approved.
+8. Do not proceed to Gate 3 read-only UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -155,6 +159,17 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - UTXO/signing/broadcast/covenant lifecycle remains NOT TESTED
 - Roulette remains PAUSED
 
+## ENV-050C mining attempt status
+
+- Status: blocked (result = BLOCKED)
+- Approved one-thread mining attempt did not start because `kaspa-miner` was not installed/available locally
+- Current synced TN12 `kaspad` node remained running; no restart and no `--utxoindex` change were performed
+- Existing ENV-049 address remained the only address in scope: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`
+- No miner process connected to the local node
+- No UTXO inspection, signing, broadcast, or covenant lifecycle work was performed
+- Mining-attempt evidence path: `spikes/tn12-minimal-covenant/artifacts/env-050c-tn12-mining-attempt/env-050c-summary.txt`
+- Roulette remains PAUSED
+
 ## Suggested model/session guidance
 
 - use `gpt-5.4` for ENV-048 documentation and normal repo work
@@ -182,3 +197,43 @@ Use this as the first prompt:
 - Do not modify external SilverScript source.
 - Do not start kaspad.
 - Do not call RPC.
+
+## ENV-051 TN10 public wRPC proof
+
+ENV-051 established that the live path should pivot from TN12 to TN10.
+
+Reason:
+- TN12 funding/mining route remained blocked or unclear.
+- Official Rusty Kaspa release evidence points to TN10 Toccata validation via `tn10-toc3`.
+- Official `tn10-toc3` `kaspa-wallet` connected successfully to public resolver-backed TN10 wRPC.
+- Read-only calls succeeded against TN10:
+  - `rpc get-server-info`
+  - `rpc get-current-network`
+  - `rpc get-sync-status`
+  - `rpc get-block-dag-info`
+
+Evidence:
+`spikes/tn12-minimal-covenant/artifacts/env-051-tn10-public-rpc-proof/env-051-summary.txt`
+
+Safety:
+No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
+
+## ENV-051 TN10 public wRPC proof
+
+ENV-051 established that the live path should pivot from TN12 to TN10.
+
+Reason:
+- TN12 funding/mining route remained blocked or unclear.
+- Official Rusty Kaspa release evidence points to TN10 Toccata validation via `tn10-toc3`.
+- Official `tn10-toc3` `kaspa-wallet` connected successfully to public resolver-backed TN10 wRPC.
+- Read-only calls succeeded against TN10:
+  - `rpc get-server-info`
+  - `rpc get-current-network`
+  - `rpc get-sync-status`
+  - `rpc get-block-dag-info`
+
+Evidence:
+`spikes/tn12-minimal-covenant/artifacts/env-051-tn10-public-rpc-proof/env-051-summary.txt`
+
+Safety:
+No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
