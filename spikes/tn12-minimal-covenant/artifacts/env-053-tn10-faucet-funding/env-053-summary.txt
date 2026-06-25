@@ -1,0 +1,33 @@
+ENV-053 TN10 faucet funding only
+
+Result: PASS
+Network: testnet-10 / TN10
+Address funded: kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+Faucet source used: https://faucet.kaspanet.io/
+Faucet URL used: https://faucet-tn10.kaspanet.io/
+Selected network: TN10 / testnet-10 (site network value `kaspatest` on the TN10 faucet)
+Amount requested: 1000 TKAS
+Faucet response: success; faucet returned amount=100000000000 sompi, address=kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx, network=kaspatest, available=10000000000000 sompi before limit update
+Txid/hash: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116
+Timestamp: 2026-06-25T20:14:49Z
+Status detail: request succeeded
+
+Safe public evidence captured:
+- Landing page listed testnet faucets at https://faucet.kaspanet.io/ as:
+  - faucet-tn10.kaspanet.io
+  - faucet-tn11.kaspanet.io
+- TN10 faucet page was accessed after Cloudflare verification.
+- Live faucet websocket request subject: faucet-request
+- Submitted address: kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+- Submitted amount: 1000 TKAS
+- Returned txid: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116
+
+Safety confirmations:
+- No new wallet was created.
+- No new address was generated.
+- No balance or UTXO inspection was performed by our wallet/tooling.
+- No signing was performed.
+- No transaction was broadcast by our wallet/tooling.
+- No covenant create/spend action was performed.
+- No mainnet action was performed.
+- No wallet password, mnemonic, seed, private key, or wallet file contents were accessed or exposed.
