@@ -1,0 +1,20 @@
+Relevant syntax strings extracted from the official tn10-toc3 kaspa-wallet binary:
+
+usage: estimate <amount> [<priority fee>]
+usage: send <address> <amount> <priority fee>
+usage: transfer <account> <amount> <priority fee>
+pskb create <address> <amount> <priority fee>
+Create a PSKB from single send transaction
+pskb parse <payload>
+Print PSKB formatted view
+pskb debug <payload>
+Print PSKB debug view
+Open a wallet (shorthand for 'wallet open [<name>]')
+Enter wallet password:
+Enter payment password:
+
+Interpretation used for ENV-055:
+- estimate exists as a fee-estimation path.
+- send exists as the ordinary public-address spend path.
+- transfer is intra-wallet/account and is not the target for an ordinary external spend.
+- pskb exists, but it is a PSKB-specific flow rather than the simplest ordinary send path.

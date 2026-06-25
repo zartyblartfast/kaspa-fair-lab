@@ -1,0 +1,36 @@
+Commands issued in kaspa-wallet shell for ENV-055 preflight:
+- network testnet-10
+- server public
+- connect
+- help
+- help wallet
+- help account
+- help address
+- help send
+- help transfer
+- help tx
+- help transaction
+- help estimate
+- help pskb
+- help open
+- wallet open env052-tn10-test-only
+
+Observed command list from help:
+- estimate
+- send
+- pskb
+- transfer
+- open
+- address
+- account
+- wallet
+
+Observed wallet-open behavior:
+- command: wallet open env052-tn10-test-only
+- prompt shown: Enter wallet password:
+- no password was supplied for this preflight run
+- observed follow-up from non-secret automation path: Unable to decrypt this wallet
+
+Important observation:
+- help <command> did not print command-specific syntax in this wallet build; it repeated the top-level command list.
+- no usable tx or transaction command was surfaced by help.

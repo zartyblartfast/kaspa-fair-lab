@@ -26,6 +26,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-052 TN10 test-only wallet/address generation: COMPLETE
 - ENV-053 TN10 faucet funding only: COMPLETE
 - ENV-054 TN10 read-only balance and UTXO inspection: COMPLETE
+- ENV-055 TN10 ordinary spend preflight / dry-run only: READY
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -55,6 +56,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Public ENV-053 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-053-tn10-faucet-funding/`.
 - ENV-054 completed read-only TN10 balance and UTXO inspection for the funded ENV-052 address.
 - Public ENV-054 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
+- ENV-055 completed ordinary TN10 spend preflight only and identified the future estimate/send command path without signing or broadcasting.
+- Public ENV-055 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -107,7 +110,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 7. Treat ENV-050C as blocked: the approved one-thread mining attempt could not start because `kaspa-miner` is not installed/available locally, and no install was approved.
 8. Treat ENV-053 as complete: TN10 faucet funding request succeeded for the ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-053-tn10-faucet-funding/`.
 9. Treat ENV-054 as complete: TN10 read-only balance and UTXO inspection passed for the funded ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
-10. Do not proceed to signing, broadcast, or covenant lifecycle work without explicit future approval.
+10. Treat ENV-055 as ready-only preflight: TN10 ordinary spend syntax and estimate/send path were identified without signing or broadcasting, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
+11. Do not proceed to signing, broadcast, or covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -294,3 +298,18 @@ No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
 - Transaction lookup attempt via wallet RPC command surface was not available (`No such rpc method: 'get-transaction-by-id'`).
 - Commands executed were read-only only.
 - No signing, broadcast, spend construction, covenant action, private-material access, or mainnet action was performed.
+
+## ENV-055 TN10 ordinary spend preflight / dry-run only
+
+- Status: ready
+- Network: TN10 / `testnet-10`
+- Wallet: `env052-tn10-test-only`
+- Address in scope: `kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx`
+- Carry-forward balance/UTXO from ENV-054: `1000.0 TKAS`, `1 UTXO`, outpoint `29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116:0`
+- Future ordinary spend syntax identified: `send <address> <amount> <priority fee>`
+- Estimate syntax identified: `estimate <amount> [<priority fee>]`
+- No explicit send dry-run/preview mode was discovered
+- Recommended future pre-send check: `estimate 1 0`
+- Recommended future tiny send command path: open wallet, run `estimate 1 0`, then `send <fresh-tn10-test-only-recipient-address> 1 0`
+- Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/env-055-summary.txt`
+- No signing, broadcast, covenant action, private-material exposure, or mainnet action was performed.

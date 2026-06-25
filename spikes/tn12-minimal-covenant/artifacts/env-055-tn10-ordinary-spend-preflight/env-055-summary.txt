@@ -1,0 +1,81 @@
+ENV-055 TN10 ordinary spend preflight / dry-run only
+
+Result: READY
+Network: TN10 / testnet-10
+Wallet used for preflight: env052-tn10-test-only
+Public address in scope: kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+Tool path: /root/kaspa-fair-lab/tools/rusty-kaspa-releases/tn10-toc3/bin/kaspa-wallet
+Server mode: public resolver-backed TN10 wRPC
+
+Confirmed carry-forward from ENV-054:
+- balance: 1000.0 TKAS
+- UTXO count: 1
+- UTXO outpoint: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116:0
+- public TN10 node state: synced=true, has_utxo_index=true, suffix=10
+
+Connection/open path inspected:
+- network testnet-10
+- server public
+- connect
+- wallet open env052-tn10-test-only
+
+Wallet-open observation:
+- opening the wallet requires a wallet password prompt
+- no wallet password was entered during this preflight run
+- no private material was exposed
+
+Help inspection result:
+- top-level help confirms relevant commands exist: estimate, send, transfer, pskb, open
+- help send / help transfer / help estimate did not print command-specific syntax in this wallet build; they repeated the general command list
+- no usable tx or transaction command was surfaced by help
+
+Exact command syntax discovered for a future ordinary spend:
+- estimate path: estimate <amount> [<priority fee>]
+- ordinary public-address spend path: send <address> <amount> <priority fee>
+- intra-wallet path only: transfer <account> <amount> <priority fee>
+- PSKB path also exists but is not the recommended simplest ordinary send route: pskb create <address> <amount> <priority fee>
+
+Dry-run / preview / estimate finding:
+- estimate mode exists
+- explicit dry-run or preview mode for send was not discovered in the inspected command surface
+- recommended pre-send check later: estimate 1 0
+
+Recommended future tiny send amount:
+- 1 TKAS
+- rationale: simple small test amount relative to the confirmed 1000.0 TKAS balance
+
+Recommended future recipient strategy:
+- create or provide a fresh TN10 test-only recipient address at the time of the approved live send step
+- do not reuse mainnet addresses
+- do not execute recipient creation in this preflight run
+- if available later, prefer a clearly labeled dedicated TN10 recipient for this ordinary-send test
+
+Recommended future exact command path:
+1. network testnet-10
+2. server public
+3. connect
+4. wallet open env052-tn10-test-only
+5. estimate 1 0
+6. send <fresh-tn10-test-only-recipient-address> 1 0
+
+Stop conditions:
+- stop if wallet password is not intentionally supplied by the operator at the approved live step
+- stop if the recipient address is not explicitly confirmed to be TN10 / kaspatest
+- stop if estimate output is unexpected or indicates insufficient funds / excessive fees
+- stop if the wallet command surface differs from the preflight evidence captured here
+- stop before any signing/broadcast action unless explicit approval for the live send step is granted
+
+Artifacts:
+- help inspection: spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/help-inspection.txt
+- binary syntax evidence: spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/binary-usage-strings.txt
+
+Safety confirmations:
+- No signing occurred.
+- No transaction was broadcast.
+- No funds were sent.
+- No covenant create/spend occurred.
+- No private material was exposed.
+- No mnemonic, seed, private key, or wallet password was printed into public artifacts.
+- No mainnet action occurred.
+- No new wallet or address was created in this run.
+- No additional faucet funds were requested.
