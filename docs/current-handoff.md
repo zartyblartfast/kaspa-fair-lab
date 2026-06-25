@@ -68,15 +68,22 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## Recommended next step
 
-1. Treat env-046 synced-node read-only RPC evidence as the current TN12 readiness baseline.
-2. Keep wallet/faucet/signing/broadcast/live covenant work gated as NOT TESTED.
-3. Decide the next smallest approved step from that baseline without resuming roulette work.
+1. Treat ENV-046 as complete and as the current TN12 readiness baseline.
+2. Treat ENV-047 as planning-only pending explicit approval.
+3. Use `spikes/tn12-minimal-covenant/env-047-gated-plan.md` as the gate-by-gate checklist for any future live work.
+
+## ENV-047 planning status
+
+- Planning doc: `spikes/tn12-minimal-covenant/env-047-gated-plan.md`
+- Status: planning-only
+- Execution state: no wallet, no faucet, no signing, no broadcast, no mainnet
+- Any ENV-047 gate requires explicit approval before execution
 
 ## First prompt for new ChatGPT session
 
 Use this as the first prompt:
 
-`Continue from /root/kaspa-fair-lab/docs/current-handoff.md. Treat these as already proven: local SilverScript/Toccata tooling GREEN, local Rust transaction/RPC path GREEN, local TN12 full sync GREEN with RAM/swap caveat, and local TN12 read-only RPC confirmation GREEN from env-046 under spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/. Keep all current constraints in force: documentation-first, no roulette build, no web app, no wallet creation, no key generation, no faucet funding, no signing, no broadcast, no mainnet, no dependency installs, no repo clones, no external SilverScript edits, and no live covenant operations without explicit approval. Treat wallet/faucet/signing/broadcast/live covenant operations as NOT TESTED and roulette as PAUSED.`
+`Continue from /root/kaspa-fair-lab/docs/current-handoff.md. Treat ENV-046 as complete: local SilverScript/Toccata tooling GREEN, local Rust transaction/RPC path GREEN, local TN12 full sync GREEN with RAM/swap caveat, and local TN12 read-only RPC confirmation GREEN from env-046 under spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/. Treat ENV-047 as planning-only pending explicit approval, and use spikes/tn12-minimal-covenant/env-047-gated-plan.md as the gate-by-gate checklist. Keep all current constraints in force: documentation-first, no roulette build, no web app, no wallet creation unless explicitly approved, no key generation unless explicitly approved, no faucet funding unless explicitly approved, no signing unless explicitly approved, no broadcast unless explicitly approved, no mainnet, no dependency installs, no repo clones, no external SilverScript edits, and no live covenant operations without explicit approval.`
 
 ## Constraints recap
 
