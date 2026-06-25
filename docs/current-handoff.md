@@ -18,7 +18,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-047 is planning-only background context
 - ENV-049 Gate 1 key/address generation: COMPLETE
 - one TN12 test-only address has been generated
-- wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1: NOT TESTED
+- ENV-050 Gate 2 faucet funding: PENDING / BLOCKED FOR SAFETY REVIEW
+- wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
 ## What has been proven
@@ -42,13 +43,16 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Recent sync observation shows log-level header sync progress.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
+- Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
+- Public ENV-050 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050-faucet-funding/`.
 - Private material for ENV-049, if needed, is stored only under ignored `spikes/tn12-minimal-covenant/local-secrets/`.
 
 ## What has not been proven / tested
 
 - Signing.
 - Real UTXO usage.
-- Faucet funding.
+- ENV-050 Gate 2 funding completion.
+- Gate 3 read-only UTXO inspection (not started).
 - Live TN12 transaction submission.
 - Mempool acceptance.
 - Covenant-bound create/spend/inspect lifecycle.
@@ -77,8 +81,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 1. Treat ENV-046 as complete and as the TN12 readiness baseline.
 2. Treat ENV-047 and ENV-048 as planning/preflight background context.
 3. Treat ENV-049 Gate 1 as complete: one TN12 test-only address generated, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
-4. Keep private material restricted to ignored `spikes/tn12-minimal-covenant/local-secrets/`.
-5. Do not proceed to faucet funding, UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
+4. Treat ENV-050 Gate 2 as pending safety review: the candidate faucet route was identified as `https://faucet.kaspanet.io/`, but the accessible session remained blocked at Cloudflare verification without exposed TN12/testnet-12 funding controls.
+5. Do not proceed to Gate 3 read-only UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -101,7 +105,19 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Public evidence path: `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/env-049-summary.txt`
 - Helper path used: `spikes/tn12-minimal-covenant/env-049-key-address-helper/src/main.rs`
 - Private material, if any, stored only under ignored `spikes/tn12-minimal-covenant/local-secrets/`
-- Faucet/signing/broadcast/covenant lifecycle still NOT TESTED
+- Faucet/signing/broadcast/covenant lifecycle still NOT TESTED after Gate 1
+- Roulette remains PAUSED
+
+## ENV-050 Gate 2 status
+
+- Status: pending / blocked for safety review
+- Existing ENV-049 address reused: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`
+- Candidate faucet route checked: `https://faucet.kaspanet.io/`
+- Accessible session state: blocked at Cloudflare security verification; no faucet form or network selector became available for verification
+- Public evidence path: `spikes/tn12-minimal-covenant/artifacts/env-050-faucet-funding/env-050-summary.txt`
+- Faucet funding requested/completed/pending: pending
+- Gate 3 read-only UTXO inspection remains NOT STARTED
+- Signing/broadcast/covenant lifecycle remains NOT TESTED
 - Roulette remains PAUSED
 
 ## Suggested model/session guidance

@@ -1,0 +1,28 @@
+Result: PENDING
+Network: testnet-12 / TN12
+Address funded: kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg
+Faucet route/source used: candidate official faucet page https://faucet.kaspanet.io/
+Faucet response: blocked at Cloudflare security verification; no faucet form, network selector, or funding response became accessible from the verified automation session
+Transaction id/hash: not provided
+Timestamp: 2026-06-25T10:39:12+00:00
+New key/address generated: no
+Wallet created: no
+Private material accessed or exposed: no
+UTXO inspection performed: no
+Signing performed: no
+Self-created transaction broadcast: no
+Covenant transaction created/spent: no
+Mainnet action performed: no
+Notes: Stopped without submitting a funding request because the accessible page state did not expose verifiable TN12/testnet-12 funding controls, so the faucet/network selection remained ambiguous under the approved safety constraints.
+
+Additional manual browser finding:
+The main Kaspa faucet page referenced kaspa-ng.org for creating testnet wallets.
+Opening kaspa-ng.org triggered a Phantom warning stating that the site is blocked because Phantom believes it is malicious and unsafe to use.
+
+Decision:
+Do not bypass the warning.
+Do not use kaspa-ng.org for this PoC.
+No wallet was created.
+No private key/seed/mnemonic was entered or exposed.
+No faucet request was submitted.
+ENV-050 remains BLOCKED/PENDING.
