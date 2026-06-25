@@ -1,6 +1,11 @@
-use std::fs;
+use std::env;
+use std::fs::{self, OpenOptions};
+use std::io::Write;
+#[cfg(unix)]
+use std::os::unix::fs::OpenOptionsExt;
 use std::path::{Path, PathBuf};
 
+use kaspa_addresses::{Address, Prefix, Version};
 use kaspa_consensus_core::constants::TX_VERSION_TOCCATA;
 use kaspa_consensus_core::subnets::SubnetworkId;
 use kaspa_consensus_core::tx::{
@@ -16,6 +21,7 @@ use kaspa_txscript::opcodes::codes::{
 };
 use kaspa_txscript::pay_to_script_hash_script;
 use kaspa_txscript::script_builder::{ScriptBuilder, ScriptBuilderResult};
+use secp256k1::{Keypair, SecretKey};
 
 const SOURCE_TAG: &str = "tn10-toc3";
 const SOURCE_PATH: &str =
@@ -23,8 +29,28 @@ const SOURCE_PATH: &str =
 const DUMMY_REFERENCE_OUTPOINT: &str =
     "c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:0";
 const DUMMY_REFERENCE_AMOUNT_SOMPI: u64 = 100_000_000;
+const ENV059_HELPER_FUNDING_TKAS: u64 = 3;
+const SOMPI_PER_TKAS: u64 = 100_000_000;
+const ENV059_SECRET_REL_DIR: &str = "local-secrets/env-059-helper-key";
+const ENV059_ARTIFACT_REL_DIR: &str = "artifacts/env-059-helper-controlled-covenant-preflight";
 
-fn main() -> ScriptBuilderResult<()> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut args = env::args().skip(1);
+    match args.next().as_deref() {
+        None | Some("env058-offline-scaffold") => run_env058()?,
+        Some("env059-helper-key") => run_env059_helper_key()?,
+        Some("help") | Some("--help") | Some("-h") => print_help(),
+        Some(other) => {
+            return Err(format!(
+                "unknown command `{other}`; use `env058-offline-scaffold` or `env059-helper-key`"
+            )
+            .into());
+        }
+    }
+    Ok(())
+}
+
+fn run_env058() -> ScriptBuilderResult<()> {
     let artifact_dir = env058_artifact_dir();
     fs::create_dir_all(&artifact_dir).expect("create ENV-058 artifact directory");
 
@@ -252,6 +278,259 @@ fn main() -> ScriptBuilderResult<()> {
     Ok(())
 }
 
+fn run_env059_helper_key() -> Result<(), Box<dyn std::error::Error>> {
+    let secret_dir = env059_secret_dir();
+    let artifact_dir = env059_artifact_dir();
+    fs::create_dir_all(&secret_dir)?;
+    fs::create_dir_all(&artifact_dir)?;
+
+    let private_key_path = secret_dir.join("helper-private-key.hex");
+    let (secret_key, key_was_generated) = load_or_generate_secret_key(&private_key_path)?;
+    let keypair = Keypair::from_secret_key(secp256k1::SECP256K1, &secret_key);
+    let xonly_public_key = keypair.x_only_public_key().0.serialize();
+    let helper_address = Address::new(Prefix::Testnet, Version::PubKey, &xonly_public_key);
+    let helper_address_string = helper_address.to_string();
+    let public_key_hex = hex_encode(&xonly_public_key);
+    let public_json_path = artifact_dir.join("helper-address-public.json");
+    let summary_path = artifact_dir.join("env-059-summary.txt");
+
+    let planned_funding_tkas = planned_helper_funding_tkas();
+    let planned_funding_sompi = planned_helper_funding_sompi();
+    let planned_wallet_funding_command =
+        format!("send {helper_address_string} {planned_funding_tkas} 0");
+    let planned_wallet_estimate_command = format!("estimate {planned_funding_tkas} 0");
+    let planned_create_command = concat!(
+        "cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- ",
+        "covenant-create --network testnet-10 --utxo <helper-funding-txid:index> ",
+        "--input-amount-sompi <helper-utxo-amount-sompi> --change-address <helper-address> ",
+        "--submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-060-helper-controlled-covenant-create/"
+    );
+
+    let public_json = format!(
+        concat!(
+            "{{\n",
+            "  \"result\": \"READY\",\n",
+            "  \"network\": \"testnet-10\",\n",
+            "  \"address_prefix\": \"kaspatest\",\n",
+            "  \"helper_public_address\": \"{}\",\n",
+            "  \"helper_xonly_public_key_hex\": \"{}\",\n",
+            "  \"private_material_storage_path\": \"{}\",\n",
+            "  \"private_key_generated_this_run\": {},\n",
+            "  \"private_material_publicly_exposed\": false,\n",
+            "  \"planned_funding_amount_tkas\": {},\n",
+            "  \"planned_funding_amount_sompi\": {},\n",
+            "  \"planned_wallet_estimate_command\": \"{}\",\n",
+            "  \"planned_wallet_funding_command\": \"{}\",\n",
+            "  \"planned_covenant_create_command\": \"{}\",\n",
+            "  \"live_covenant_transaction_created\": false,\n",
+            "  \"live_utxo_spent\": false,\n",
+            "  \"live_funds_signed\": false,\n",
+            "  \"broadcast\": false,\n",
+            "  \"mainnet\": false,\n",
+            "  \"roulette_or_web_app\": false\n",
+            "}}\n"
+        ),
+        helper_address_string,
+        public_key_hex,
+        private_key_path.display(),
+        key_was_generated,
+        planned_funding_tkas,
+        planned_funding_sompi,
+        json_escape(&planned_wallet_estimate_command),
+        json_escape(&planned_wallet_funding_command),
+        json_escape(planned_create_command),
+    );
+    fs::write(&public_json_path, public_json)?;
+
+    let summary = format!(
+        concat!(
+            "ENV-059 helper-controlled TN10 covenant create preflight\n",
+            "\n",
+            "Result: READY\n",
+            "\n",
+            "Helper crate path:\n",
+            "- {}\n",
+            "\n",
+            "Helper key/address support added:\n",
+            "- yes; command: cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- env059-helper-key\n",
+            "- behavior: generate or reuse a local helper-controlled Schnorr key, derive a kaspatest P2PK address, write public-safe artifacts only\n",
+            "\n",
+            "Helper public TN10 address:\n",
+            "- {}\n",
+            "\n",
+            "Helper public key:\n",
+            "- x-only public key hex: {}\n",
+            "\n",
+            "Private material storage:\n",
+            "- path: {}\n",
+            "- generated this run: {}\n",
+            "- private material is not printed and is not included in public artifacts\n",
+            "- expected gitignore coverage: spikes/tn12-minimal-covenant/local-secrets/\n",
+            "\n",
+            "Planned funding amount:\n",
+            "- {} TKAS ({} sompi)\n",
+            "- rationale: small test-only amount above ENV-056 ordinary-send fee evidence (~0.002036 TKAS), enough room for a minimal create output/change and later spend experiments while limiting exposure\n",
+            "\n",
+            "Planned future funding command from official wallet:\n",
+            "- network testnet-10\n",
+            "- server public\n",
+            "- connect\n",
+            "- wallet open env052-tn10-test-only\n",
+            "- {}\n",
+            "- {}\n",
+            "\n",
+            "How helper will locate or accept funded UTXO once funded:\n",
+            "- Preferred ENV-060 precheck: use official wallet/read-only RPC or public TN10 RPC to inspect helper address {} and capture the funding outpoint/value as public evidence.\n",
+            "- Then pass that outpoint explicitly to the helper create command; do not let the helper guess or scan private wallet state.\n",
+            "\n",
+            "Planned future covenant create command:\n",
+            "- {}\n",
+            "\n",
+            "Planned future evidence artifacts:\n",
+            "- env-060 helper funding read-only UTXO capture for {}\n",
+            "- env-060 unsigned/signed transaction summary with tx version 1 and output covenant binding\n",
+            "- env-060 submit/broadcast response with transaction id if explicitly approved\n",
+            "- env-060 post-broadcast read-only UTXO inspection showing covenant id on the created output\n",
+            "\n",
+            "Risks/unknowns:\n",
+            "- Helper live signing and submit path is not implemented/proven yet.\n",
+            "- Need exact mass/fee/change policy for Toccata covenant create.\n",
+            "- Need proof that TN10 RPC/mempool accepts the helper-created covenant transaction.\n",
+            "- Need read-only route that exposes covenant id on the created output after broadcast.\n",
+            "\n",
+            "Answers to ENV-059 questions:\n",
+            "1. Can the helper generate a TN10 helper-controlled key/address safely? yes, with private material under ignored local-secrets and only public address/key artifacts committed.\n",
+            "2. Code changes needed: add kaspa-addresses/secp256k1/rand deps; add env059-helper-key command; derive kaspatest P2PK address from x-only Schnorr public key; write private hex only to local-secrets; write public JSON/summary.\n",
+            "3. Recommended funding amount: {} TKAS.\n",
+            "4. Future wallet funding command: {} after network/server/connect/wallet-open and optional estimate.\n",
+            "5. Helper UTXO handling: capture helper-address UTXO read-only, then pass <txid:index> and amount explicitly to helper.\n",
+            "6. Future create command: {}\n",
+            "7. Covenant create success evidence: accepted txid plus read-only UTXO inspection showing version-1 create output with covenant binding/covenant id.\n",
+            "8. Remaining after create: covenant spend construction/sign/broadcast and post-spend/inspect lifecycle proof.\n",
+            "9. Stop conditions: listed below.\n",
+            "\n",
+            "Stop conditions:\n",
+            "- Stop before creating a live covenant transaction in ENV-059.\n",
+            "- Stop before spending the existing wallet UTXO unless separately approved.\n",
+            "- Stop before signing live funds.\n",
+            "- Stop before broadcast/submission.\n",
+            "- Stop before exposing private material.\n",
+            "- Stop before mainnet.\n",
+            "- Stop before roulette/web-app work.\n",
+            "\n",
+            "Safety confirmations:\n",
+            "- no live covenant transaction created: true\n",
+            "- no live UTXO spent unless separately approved: true\n",
+            "- no signing of live funds: true\n",
+            "- no broadcast: true\n",
+            "- no private material exposed: true\n",
+            "- no mainnet: true\n",
+            "- no roulette/web app: true\n",
+            "\n",
+            "Artifact paths:\n",
+            "- {}\n",
+            "- {}\n"
+        ),
+        env!("CARGO_MANIFEST_DIR"),
+        helper_address_string,
+        public_key_hex,
+        private_key_path.display(),
+        key_was_generated,
+        planned_funding_tkas,
+        planned_funding_sompi,
+        planned_wallet_estimate_command,
+        planned_wallet_funding_command,
+        helper_address_string,
+        planned_create_command,
+        helper_address_string,
+        planned_funding_tkas,
+        planned_wallet_funding_command,
+        planned_create_command,
+        summary_path.display(),
+        public_json_path.display(),
+    );
+    fs::write(&summary_path, summary)?;
+
+    println!("ENV-059 READY");
+    println!("helper_public_address={}", helper_address_string);
+    println!("helper_xonly_public_key_hex={}", public_key_hex);
+    println!(
+        "private_material_storage_path={}",
+        private_key_path.display()
+    );
+    println!("private_material_exposed=false");
+    println!("planned_funding_tkas={}", planned_funding_tkas);
+    println!("summary={}", summary_path.display());
+    println!("public_json={}", public_json_path.display());
+    Ok(())
+}
+
+fn print_help() {
+    println!("tn10-covenant-spike commands:");
+    println!(
+        "  env058-offline-scaffold  Build the ENV-058 offline covenant scaffold artifact (default)"
+    );
+    println!(
+        "  env059-helper-key        Generate/reuse helper-controlled TN10 key and public address preflight artifacts"
+    );
+}
+
+fn planned_helper_funding_tkas() -> u64 {
+    ENV059_HELPER_FUNDING_TKAS
+}
+
+fn planned_helper_funding_sompi() -> u64 {
+    ENV059_HELPER_FUNDING_TKAS * SOMPI_PER_TKAS
+}
+
+fn env059_secret_dir() -> PathBuf {
+    spike_root_dir().join(ENV059_SECRET_REL_DIR)
+}
+
+fn env059_artifact_dir() -> PathBuf {
+    spike_root_dir().join(ENV059_ARTIFACT_REL_DIR)
+}
+
+fn spike_root_dir() -> PathBuf {
+    let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+    manifest_dir
+        .parent()
+        .expect("crate is under spikes/tn12-minimal-covenant")
+        .to_path_buf()
+}
+
+fn load_or_generate_secret_key(
+    path: &Path,
+) -> Result<(SecretKey, bool), Box<dyn std::error::Error>> {
+    if path.exists() {
+        let private_hex = fs::read_to_string(path)?;
+        let private_bytes = hex_decode_32(private_hex.trim());
+        let secret_key = SecretKey::from_slice(&private_bytes)?;
+        return Ok((secret_key, false));
+    }
+
+    let secret_key = SecretKey::new(&mut rand::thread_rng());
+    let private_hex = format!("{}\n", hex_encode(&secret_key.secret_bytes()));
+    write_secret_file(path, private_hex.as_bytes())?;
+    Ok((secret_key, true))
+}
+
+fn write_secret_file(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
+    let mut options = OpenOptions::new();
+    options.write(true).create_new(true);
+    #[cfg(unix)]
+    options.mode(0o600);
+    let mut file = options.open(path)?;
+    file.write_all(bytes)
+}
+
+fn json_escape(input: &str) -> String {
+    input
+        .replace('\\', "\\\\")
+        .replace('"', "\\\"")
+        .replace('\n', "\\n")
+}
+
 /// Adapted from the official tn10-toc3 `crypto/txscript/examples/covenants.rs`.
 fn build_covenant_script() -> ScriptBuilderResult<Vec<u8>> {
     Ok(ScriptBuilder::new()
@@ -321,5 +600,22 @@ fn hex_nibble(byte: u8) -> u8 {
         b'a'..=b'f' => byte - b'a' + 10,
         b'A'..=b'F' => byte - b'A' + 10,
         _ => panic!("invalid hex byte"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn env059_plans_small_tn10_funding_amount() {
+        assert_eq!(planned_helper_funding_tkas(), 3);
+        assert_eq!(planned_helper_funding_sompi(), 300_000_000);
+    }
+
+    #[test]
+    fn env059_secret_path_stays_under_ignored_local_secrets() {
+        let path = env059_secret_dir();
+        assert!(path.ends_with("spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key"));
     }
 }

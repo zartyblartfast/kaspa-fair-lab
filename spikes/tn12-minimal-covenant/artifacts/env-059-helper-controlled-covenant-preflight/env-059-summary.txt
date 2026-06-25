@@ -1,0 +1,86 @@
+ENV-059 helper-controlled TN10 covenant create preflight
+
+Result: READY
+
+Helper crate path:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/tn10-covenant-spike
+
+Helper key/address support added:
+- yes; command: cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- env059-helper-key
+- behavior: generate or reuse a local helper-controlled Schnorr key, derive a kaspatest P2PK address, write public-safe artifacts only
+
+Helper public TN10 address:
+- kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+
+Helper public key:
+- x-only public key hex: a7eef2e1b37fd6d8bb53d2f53455d63ec679d7473681eea1c9aad9661de65af4
+
+Private material storage:
+- path: /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/helper-private-key.hex
+- generated this run: false
+- private material is not printed and is not included in public artifacts
+- expected gitignore coverage: spikes/tn12-minimal-covenant/local-secrets/
+
+Planned funding amount:
+- 3 TKAS (300000000 sompi)
+- rationale: small test-only amount above ENV-056 ordinary-send fee evidence (~0.002036 TKAS), enough room for a minimal create output/change and later spend experiments while limiting exposure
+
+Planned future funding command from official wallet:
+- network testnet-10
+- server public
+- connect
+- wallet open env052-tn10-test-only
+- estimate 3 0
+- send kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld 3 0
+
+How helper will locate or accept funded UTXO once funded:
+- Preferred ENV-060 precheck: use official wallet/read-only RPC or public TN10 RPC to inspect helper address kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld and capture the funding outpoint/value as public evidence.
+- Then pass that outpoint explicitly to the helper create command; do not let the helper guess or scan private wallet state.
+
+Planned future covenant create command:
+- cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-create --network testnet-10 --utxo <helper-funding-txid:index> --input-amount-sompi <helper-utxo-amount-sompi> --change-address <helper-address> --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-060-helper-controlled-covenant-create/
+
+Planned future evidence artifacts:
+- env-060 helper funding read-only UTXO capture for kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+- env-060 unsigned/signed transaction summary with tx version 1 and output covenant binding
+- env-060 submit/broadcast response with transaction id if explicitly approved
+- env-060 post-broadcast read-only UTXO inspection showing covenant id on the created output
+
+Risks/unknowns:
+- Helper live signing and submit path is not implemented/proven yet.
+- Need exact mass/fee/change policy for Toccata covenant create.
+- Need proof that TN10 RPC/mempool accepts the helper-created covenant transaction.
+- Need read-only route that exposes covenant id on the created output after broadcast.
+
+Answers to ENV-059 questions:
+1. Can the helper generate a TN10 helper-controlled key/address safely? yes, with private material under ignored local-secrets and only public address/key artifacts committed.
+2. Code changes needed: add kaspa-addresses/secp256k1/rand deps; add env059-helper-key command; derive kaspatest P2PK address from x-only Schnorr public key; write private hex only to local-secrets; write public JSON/summary.
+3. Recommended funding amount: 3 TKAS.
+4. Future wallet funding command: send kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld 3 0 after network/server/connect/wallet-open and optional estimate.
+5. Helper UTXO handling: capture helper-address UTXO read-only, then pass <txid:index> and amount explicitly to helper.
+6. Future create command: cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-create --network testnet-10 --utxo <helper-funding-txid:index> --input-amount-sompi <helper-utxo-amount-sompi> --change-address <helper-address> --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-060-helper-controlled-covenant-create/
+7. Covenant create success evidence: accepted txid plus read-only UTXO inspection showing version-1 create output with covenant binding/covenant id.
+8. Remaining after create: covenant spend construction/sign/broadcast and post-spend/inspect lifecycle proof.
+9. Stop conditions: listed below.
+
+Stop conditions:
+- Stop before creating a live covenant transaction in ENV-059.
+- Stop before spending the existing wallet UTXO unless separately approved.
+- Stop before signing live funds.
+- Stop before broadcast/submission.
+- Stop before exposing private material.
+- Stop before mainnet.
+- Stop before roulette/web-app work.
+
+Safety confirmations:
+- no live covenant transaction created: true
+- no live UTXO spent unless separately approved: true
+- no signing of live funds: true
+- no broadcast: true
+- no private material exposed: true
+- no mainnet: true
+- no roulette/web app: true
+
+Artifact paths:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/env-059-summary.txt
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/helper-address-public.json

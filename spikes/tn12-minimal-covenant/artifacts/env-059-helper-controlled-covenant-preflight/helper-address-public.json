@@ -1,0 +1,21 @@
+{
+  "result": "READY",
+  "network": "testnet-10",
+  "address_prefix": "kaspatest",
+  "helper_public_address": "kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld",
+  "helper_xonly_public_key_hex": "a7eef2e1b37fd6d8bb53d2f53455d63ec679d7473681eea1c9aad9661de65af4",
+  "private_material_storage_path": "/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/helper-private-key.hex",
+  "private_key_generated_this_run": false,
+  "private_material_publicly_exposed": false,
+  "planned_funding_amount_tkas": 3,
+  "planned_funding_amount_sompi": 300000000,
+  "planned_wallet_estimate_command": "estimate 3 0",
+  "planned_wallet_funding_command": "send kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld 3 0",
+  "planned_covenant_create_command": "cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-create --network testnet-10 --utxo <helper-funding-txid:index> --input-amount-sompi <helper-utxo-amount-sompi> --change-address <helper-address> --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-060-helper-controlled-covenant-create/",
+  "live_covenant_transaction_created": false,
+  "live_utxo_spent": false,
+  "live_funds_signed": false,
+  "broadcast": false,
+  "mainnet": false,
+  "roulette_or_web_app": false
+}

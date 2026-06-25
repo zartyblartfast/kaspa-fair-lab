@@ -32,7 +32,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-057A covenant blocker resolution: STILL_BLOCKED (superseded in part by ENV-057B source reconciliation)
 - ENV-057B covenant source reconciliation: PARTIAL (official tn10-toc3 source proves `toccata_activation` on TN10 and tx version 1; official local covenant example passes; live wallet/create/sign/broadcast path still unproven)
 - ENV-058 TN10 offline covenant scaffold: PASS (helper builds/runs a version-1 `TX_VERSION_TOCCATA` transaction offline, calls `populate_genesis_covenants(...)`, and observes output-0 `CovenantBinding`; no signing/broadcast/spend)
-- wallet/faucet/signing/broadcast/covenant lifecycle beyond ordinary TN10 send and offline covenant structure remains NOT TESTED
+- ENV-059 helper-controlled TN10 covenant create preflight: READY (helper can generate/reuse a local helper-controlled key under ignored `local-secrets/`, emits public helper TN10 address and funding/create plan; no live covenant tx/signing/broadcast/spend)
+- wallet/faucet/signing/broadcast/covenant lifecycle beyond ordinary TN10 send, offline covenant structure, and helper-controlled preflight remains NOT TESTED
 - roulette remains PAUSED
 
 ## What has been proven
@@ -69,6 +70,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-057A resolved the main blockers to a tighter STILL_BLOCKED verdict, but its TN10 activation reading was later superseded by ENV-057B because it relied on a different non-tagged Rusty Kaspa checkout; see `spikes/tn12-minimal-covenant/artifacts/env-057a-covenant-blocker-resolution/env-057a-summary.txt`.
 - ENV-057B reconciled the source against the official `tn10-toc3` tag and concluded PARTIAL: TN10 uses `toccata_activation`, TN10 suffix 10 activates it at DAA `467579632`, Toccata tx version is `1`, local version-2 spike fixtures are stale, and the official local covenant example passes; however this still proves only local script semantics, not a live wallet/create/sign/broadcast route. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-057b-covenant-source-reconciliation/env-057b-summary.txt`.
 - ENV-058 created a small offline helper crate at `spikes/tn12-minimal-covenant/tn10-covenant-spike/` using path dependencies to the official `tn10-toc3` source under ignored `tools/rusty-kaspa-source/`; it compiled and ran, constructed a version-1 `TX_VERSION_TOCCATA` transaction, called `GenesisCovenantGroup::new(...)` and `populate_genesis_covenants(...)`, and observed output 0 with a `CovenantBinding` / covenant id. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/env-058-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/offline-covenant-create.json`.
+- ENV-059 extended `spikes/tn12-minimal-covenant/tn10-covenant-spike/` with `env059-helper-key`, generated a helper-controlled TN10 public address `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, stored private material only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, and documented the planned 3 TKAS funding/create flow. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/env-059-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/helper-address-public.json`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -127,8 +129,10 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 13. Treat ENV-057A as partially superseded by ENV-057B: keep its tx-version and wallet-route cautions, but do not rely on its earlier TN10 activation conclusion.
 14. Treat ENV-057B as the current authoritative source reconciliation result: PARTIAL / PARTIALLY_UNBLOCKED for source-level blockers only. Official `tn10-toc3` source proves TN10 Toccata activation and tx version 1, and the official local covenant example passes, but wallet/create/sign/broadcast path remains unproven; see `spikes/tn12-minimal-covenant/artifacts/env-057b-covenant-source-reconciliation/env-057b-summary.txt`.
 15. Treat ENV-058 as complete offline scaffold evidence: `spikes/tn12-minimal-covenant/tn10-covenant-spike/` builds and runs against official `tn10-toc3` source APIs, creates a version-1 covenant transaction structure, and records covenant binding evidence under `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/`; it does not prove live signing, wallet support, mempool acceptance, or broadcast.
-16. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into the next live-prep step.
-17. Do not proceed to covenant lifecycle work without explicit future approval.
+16. Treat ENV-059 as complete helper-controlled preflight: helper public address is `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, private material is local-only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, planned funding amount is 3 TKAS, and evidence is under `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/`.
+17. Next smallest approvable live step is funding the helper address from the existing official wallet using `estimate 3 0` then `send kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld 3 0`, followed by read-only UTXO inspection of the helper address; do not execute without explicit approval.
+18. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into the next live-prep step.
+19. Do not proceed to covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
