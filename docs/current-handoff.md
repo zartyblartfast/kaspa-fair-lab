@@ -10,13 +10,14 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## Current feasibility verdict
 
+- ENV-046 is complete and pushed
 - local SilverScript/Toccata tooling: GREEN
 - local Rust transaction/RPC path: GREEN
-- local TN12 full sync: GREEN (RAM/swap caveat)
-- local TN12 read-only connectivity: GREEN
+- local TN12 synced node: GREEN (RAM/swap caveat)
 - local TN12 read-only RPC confirmation: GREEN
-- live covenant create/spend/inspect: not yet proven
-- roulette PoC: PAUSED
+- ENV-047 is planning-only and pending explicit approval before any execution
+- wallet/faucet/signing/broadcast/covenant lifecycle: NOT TESTED
+- roulette remains PAUSED
 
 ## What has been proven
 
