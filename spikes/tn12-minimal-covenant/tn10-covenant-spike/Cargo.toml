@@ -1,0 +1,10 @@
+[package]
+name = "tn10-covenant-spike"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+kaspa-consensus-core = { path = "../../../tools/rusty-kaspa-source/env058-20260625T230041Z/rusty-kaspa-tn10-toc3/consensus/core" }
+kaspa-hashes = { path = "../../../tools/rusty-kaspa-source/env058-20260625T230041Z/rusty-kaspa-tn10-toc3/crypto/hashes" }
+kaspa-txscript = { path = "../../../tools/rusty-kaspa-source/env058-20260625T230041Z/rusty-kaspa-tn10-toc3/crypto/txscript" }
+kaspa-txscript-errors = { path = "../../../tools/rusty-kaspa-source/env058-20260625T230041Z/rusty-kaspa-tn10-toc3/crypto/txscript/errors" }

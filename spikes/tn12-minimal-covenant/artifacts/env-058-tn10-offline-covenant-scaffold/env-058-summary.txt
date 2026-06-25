@@ -1,0 +1,77 @@
+ENV-058 TN10 offline covenant scaffold
+
+Result: PASS
+
+Source tag/path used:
+- tag: tn10-toc3
+- source path: /root/kaspa-fair-lab/tools/rusty-kaspa-source/env058-20260625T230041Z/rusty-kaspa-tn10-toc3
+- path dependencies: kaspa-consensus-core, kaspa-hashes, kaspa-txscript, kaspa-txscript-errors from the official source path above
+
+Helper crate path:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/tn10-covenant-spike
+
+Official source APIs used:
+- kaspa_consensus_core::constants::TX_VERSION_TOCCATA
+- kaspa_consensus_core::tx::Transaction::new
+- kaspa_consensus_core::tx::TransactionInput::new
+- kaspa_consensus_core::tx::TransactionOutpoint::new
+- kaspa_consensus_core::tx::TransactionOutput::new
+- kaspa_consensus_core::tx::GenesisCovenantGroup::new
+- kaspa_consensus_core::tx::Transaction::populate_genesis_covenants
+- kaspa_consensus_core::tx::PopulatedTransaction::new
+- kaspa_consensus_core::tx::UtxoEntry::new
+- kaspa_txscript::script_builder::ScriptBuilder
+- kaspa_txscript::pay_to_script_hash_script
+- kaspa_txscript::covenants::CovenantsContext::from_tx
+- covenant script opcode sequence adapted from crypto/txscript/examples/covenants.rs
+
+Commands run:
+- cargo run -p kaspa-txscript --example covenants (from official tn10-toc3 source root)
+- cargo fmt --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml
+- cargo check --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml
+- cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml
+
+Whether upstream covenant example was run: yes
+Whether helper compiled: yes
+Whether helper ran: yes
+Transaction version observed: 1
+Expected TX_VERSION_TOCCATA: 1
+Created version-1 transaction: true
+populate_genesis_covenants(...) succeeded: true
+Covenant binding result: output 0 covenant binding present = true; authorizing_input = 0; covenant_id = c80687648cc38995f7e31ece31568ecfafbb6e147725bf9b32ed87b4d06f307a
+CovenantsContext validation: true
+Input outpoint used as dummy/public reference only: c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:0
+Output count: 1
+Output 0 value sompi: 100000000
+Redeem script length: 35
+P2SH/SPK length: 35
+
+Artifact paths:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/env-058-summary.txt
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/offline-covenant-create.json
+
+Remaining blockers before live ENV-059/ENV-060:
+- Prove a safe live-style create route that preserves covenant bindings end-to-end without relying on stale version-2 fixtures.
+- Determine whether official wallet/PSKB tooling can construct and sign a covenant-bound output without stripping covenant fields.
+- Prove mempool/RPC acceptance on TN10 only after explicit approval; this helper proves offline structure only.
+- Define exact live UTXO choice, fee/change policy, and stop conditions before any signing/broadcast gate.
+
+Stale local tx.version == 2 status:
+- This ENV-058 scaffold supersedes the stale local helper assumption for new offline Toccata-oriented construction by using TX_VERSION_TOCCATA = 1.
+- Existing stale version-2 fixtures/helpers should be patched in a later narrow cleanup unless the reviewer wants that scope folded into ENV-058; this run flags them but does not broadly rewrite old fixtures.
+
+Stop conditions:
+- Stop before signing.
+- Stop before broadcast/submission.
+- Stop before spending any live UTXO.
+- Stop before accessing wallet/private material.
+- Stop before mainnet.
+- Stop before roulette/web-app work.
+
+Safety confirmations:
+- no signing: true
+- no broadcast: true
+- no UTXO spend: true
+- no wallet/private material accessed: true
+- no mainnet: true
+- no roulette/web app: true

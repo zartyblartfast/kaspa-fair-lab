@@ -42,5 +42,6 @@ spikes/tn12-minimal-covenant/**/*.key
 # Rust build output from nested spike/helper crates
 **/target/
 
-# Local downloaded Rusty Kaspa release binaries
+# Local downloaded Rusty Kaspa release binaries/source archives
 tools/rusty-kaspa-releases/
+tools/rusty-kaspa-source/
