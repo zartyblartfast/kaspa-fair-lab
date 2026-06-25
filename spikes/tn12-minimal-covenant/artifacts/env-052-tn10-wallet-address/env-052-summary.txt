@@ -1,0 +1,26 @@
+ENV-052 TN10 test-only wallet/address generation
+
+Result: PASS
+Network: testnet-10 / TN10
+Wallet name: env052-tn10-test-only
+Public receive address: kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+Address prefix/type if known: prefix = kaspatest; type not explicitly reported by kaspa-wallet output
+Tool used: official tn10-toc3 kaspa-wallet
+Tool path: tools/rusty-kaspa-releases/tn10-toc3/bin/kaspa-wallet
+Server mode: public resolver-backed TN10 wRPC
+Resolved public TN10 endpoint observed: wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh
+
+Safety confirmations:
+- No faucet funds were requested.
+- No balance inspection beyond the wallet shell's automatic 0 TKAS account display was performed.
+- No explicit UTXO inspection was performed.
+- No signing was performed.
+- No transaction was broadcast.
+- No covenant create/spend action was performed.
+- No mainnet action was performed.
+- No mnemonic/seed/private key material was committed or included in public artifacts.
+
+Notes:
+- Wallet creation and reopen were performed locally with the official tn10-toc3 wallet.
+- The public receive address was confirmed with the safe `address` command after reopening the wallet.
+- Secret material remained local only and is not included here.

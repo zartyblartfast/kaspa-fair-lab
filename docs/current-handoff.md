@@ -22,6 +22,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-050A funding-route discovery: COMPLETE (needs human follow-up)
 - ENV-050B TN12 mining preflight: COMPLETE
 - ENV-050C TN12 mining attempt: BLOCKED (miner binary unavailable)
+- ENV-051 TN10 public wRPC proof: COMPLETE
+- ENV-052 TN10 test-only wallet/address generation: COMPLETE
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -44,6 +46,9 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
   - `getCurrentNetwork`
 - Latest synced-node read-only values include `hasUtxoIndex=false`, `isSynced=true`, `blockCount=1235733`, `headerCount=1235733`, and `virtualDaaScore=46858621`.
 - Recent sync observation shows log-level header sync progress.
+- ENV-051 proved official `tn10-toc3` `kaspa-wallet` can connect to public resolver-backed TN10 wRPC.
+- ENV-052 generated one TN10 test-only wallet/address with the official `tn10-toc3` `kaspa-wallet`.
+- Public ENV-052 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-052-tn10-wallet-address/`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -237,3 +242,16 @@ Evidence:
 
 Safety:
 No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
+
+
+## ENV-052 TN10 test-only wallet/address generation
+
+- Status: complete
+- Network: TN10 / `testnet-10`
+- Wallet name: `env052-tn10-test-only`
+- Public receive address: `kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx`
+- Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-052-tn10-wallet-address/env-052-summary.txt`
+- Tool path used: `tools/rusty-kaspa-releases/tn10-toc3/bin/kaspa-wallet`
+- Server mode: public resolver-backed TN10 wRPC
+- No faucet request, explicit UTXO inspection, signing, broadcast, covenant action, or mainnet action was performed.
+- No mnemonic/seed/private key material was committed or included in public artifacts.
