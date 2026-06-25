@@ -28,6 +28,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-054 TN10 read-only balance and UTXO inspection: COMPLETE
 - ENV-055 TN10 ordinary spend preflight / dry-run only: READY
 - ENV-056 TN10 live ordinary send of 1 TKAS: COMPLETE
+- ENV-057 TN10 covenant preflight: BLOCKED
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -61,6 +62,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Public ENV-055 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
 - ENV-056 completed one live ordinary TN10 send of 1 TKAS to a fresh TN10 recipient address and confirmed the resulting recipient/change UTXOs.
 - Public ENV-056 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
+- ENV-057 completed TN10 covenant preflight only and concluded BLOCKED: the smallest local covenant path is still local-only, TN10 covenant activation/signing are not proven from inspected evidence, and the summary artifact is under `spikes/tn12-minimal-covenant/artifacts/env-057-tn10-covenant-preflight/`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -115,7 +117,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 9. Treat ENV-054 as complete: TN10 read-only balance and UTXO inspection passed for the funded ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
 10. Treat ENV-055 as ready-only preflight: TN10 ordinary spend syntax and estimate/send path were identified without signing or broadcasting, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
 11. Treat ENV-056 as complete: one live ordinary TN10 send of 1 TKAS succeeded and was confirmed by read-only post-send checks, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
-12. Do not proceed to covenant lifecycle work without explicit future approval.
+12. Treat ENV-057 as complete preflight-only and BLOCKED for live covenant execution: see `spikes/tn12-minimal-covenant/artifacts/env-057-tn10-covenant-preflight/env-057-summary.txt` for the TN10 activation/version/signing blockers.
+13. Do not proceed to covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 

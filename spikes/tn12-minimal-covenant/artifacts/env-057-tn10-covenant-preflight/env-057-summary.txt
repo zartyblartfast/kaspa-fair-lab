@@ -1,0 +1,153 @@
+ENV-057 TN10 minimal covenant live-path preflight
+
+Result: BLOCKED
+
+Recommended minimal covenant path:
+- Do not start from the absolute-smallest `simple_covenant` live candidate. It only proves `require(tx.version == 2)` in local SilverScript fixtures and does not prove covenant binding/state transition behavior.
+- Use the smallest already-proven transition-style covenant pattern instead: `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil` with `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`.
+- Keep the local proof stack for that path anchored to:
+  - `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
+  - `external/silverscript/silverscript-lang/tests/common.rs`
+  - `external/silverscript/silverscript-lang/tests/covenant_declaration_security_tests.rs`
+  - `external/silverscript/silverscript-lang/src/compiler/mod.rs`
+  - `spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs`
+- If a live path is attempted later, the safest minimal shape is:
+  1. assemble the covenant create transaction in a tiny repo-owned Rust helper,
+  2. inspect the spend path locally with SilverScript/Rust helpers before any live spend,
+  3. only then consider signing/broadcast under a separate approval gate.
+
+Smallest already-proven local artifact(s):
+- Absolute smallest compiled covenant artifact: `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json` from `simple_covenant.sil`.
+- Smallest already-proven local create/spend-like covenant artifact: `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil` + `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json` validated by `run_no_broadcast_checks.sh`.
+
+Can it be used on TN10 with the official Toccata release?
+- Not proven from the inspected local evidence.
+- Current local source evidence points the other way for the inspected Rusty Kaspa checkout:
+  - `consensus/core/src/constants.rs` defines `TX_VERSION_TOCCATA = 1`.
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil` requires `tx.version == 2`.
+  - `consensus/core/src/config/params.rs` shows `TESTNET_PARAMS` (suffix 10) with `covenants_activation: ForkActivation::never()` while `TESTNET12_PARAMS` has `covenants_activation: ForkActivation::always()`.
+- The repo does not contain source for the shipped `tools/rusty-kaspa-releases/tn10-toc3` binaries, so ENV-057 cannot honestly claim TN10 covenant activation is available there.
+- Therefore TN10 live covenant execution is BLOCKED pending explicit proof that the official `tn10-toc3` release accepts covenant-bearing Toccata transactions on testnet-10.
+
+Exact files/helpers involved:
+- Local SilverScript proof artifacts:
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil`
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json`
+  - `spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json`
+  - `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil`
+  - `spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json`
+  - `external/silverscript/silverscript-lang/tests/examples/simple_covenant.json`
+- Create-transaction helper route:
+  - `external/silverscript/silverscript-lang/tests/common.rs`
+    - `covenant_output(...)`
+    - `pay_to_script_hash_script(...)`
+    - `covenant_utxo(...)`
+  - `spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs`
+    - `Transaction::new(...)`
+    - `RpcTransaction` conversion via `(&tx).into()`
+    - `SubmitTransactionRequest`
+- Spend/inspect helper route:
+  - `external/silverscript/silverscript-lang/src/compiler/mod.rs`
+    - `build_sig_script_for_covenant_decl(...)`
+  - `external/silverscript/silverscript-lang/tests/common.rs`
+    - `covenant_decl_sigscript(...)`
+    - `execute_input_with_covenants(...)`
+  - `external/silverscript/silverscript-lang/tests/covenant_declaration_security_tests.rs`
+    - `singleton_transition_allows_correct_state_update`
+    - related singleton transition checks
+- TN10 wallet capability evidence:
+  - `.hermes/skills/tn10-official-wallet-workflow.md`
+  - `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/binary-usage-strings.txt`
+  - `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/help-inspection.txt`
+
+What code path should build the covenant create transaction?
+- A repo-owned Rust helper, not the wallet CLI alone.
+- Reuse the existing Rust assembly pattern from `spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs`:
+  - construct `Transaction::new(...)`,
+  - convert to `RpcTransaction`,
+  - prepare `SubmitTransactionRequest`.
+- For the covenant output itself, mirror `external/silverscript/silverscript-lang/tests/common.rs`:
+  - `script_public_key: pay_to_script_hash_script(&compiled.script)`
+  - `covenant: Some(CovenantBinding { authorizing_input, covenant_id })`
+- Use Toccata transaction version semantics from source (`TX_VERSION_TOCCATA = 1`), not the local `simple_covenant` fixture’s `tx.version == 2` assumption.
+
+What code path should build the covenant spend/inspect transaction?
+- Build the sigscript with SilverScript compiler helpers:
+  - `build_sig_script_for_covenant_decl(...)` from `external/silverscript/silverscript-lang/src/compiler/mod.rs`
+  - or the wrapper `covenant_decl_sigscript(...)` from `external/silverscript/silverscript-lang/tests/common.rs`
+- Build the spend transaction with the same Rust `Transaction::new(...)` route.
+- Inspect locally before any live attempt with `execute_input_with_covenants(...)` from `external/silverscript/silverscript-lang/tests/common.rs`.
+- Use the security-test transition cases in `external/silverscript/silverscript-lang/tests/covenant_declaration_security_tests.rs` as the closest source-backed spend/inspect reference.
+
+UTXO recommendation:
+- Use the 1 TKAS recipient UTXO first: `c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135:0`.
+- Why:
+  - smallest blast radius,
+  - cleaner evidence/accounting,
+  - already isolated as a single fresh test output from ENV-056,
+  - easier post-create/post-spend inspection than consuming the large change output first.
+- Fall back to the large change UTXO only if a reviewed estimate/prototype shows 1 TKAS cannot safely cover the create output plus fees.
+
+Signing/broadcast strategy:
+- No safe proven wallet-native covenant route was found.
+- The official wallet evidence only proves:
+  - `estimate <amount> [<priority fee>]`
+  - `send <address> <amount> <priority fee>`
+  - `pskb create <address> <amount> <priority fee>`
+  - `pskb parse <payload>`
+  - `pskb debug <payload>`
+- No `pskb sign`, covenant-specific command, or covenant-output construction path was surfaced.
+- Therefore ENV-057 cannot recommend wallet CLI signing as a proven covenant path.
+- The only source-backed signing route actually visible in inspected code is Rust helper signing (`sign_with_multiple_v2(...)` / `sign_input(...)` in the pinned Rusty Kaspa source), which would require controlled secret handling and separate approval.
+- Conclusion: covenant assembly requires a Rust helper; covenant signing is not safely/provenly routable through the current wallet CLI evidence.
+
+Exact ENV-058 proposed command sequence:
+1. `cd /root/kaspa-fair-lab`
+2. `git status --short --branch`
+3. `./spikes/tn12-minimal-covenant/run_no_broadcast_checks.sh`
+4. `cargo test --manifest-path /root/kaspa-fair-lab/external/silverscript/Cargo.toml -p silverscript-lang singleton_transition_allows_correct_state_update -- --nocapture`
+5. `cargo run --manifest-path /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/rust-tx-assembly/Cargo.toml`
+6. Stop and review:
+   - the TN10 covenant activation proof gap,
+   - the `tx.version` mismatch (`simple_covenant` requires 2 vs source `TX_VERSION_TOCCATA = 1`),
+   - the missing wallet-side covenant signing path.
+7. Do not open the wallet, do not sign, and do not broadcast until those blockers are cleared in a later approved step.
+
+Expected evidence artifacts for ENV-058:
+- If ENV-058 remains blocker-verification-only:
+  - a repo-owned env-058 summary under `spikes/tn12-minimal-covenant/artifacts/env-058-.../`
+  - captured stdout/logs for `run_no_broadcast_checks.sh`
+  - captured stdout/logs for the singleton transition test
+  - captured stdout/logs for `rust-tx-assembly`
+  - an explicit blocker statement covering activation/version/signing
+- If a later env is explicitly approved to go live after blockers are cleared, require at minimum:
+  - create-tx assembly summary
+  - spend-tx assembly summary
+  - read-only pre-UTXO snapshot
+  - read-only post-create UTXO snapshot
+  - read-only post-spend UTXO snapshot
+  - txids for create and spend
+  - explicit statement of which signing path was used
+
+Stop conditions:
+- Stop if TN10 covenant activation for the official `tn10-toc3` release is still not source-proven or runtime-proven.
+- Stop if the plan still depends on `simple_covenant`’s `tx.version == 2` assumption.
+- Stop if the path requires wallet secrets to be exported into ad-hoc helper code.
+- Stop if the only available route is unreviewed Rust helper signing.
+- Stop if the 1 TKAS UTXO is not clearly sufficient after a reviewed estimate.
+- Stop if any command path drifts into mainnet, roulette, or web-app work.
+- Stop before any signing or broadcast unless a fresh explicit approval gate is granted.
+
+What remains unproven after ENV-058:
+- Whether TN10 with the official `tn10-toc3` release accepts covenant-bearing transactions at all.
+- Whether a safe wallet-mediated covenant signing route exists.
+- Whether a live TN10 covenant create transaction can be assembled, signed, and accepted.
+- Whether a live TN10 covenant spend/inspect transaction can be assembled, signed, and accepted.
+- Whether post-create/post-spend read-only inspection yields clean reviewer-friendly evidence.
+
+Safety confirmation:
+- ENV-057 inspected files and artifacts only.
+- ENV-057 did not sign anything.
+- ENV-057 did not broadcast anything.
+- ENV-057 did not create a covenant transaction.
+- ENV-057 did not spend any UTXO.
