@@ -1,0 +1,9 @@
+network testnet-10
+Setting network id to: testnet-10
+server public
+Setting RPC server to: public
+connect
+Connecting to a public node
+Connected to Kaspa node version 2.0.1 at wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh
+rpc get-balance-by-address kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+1000.0

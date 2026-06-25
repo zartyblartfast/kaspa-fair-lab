@@ -25,6 +25,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-051 TN10 public wRPC proof: COMPLETE
 - ENV-052 TN10 test-only wallet/address generation: COMPLETE
 - ENV-053 TN10 faucet funding only: COMPLETE
+- ENV-054 TN10 read-only balance and UTXO inspection: COMPLETE
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -52,6 +53,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Public ENV-052 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-052-tn10-wallet-address/`.
 - ENV-053 submitted one TN10 faucet request to the existing ENV-052 address via the public TN10 faucet.
 - Public ENV-053 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-053-tn10-faucet-funding/`.
+- ENV-054 completed read-only TN10 balance and UTXO inspection for the funded ENV-052 address.
+- Public ENV-054 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -103,7 +106,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 6. Treat ENV-050B as complete preflight-only: direct TN12 mining against the existing synced node is the likely next funding path if explicitly approved later; no mining has started yet.
 7. Treat ENV-050C as blocked: the approved one-thread mining attempt could not start because `kaspa-miner` is not installed/available locally, and no install was approved.
 8. Treat ENV-053 as complete: TN10 faucet funding request succeeded for the ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-053-tn10-faucet-funding/`.
-9. Do not proceed to Gate 3 read-only UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
+9. Treat ENV-054 as complete: TN10 read-only balance and UTXO inspection passed for the funded ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
+10. Do not proceed to signing, broadcast, or covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -275,3 +279,18 @@ No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
 - No new wallet/address was created.
 - No balance/UTXO inspection, signing, wallet-driven broadcast, covenant action, or mainnet action was performed.
 - No private material was accessed or exposed.
+
+## ENV-054 TN10 read-only balance and UTXO inspection
+
+- Status: complete
+- Network: TN10 / `testnet-10`
+- Address inspected: `kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx`
+- Faucet txid referenced: `29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116`
+- Observed balance: `1000.0 TKAS`
+- Observed UTXO count: `1`
+- Observed UTXO outpoint: `29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116:0`
+- Observed server state: `suffix=10`, `is_synced=true`, `has_utxo_index=true`
+- Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/env-054-summary.txt`
+- Transaction lookup attempt via wallet RPC command surface was not available (`No such rpc method: 'get-transaction-by-id'`).
+- Commands executed were read-only only.
+- No signing, broadcast, spend construction, covenant action, private-material access, or mainnet action was performed.

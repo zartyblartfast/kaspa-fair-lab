@@ -1,0 +1,61 @@
+ENV-054 TN10 read-only balance and UTXO inspection only
+
+Result: PASS
+Network: testnet-10 / TN10
+Public address inspected: kaspatest:qrhszwr4r2ejukpxyjp7jvn40tth5s8zy0538zvkkrvtkxvvyhlmjhe275slx
+Faucet txid: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116
+Tool path: /root/kaspa-fair-lab/tools/rusty-kaspa-releases/tn10-toc3/bin/kaspa-wallet
+Server mode: public resolver-backed TN10 wRPC
+
+Connection sequence used:
+- network testnet-10
+- server public
+- connect
+
+Server info observed:
+- server_version: 2.0.1
+- network suffix: 10
+- synced: true
+- has_utxo_index: true
+- virtual_daa_score: 500606709
+- endpoint observed: wss://proton-10.kaspa.stream/kaspa/testnet-10/wrpc/borsh
+
+Balance observed:
+- 1000.0 TKAS
+
+UTXO count observed:
+- 1
+
+UTXO details observed:
+- outpoint: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116:0
+- transaction_id: 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116
+- amount sompi: 100000000000
+- amount TKAS: 1000.0
+- block_daa_score: 500588674
+- is_coinbase: false
+- covenant_id: None
+- script_public_key_version: 0
+- script_public_key: 20ef0138751ab32e58262483e932757ad77a40e223e9138996b0d8bb198c25ffb9ac
+
+Read-only transaction lookup status:
+- attempted command: rpc get-transaction-by-id 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116
+- observed result: No such rpc method: 'get-transaction-by-id'
+- conclusion: transaction lookup was not available through this wallet RPC command surface in this run
+
+Artifacts:
+- server info: spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/server-info.txt
+- balance: spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/balance.txt
+- utxos: spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/utxos.txt
+- tx lookup attempt: spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/tx-lookup-attempt.txt
+
+Safety confirmations:
+- Commands executed were read-only RPC inspection commands only.
+- No signing was performed.
+- No transaction was broadcast.
+- No spend transaction was constructed.
+- No covenant create/spend action was performed.
+- No private material was accessed or exposed.
+- No mnemonic, seed, private key, or wallet password was printed into public artifacts.
+- No new wallet or address was created.
+- No additional faucet funds were requested.
+- No mainnet action was performed.

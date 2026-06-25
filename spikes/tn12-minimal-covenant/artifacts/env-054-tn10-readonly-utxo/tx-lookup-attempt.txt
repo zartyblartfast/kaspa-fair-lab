@@ -1,0 +1,9 @@
+network testnet-10
+Setting network id to: testnet-10
+server public
+Setting RPC server to: public
+connect
+Connecting to a public node
+Connected to Kaspa node version 2.0.1 at wss://electron-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh
+rpc get-transaction-by-id 29d76273819d519bea146e881554c633bac4d30989bfc8e1862fed965d8f5116
+No such rpc method: 'get-transaction-by-id'

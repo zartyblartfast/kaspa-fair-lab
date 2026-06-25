@@ -1,0 +1,22 @@
+network testnet-10
+Setting network id to: testnet-10
+server public
+Setting RPC server to: public
+connect
+Connecting to a public node
+Connected to Kaspa node version 2.0.1 at wss://proton-10.kaspa.stream/kaspa/testnet-10/wrpc/borsh
+rpc get-server-info
+GetServerInfoResponse {
+    rpc_api_version: 1,
+    rpc_api_revision: 0,
+    server_version: "2.0.1",
+    network_id: NetworkId {
+        network_type: Testnet,
+        suffix: Some(
+            10,
+        ),
+    },
+    has_utxo_index: true,
+    is_synced: true,
+    virtual_daa_score: 500606709,
+}
