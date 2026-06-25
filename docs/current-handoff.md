@@ -29,7 +29,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-055 TN10 ordinary spend preflight / dry-run only: READY
 - ENV-056 TN10 live ordinary send of 1 TKAS: COMPLETE
 - ENV-057 TN10 covenant preflight: BLOCKED
-- ENV-057A covenant blocker resolution: STILL_BLOCKED (TN10 activation negative in inspected source; correct Toccata tx version is 1; wallet PSKB exists but create-path covenant authoring is not yet proven)
+- ENV-057A covenant blocker resolution: STILL_BLOCKED (superseded in part by ENV-057B source reconciliation)
+- ENV-057B covenant source reconciliation: PARTIAL (official tn10-toc3 source proves `toccata_activation` on TN10 and tx version 1; official local covenant example passes; live wallet/create/sign/broadcast path still unproven)
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -64,7 +65,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-056 completed one live ordinary TN10 send of 1 TKAS to a fresh TN10 recipient address and confirmed the resulting recipient/change UTXOs.
 - Public ENV-056 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
 - ENV-057 completed TN10 covenant preflight only and concluded BLOCKED: the smallest local covenant path is still local-only, TN10 covenant activation/signing are not proven from inspected evidence, and the summary artifact is under `spikes/tn12-minimal-covenant/artifacts/env-057-tn10-covenant-preflight/`.
-- ENV-057A resolved the main blockers to a tighter STILL_BLOCKED verdict: inspected source shows TN10 covenants disabled, the correct Toccata tx version is 1 not 2, and wallet PSKB support exists but the normal create path is not yet a proven covenant-output route; see `spikes/tn12-minimal-covenant/artifacts/env-057a-covenant-blocker-resolution/env-057a-summary.txt`.
+- ENV-057A resolved the main blockers to a tighter STILL_BLOCKED verdict, but its TN10 activation reading was later superseded by ENV-057B because it relied on a different non-tagged Rusty Kaspa checkout; see `spikes/tn12-minimal-covenant/artifacts/env-057a-covenant-blocker-resolution/env-057a-summary.txt`.
+- ENV-057B reconciled the source against the official `tn10-toc3` tag and concluded PARTIAL: TN10 uses `toccata_activation`, TN10 suffix 10 activates it at DAA `467579632`, Toccata tx version is `1`, local version-2 spike fixtures are stale, and the official local covenant example passes; however this still proves only local script semantics, not a live wallet/create/sign/broadcast route. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-057b-covenant-source-reconciliation/env-057b-summary.txt`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -120,8 +122,9 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 10. Treat ENV-055 as ready-only preflight: TN10 ordinary spend syntax and estimate/send path were identified without signing or broadcasting, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
 11. Treat ENV-056 as complete: one live ordinary TN10 send of 1 TKAS succeeded and was confirmed by read-only post-send checks, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
 12. Treat ENV-057 as complete preflight-only and BLOCKED for live covenant execution: see `spikes/tn12-minimal-covenant/artifacts/env-057-tn10-covenant-preflight/env-057-summary.txt` for the TN10 activation/version/signing blockers.
-13. Treat ENV-057A as complete blocker-resolution-only and STILL_BLOCKED: TN10 activation remains negative in inspected source, local version-2 covenant fixtures are stale, and wallet PSKB support does not yet prove a covenant-output create route; see `spikes/tn12-minimal-covenant/artifacts/env-057a-covenant-blocker-resolution/env-057a-summary.txt`.
-14. Do not proceed to covenant lifecycle work without explicit future approval.
+13. Treat ENV-057A as partially superseded by ENV-057B: keep its tx-version and wallet-route cautions, but do not rely on its earlier TN10 activation conclusion.
+14. Treat ENV-057B as the current authoritative source reconciliation result: PARTIAL / PARTIALLY_UNBLOCKED for source-level blockers only. Official `tn10-toc3` source proves TN10 Toccata activation and tx version 1, and the official local covenant example passes, but wallet/create/sign/broadcast path remains unproven; see `spikes/tn12-minimal-covenant/artifacts/env-057b-covenant-source-reconciliation/env-057b-summary.txt`.
+15. Do not proceed to covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 

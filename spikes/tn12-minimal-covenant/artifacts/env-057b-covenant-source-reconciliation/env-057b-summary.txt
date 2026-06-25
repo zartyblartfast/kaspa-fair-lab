@@ -1,0 +1,193 @@
+ENV-057B covenant source reconciliation and local example proof
+
+Result: PARTIAL
+
+Scope and safety
+- No signing occurred.
+- No broadcast occurred.
+- No UTXOs were spent.
+- No live covenant transaction was created.
+- No mainnet was used.
+- No wallet secrets were exposed.
+- No roulette or web-app work was done.
+
+Official source inspected
+- Downloaded source tag: tn10-toc3
+- Extracted path: /root/kaspa-fair-lab/tools/rusty-kaspa-source/rusty-kaspa-tn10-toc3
+- Tag archive SHA256: b7a4360316471ad26bf0c1d4cffbac8ee5c9938cdfeacd9110ea176d90031b8a
+- Tagged source commit recorded in extracted repo metadata: 62cd50524d41212e3657bece7309782b69546e71
+
+Important reconciliation note
+- ENV-057A relied on a different local Rusty Kaspa checkout at:
+  /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f
+- That checkout is not the same as the official tn10-toc3 tag inspected here.
+- The official tn10-toc3 tag materially changes the answer to the activation-gate question.
+
+Question-by-question answers
+
+1. In the official tn10-toc3 source, is the fork gate really `toccata_activation`?
+- Yes.
+- Verified in official source:
+  - consensus/core/src/config/params.rs defines `pub toccata_activation: ForkActivation`
+  - consensus/src/processes/transaction_validator/tx_validation_in_header_context.rs gates tx-version acceptance with `self.toccata_activation.is_active(block_daa_score)`
+- Search result in official tag for `covenants_activation`: zero matches.
+- Therefore the separate AI claim is correct on this point: `toccata_activation` is the relevant gate in official tn10-toc3, not `covenants_activation`.
+
+2. For TN10/testnet suffix 10, is `toccata_activation` set to a real DAA score or `never()`?
+- Real DAA score.
+- Exact official source evidence from consensus/core/src/config/params.rs:
+  - `net: NetworkId::with_suffix(NetworkType::Testnet, 10)`
+  - `toccata_activation: ForkActivation::new(467_579_632)`
+- This refutes the ENV-057A activation conclusion that TN10 was negative/never in the governing source.
+
+3. What is the correct Toccata transaction version?
+- `TX_VERSION_TOCCATA = 1`
+- Exact official source evidence from consensus/core/src/constants.rs:
+  - `pub const TX_VERSION: u16 = 0;`
+  - `pub const TX_VERSION_TOCCATA: u16 = 1;`
+- The same file separately defines:
+  - `pub const BLOCK_VERSION: u16 = 1;`
+  - `pub const TOCCATA_BLOCK_VERSION: u16 = 2;`
+- So block version 2 and transaction version 1 are different concepts.
+
+4. Is `tx.version == 2` definitely stale/wrong for covenant transactions?
+- Yes, for Toccata transaction-version checks it is stale/wrong.
+- Official validator evidence:
+  - tx_validation_in_header_context.rs allows tx versions up to `TX_VERSION_TOCCATA` once `toccata_activation` is active.
+  - tx_validation_in_isolation.rs rejects `tx.version > TX_VERSION_TOCCATA` as unknown.
+  - tx_validation_in_isolation.rs rejects covenant bindings on version 0 outputs (`CovenantBindingInV0`).
+- Therefore the correct transaction version target is 1, not 2.
+- The earlier confusion is consistent with block-version drift:
+  - official source uses `TOCCATA_BLOCK_VERSION = 2`
+  - official source uses `TX_VERSION_TOCCATA = 1`
+- Local stale spots confirmed in this repo:
+  - spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil uses `require(tx.version == 2)`
+  - spikes/tn12-minimal-covenant/fixtures/simple_covenant.test.json uses `"version": 2`
+  - spikes/tn12-minimal-covenant/fixtures/simple_covenant_tx_structured.test.json uses `"version": 2`
+  - spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs constructs `Transaction::new(2, ...)`
+
+5. Does `crypto/txscript/examples/covenants.rs` exist in the official source?
+- Yes.
+- Verified path:
+  - /root/kaspa-fair-lab/tools/rusty-kaspa-source/rusty-kaspa-tn10-toc3/crypto/txscript/examples/covenants.rs
+
+6. Does `cargo run -p kaspa-txscript --example covenants` pass locally?
+- Yes.
+- Command run from official tn10-toc3 source root:
+  - `cargo run -p kaspa-txscript --example covenants`
+- Result: exit code 0.
+- Final runtime output included:
+  - `[COVENANT] Counter payload covenant`
+  - `[COVENANT] Spending to counter 1`
+  - `[COVENANT] Spending to counter 2`
+  - `[COVENANT] Spending to counter 3`
+  - three expected invalid-spend failures with `VerifyError`
+  - `[COVENANT] Example complete`
+
+7. Does the example prove script semantics only, or a live consensus/broadcast path?
+- Script semantics only.
+- Why:
+  - The example imports and uses `TxScriptEngine`, `EngineFlags`, `PopulatedTransaction`, `UtxoEntry`, and locally constructed `Transaction` objects.
+  - It sets `EngineFlags { covenants_enabled: true, ..Default::default() }` directly.
+  - It locally runs `vm.execute()` against in-memory transactions and UTXO entries.
+  - It does not connect to RPC.
+  - It does not use wallet signing.
+  - It does not create or submit a live network transaction.
+- Additional nuance:
+  - The official example uses `Transaction::new(0, ...)`, not version 1.
+  - That does not contradict the Toccata live-path conclusion, because the example is demonstrating local txscript/covenant VM behavior rather than a full post-activation consensus-validated covenant-binding transaction path.
+  - It proves local covenant script behavior, not live Toccata transaction validity or wallet/broadcast workflow.
+
+8. What is the corrected minimal next path for ENV-058?
+- Corrected ENV-058 should be narrower and partially unblocked relative to ENV-057A.
+- Recommended minimal next path:
+  1. Patch local stale version assumptions from 2 -> 1 in repo-owned spike fixtures/helpers.
+  2. Preserve the official tn10-toc3 source tag as the canonical source reference for TN10/Toccata claims.
+  3. Add a local-only reconciliation artifact showing:
+     - official tn10-toc3 activation gate = `toccata_activation`
+     - TN10 activation DAA = `467_579_632`
+     - tx version = `1`
+     - block version = `2`
+  4. Update the local rust-tx-assembly helper from `Transaction::new(2, ...)` to version 1 for any Toccata-oriented local artifact generation.
+  5. Keep the next execution step local-only and artifact-only:
+     - either rerun the official `kaspa-txscript` covenant example as baseline,
+     - or adapt the repo helper to emit a version-1 local transaction / RPC-shape artifact without signing or broadcast.
+  6. Only after local artifact reconciliation succeeds, investigate whether the wallet/PSKB path can preserve covenant outputs end-to-end.
+- In short: ENV-058 is no longer blocked on “TN10 activation unknown/negative”, but it is still blocked on the wallet/signing/create-route proof.
+
+9. Should ENV-057A be superseded/amended from `STILL_BLOCKED` to `PARTIALLY_UNBLOCKED` or similar?
+- Yes.
+- Recommended amendment:
+  - ENV-057A should not remain the final word on TN10 activation.
+  - Its activation conclusion should be superseded by ENV-057B.
+- Best status wording:
+  - `PARTIALLY_UNBLOCKED`
+- Reason:
+  - Unblocked/resolved by ENV-057B:
+    - official tn10-toc3 gate is `toccata_activation`
+    - TN10 activation is real, not `never()`
+    - correct Toccata tx version is 1
+    - local version-2 fixture/helper assumptions are stale
+    - official local covenant example exists and passes
+  - Still blocked after ENV-057B:
+    - the official example is local VM semantics only
+    - no proof yet that the wallet create/PSKB path preserves covenant outputs correctly for a live-style flow
+    - no proof yet of signing/broadcast/create route for a live covenant transaction
+
+Exact source-backed conclusions
+
+A. Activation gate
+- Official tn10-toc3 source uses `toccata_activation`.
+- `covenants_activation` does not exist in this official tag.
+
+B. TN10 activation setting
+- TN10/testnet suffix 10 has `toccata_activation: ForkActivation::new(467_579_632)`.
+- Therefore TN10 Toccata activation is source-proven in the official tag.
+
+C. Correct transaction version
+- Transaction version: 1
+- Block version: 2
+- Therefore `tx.version == 2` is stale/wrong for Toccata transaction logic.
+
+D. Official example status
+- `crypto/txscript/examples/covenants.rs` exists.
+- `cargo run -p kaspa-txscript --example covenants` passes locally.
+- It proves local covenant VM semantics only.
+
+What the official example proves
+- A covenant script can be expressed and executed locally in the official txscript engine.
+- Valid local spends succeed.
+- Invalid local spends fail with `VerifyError`.
+- The official source bundle contains a working covenant example under txscript examples.
+
+What the official example does not prove
+- It does not prove TN10 wallet support for covenant creation/signing.
+- It does not prove RPC submission or mempool acceptance.
+- It does not prove broadcast path correctness.
+- It does not prove a live covenant output lifecycle on TN10.
+- It does not prove the PSKB create path preserves covenant bindings.
+
+Corrected minimal artifact recommendation
+- Use the official tn10-toc3 source as canonical for activation/version claims.
+- Treat the official example as the local script-semantics baseline.
+- Treat the local spike’s `simple_covenant` version-2 materials as stale and patch targets, not authoritative references.
+- For repo-local work, the next minimal artifact should be a version-1 local Toccata-oriented helper or fixture set, still no-sign/no-broadcast.
+
+Stop conditions
+- Stop if any planned local or live path still depends on `tx.version == 2` for Toccata transactions.
+- Stop if any claim about TN10 activation is sourced from a non-tn10-toc3 checkout without being cross-checked against the official tag.
+- Stop before claiming wallet/create/sign/broadcast readiness from the txscript example alone.
+- Stop before any signing, broadcast, UTXO spend, or live covenant transaction without fresh explicit approval.
+
+Recommended follow-up classification
+- ENV-057: original preflight blocker snapshot
+- ENV-057A: superseded in part by wrong-source activation reading
+- ENV-057B: authoritative source reconciliation against official tn10-toc3 tag
+- Recommended current overall status: PARTIALLY_UNBLOCKED
+
+Final confirmation
+- No signing occurred.
+- No broadcast occurred.
+- No UTXOs were spent.
+- No live covenant transaction was created.
+- ENV-057B remained local/source/example-only.
