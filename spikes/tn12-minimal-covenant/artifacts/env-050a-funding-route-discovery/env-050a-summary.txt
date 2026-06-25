@@ -1,0 +1,105 @@
+Result: NEEDS HUMAN
+Timestamp: 2026-06-25T11:01:39+00:00
+Existing address: kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg
+
+Routes investigated:
+1. Local repo planning/docs for TN12 funding references
+2. Existing ENV-050 artifact for previously attempted faucet discovery
+3. Rusty-Kaspa local source for address-prefix and network-suffix behavior
+4. Official Kaspa website wallet/help page for community/explorer links
+5. Public TN10/TN11/TN12-pattern faucet/API hostnames for discovery only
+6. GitHub issue history for prior public faucet naming evidence
+
+Routes rejected and why:
+- https://faucet.kaspanet.io/
+  Rejected as funding route for now.
+  Evidence: prior ENV-050 artifact recorded Cloudflare blocker state with no visible faucet form or network selector.
+  Quote: "blocked at Cloudflare security verification; no faucet form, network selector, or funding response became accessible".
+  TN12 clarity: no.
+  Requires wallet creation/import: not proven.
+  Requires private key/seed/mnemonic: not proven from accessible state.
+
+- kaspa-ng.org
+  Rejected.
+  Evidence: ENV-050 artifact recorded Phantom warning.
+  Quote: "Phantom believes it is malicious and unsafe to use." 
+  TN12 clarity: not accepted for use.
+  Requires wallet creation/import: yes, the main faucet flow referenced it for testnet wallet creation.
+  Requires private key/seed/mnemonic: potentially yes in practice for wallet use; not approved.
+
+- Public faucet choices limited to TN10/TN11
+  Rejected.
+  Evidence source: user-provided current status for ENV-050A.
+  Reason: wrong network under current constraints.
+  TN12 clarity: no.
+
+Candidate routes found:
+- Candidate A: official Kaspa community escalation via Discord
+  Route: https://discord.gg/kaspa
+  Evidence source: official Kaspa page https://kaspa.org/hodl#wallet
+  Evidence quote: "For community help join Discord, or check a transaction on the explorer."
+  Why it matters: this is the strongest official human-assisted route found for asking where current TN12/testnet-12 funds are distributed or whether a current TN12 faucet/operator exists.
+  Clearly TN12/testnet-12: no, not by itself.
+  Requires wallet creation/import: no.
+  Requires private key/seed/mnemonic: no.
+
+- Candidate B: TN12-named infrastructure hostnames observed, but not yet verified as legitimate funding routes
+  Routes observed:
+  - https://faucet-tn12.kaspanet.io/ -> HTTP 403
+  - https://api-tn12.kaspa.org/ -> HTTP 503
+  Evidence source: direct discovery requests during ENV-050A.
+  Why it matters: these names suggest TN12-specific infrastructure may exist.
+  Why not approved: no authoritative project document or accessible UI bound either route to a safe funding workflow.
+  Clearly TN12/testnet-12: suggestive by hostname only, not sufficient for approval.
+  Requires wallet creation/import: unknown.
+  Requires private key/seed/mnemonic: unknown.
+
+Evidence source/path/quote details:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/env-047-gated-plan.md
+  Quote: "a specific TN12 faucet path has been identified and approved"
+  Meaning: Gate 2 requires a fixed, approved TN12 route; discovery has not yet satisfied that requirement.
+
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-050-faucet-funding/env-050-summary.txt
+  Quote: "blocked at Cloudflare security verification; no faucet form, network selector, or funding response became accessible"
+  Quote: "Do not use kaspa-ng.org for this PoC."
+
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/crypto/addresses/src/lib.rs lines 68-75, 89-92, 120-123
+  Quote: testnet address prefix is "kaspatest".
+  Meaning: the current address format is valid for testnet-style addressing.
+
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/network.rs lines 91-99
+  Quote: NetworkType::Testnet maps to Prefix::Testnet.
+  Meaning: address prefix reflects generic testnet, not specifically TN12.
+
+- /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/consensus/core/src/config/params.rs lines 528-531
+  Quote: testnet suffix 10 and 12 are distinct supported params.
+  Meaning: TN10 and TN12 are differentiated by network suffix, so kaspatest prefix alone is not enough to prove a funding route targets TN12.
+
+- Official Kaspa wallet/help page observed during ENV-050A
+  Evidence quote: "For community help join Discord, or check a transaction on the explorer."
+  Extracted official links:
+  - Discord: https://discord.gg/kaspa
+  - Explorer: https://explorer.kaspa.org/
+
+Address-format assessment:
+- The generated kaspatest: address format is sufficient as a generic Kaspa testnet-format address.
+- It is not, by itself, sufficient proof that a faucet or funding route is TN12 rather than TN10/TN11.
+- Any approved funding route must explicitly confirm TN12/testnet-12 compatibility separately from the address prefix.
+
+Recommendation:
+- Do not submit funding yet.
+- Treat ENV-050 funding as still blocked pending a human-verified TN12 route.
+- Best next route: use the official Kaspa Discord link from kaspa.org to ask for the current legitimate TN12/testnet-12 funding path or operator, while preserving current constraints: no wallet import/creation, no kaspa-ng.org, no private-key exposure, no signing, no broadcast, no UTXO inspection.
+- Secondary follow-up only after human verification: if a maintainer/operator confirms that faucet-tn12.kaspanet.io or another named endpoint is the legitimate TN12 route, re-run a documentation/review step before any submission.
+
+Stop conditions still in force:
+- Do not fund through TN10/TN11.
+- Do not use kaspa-ng.org.
+- Do not bypass browser/security warnings.
+- Do not create/import/use a web wallet.
+- Do not access private key material.
+- Do not inspect UTXOs.
+- Do not sign.
+- Do not broadcast.
+- Do not use mainnet.
+- Do not treat hostname patterns alone as proof of TN12 compatibility.
