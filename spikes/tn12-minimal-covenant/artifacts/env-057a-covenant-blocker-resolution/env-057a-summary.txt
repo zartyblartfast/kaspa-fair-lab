@@ -1,0 +1,187 @@
+ENV-057A covenant blocker resolution only
+
+Result: STILL_BLOCKED
+
+Scope and safety:
+- No signing occurred.
+- No broadcast occurred.
+- No UTXOs were spent.
+- No live covenant transaction was created.
+- No mainnet was used.
+- No roulette work was done.
+
+1) TN10 covenant activation evidence
+
+What was inspected:
+- Local official tn10 wallet binary path:
+  /root/kaspa-fair-lab/tools/rusty-kaspa-releases/tn10-toc3/bin/kaspa-wallet
+- Local Rusty Kaspa source checkout used by the repo helper:
+  /root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f
+- Prior TN10 public-node proof artifacts already in repo:
+  spikes/tn12-minimal-covenant/artifacts/env-051-tn10-public-rpc-proof/
+  spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/
+
+Exact source evidence:
+- consensus/core/src/constants.rs
+  - TX_VERSION = 0
+  - TX_VERSION_TOCCATA = 1
+  - comment explicitly says Toccata version 1 enables output covenant bindings
+- consensus/src/processes/transaction_validator/tx_validation_in_header_context.rs
+  - if covenants_activation is active, tx.version may be <= TX_VERSION_TOCCATA
+  - otherwise tx.version must equal TX_VERSION (0)
+- consensus/src/processes/transaction_validator/tx_validation_in_isolation.rs
+  - tx.version 0 rejects any output carrying a covenant binding via CovenantBindingInV0
+- consensus/core/src/config/params.rs
+  - TESTNET_PARAMS (suffix 10) has crescendo_activation = ForkActivation::new(88_657_000)
+  - TESTNET_PARAMS (suffix 10) has covenants_activation = ForkActivation::never()
+  - TESTNET12_PARAMS has covenants_activation = ForkActivation::always()
+
+Conclusion:
+- In the locally inspected Rusty Kaspa source, TN10/testnet-10 is not covenant-activated.
+- Because version-1 covenant-bearing outputs depend on covenants_activation, the minimal covenant spike path is not supported on TESTNET_PARAMS as inspected.
+- The repo still does not contain an exact local source bundle for the shipped tn10-toc3 release binaries under tools/rusty-kaspa-releases, so ENV-057A cannot honestly upgrade this to a release-proven READY state.
+- Net result: TN10 covenant activation remains a blocker, and it is currently a negative blocker rather than just a missing-documentation blocker.
+
+2) Correct transaction version conclusion
+
+Resolved mismatch:
+- Current consensus meaning is:
+  - v0 = pre-Toccata transaction
+  - v1 = Toccata transaction
+- Therefore the local simple_covenant requirement `tx.version == 2` is stale/wrong for the current source tree inspected here.
+
+Evidence:
+- constants.rs defines TX_VERSION_TOCCATA = 1.
+- tx_validation_in_header_context.rs allows post-activation versions only up to 1.
+- tx_validation_in_isolation.rs treats version > 0 as the Toccata-style branch.
+- upstream/local example path still has stale version-2 assumptions:
+  - spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil: `require(tx.version == 2)`
+  - external/silverscript/silverscript-lang/tests/cashc_valid_examples_tests.rs builds the simple_covenant example with version 2
+  - spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs currently constructs Transaction::new(2, ...)
+- real covenant-style SilverScript tests use version 1:
+  - external/silverscript/silverscript-lang/tests/common.rs defines covenant helpers
+  - external/silverscript/silverscript-lang/tests/covenant_declaration_security_tests.rs uses Transaction::new(1, ...)
+  - external/silverscript/silverscript-lang/tests/chess_apps_tests.rs also uses Transaction::new(1, ...)
+
+Correct tx version conclusion:
+- The correct covenant transaction version for the currently inspected Toccata source is 1, not 2.
+- simple_covenant is outdated as a tx-version sentinel.
+- ENV-057 was right that there was a mismatch; ENV-057A resolves it in favor of version 1.
+
+Minimal code/test change to reconcile local artifacts:
+- Change spikes/tn12-minimal-covenant/fixtures/simple_covenant.sil
+  - from: require(tx.version == 2);
+  - to:   require(tx.version == 1);
+- Change external/silverscript/silverscript-lang/tests/cashc_valid_examples_tests.rs
+  - simple_covenant build_tx_context(..., version = 2)
+  - to version = 1
+- Change spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+  - Transaction::new(2, ...)
+  - to Transaction::new(1, ...)
+
+Important caveat:
+- Fixing the local version mismatch only repairs local fixture/helper correctness.
+- It does not make TN10 covenant-ready because TN10 activation is still blocked above.
+
+3) Signing route
+
+What is now source-proven about official kaspa-wallet:
+- cli/src/modules/pskb.rs exposes these wallet commands:
+  - pskb create <address> <amount> <priority fee>
+  - pskb sign <pskb>
+  - pskb send <pskb>
+  - pskb debug <payload>
+  - pskb parse <payload>
+  - pskb script lock <payload> <amount> [priority fee]
+  - pskb script unlock <payload> <fee>
+  - pskb script sign <pskb>
+  - pskb script address <pskb>
+- wallet/core/src/account/mod.rs implements:
+  - pskb_from_send_generator(...)
+  - pskb_sign(...)
+  - pskb_broadcast(...)
+- wallet/core/src/account/pskb.rs shows PSKB signing uses locally derived account private keys in memory and does not require exporting secrets into public artifacts.
+
+What is also source-proven about wallet data structures:
+- wallet/core/src/tx/payment.rs defines PaymentOutput with an optional covenant field.
+- wallet/pskt/src/output.rs and wallet/pskt/src/pskt.rs carry covenant data in PSKT outputs.
+
+Critical limitation found:
+- wallet/core/src/tx/generator/generator.rs currently maps PaymentDestination::PaymentOutputs to:
+  TransactionOutput::new(output.amount, pay_to_address_script(&output.address), None/implicit no covenant path)
+  effectively dropping PaymentOutput.covenant during the normal generator path.
+- So the CLI send/create path is not a proven covenant-output authoring route even though the underlying types know about covenant fields.
+
+Meaning for signing:
+- Official kaspa-wallet can sign PSKB bundles.
+- Official kaspa-wallet can sign ordinary account-owned inputs and the dedicated P2SH script flow.
+- Official kaspa-wallet is not source-proven here as a complete covenant create/spend shell workflow, because the exposed CLI create path has no covenant-binding arguments and the normal generator path drops covenant data.
+- `pskb script sign` appears aimed at P2SH payload unlocks, not at building SilverScript covenant-declaration sigscripts.
+
+SilverScript-side spend-path evidence:
+- external/silverscript/silverscript-lang/src/compiler/mod.rs exposes build_sig_script_for_covenant_decl(...)
+- external/silverscript/silverscript-lang/tests/common.rs wraps that as covenant_decl_sigscript(...)
+- covenant_declaration_security_tests.rs proves the covenant declaration spend path locally with version-1 transactions
+
+Can the existing rust-tx-assembly helper be extended safely?
+- Yes, but not by directly embedding/exporting secret material.
+- Safer extension path:
+  1. keep helper repo-owned and offline
+  2. extend it from raw Transaction/RpcTransaction emission to PSKT/PSKB emission
+  3. preserve covenant bindings in the output object
+  4. let official kaspa-wallet perform the actual signing step later via `pskb sign`
+- Unsafe / not recommended path:
+  - extending the helper to load wallet secrets or private keys itself just to sign
+- The currently checked-in helper is not yet sufficient because:
+  - it is version 2 today
+  - it emits raw Transaction/RpcTransaction/SubmitTransactionRequest artifacts, not PSKB bundles
+  - it has no wallet-core/pskt dependencies yet
+
+Recommended signing strategy:
+- For a future create leg, prefer:
+  - repo-owned offline PSKB/PSKT builder -> official kaspa-wallet `pskb sign` -> later explicit broadcast approval
+- For a future spend leg, remain conservative:
+  - only proceed if the helper can assemble the exact covenant declaration sigscript path using SilverScript helpers without exporting secrets
+  - if that cannot be done while keeping secrets inside official wallet tooling, stop
+
+Recommended minimal covenant artifact
+- Do not use simple_covenant as the live basis.
+- Use the smallest transition-style artifact that matches the real covenant helper path:
+  - spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.sil
+  - spikes/tn12-minimal-covenant/fixtures/tn12_demo_transition.test.json
+- For transaction assembly, the minimal next artifact should be a new offline version-1 covenant PSKB builder derived from:
+  - external/silverscript/silverscript-lang/tests/common.rs
+  - external/silverscript/silverscript-lang/src/compiler/mod.rs
+  - spikes/tn12-minimal-covenant/rust-tx-assembly/src/main.rs
+  - wallet/pskt output support
+
+Exact next ENV-058 plan if READY
+- Not READY now.
+- If activation were later proven and the PSKB builder were corrected, ENV-058 should be:
+  1. patch local fixture/helper version assumptions from 2 -> 1
+  2. add an offline covenant-create PSKB builder that preserves covenant bindings
+  3. emit artifact-only PSKB/debug/parse output locally
+  4. verify wallet `pskb parse` can inspect the bundle cleanly
+  5. stop for review before any signing approval
+  6. only after explicit approval, use official wallet `pskb sign`
+  7. stop again for review before any broadcast approval
+
+Why STILL_BLOCKED instead of READY
+- TN10/testnet-10 covenant activation is negative in the inspected source (`ForkActivation::never()`).
+- The local simple_covenant and rust-tx-assembly helpers are stale on tx version.
+- Official wallet PSKB support exists, but the normal generator path is not yet a proven covenant-output authoring path.
+- Covenant spend-path sigscript construction is proven only in SilverScript/local test helpers, not yet in an approved wallet-mediated live route.
+
+Stop conditions
+- Stop if TN10/testnet-10 activation is still `ForkActivation::never()` in the governing source for the intended release.
+- Stop if any plan still depends on tx.version == 2.
+- Stop if covenant outputs are still dropped by the chosen PSKB/generator path.
+- Stop if the only workable signing route requires raw secret export into ad-hoc helper code.
+- Stop before any signing, broadcast, or UTXO spend without fresh explicit approval.
+
+Final confirmation
+- No signing occurred.
+- No broadcast occurred.
+- No UTXOs were spent.
+- No live covenant transaction was created.
+- ENV-057A was blocker-resolution only.
