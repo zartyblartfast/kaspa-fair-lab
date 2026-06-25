@@ -20,6 +20,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - one TN12 test-only address has been generated
 - ENV-050 Gate 2 faucet funding: PENDING / BLOCKED FOR SAFETY REVIEW
 - ENV-050A funding-route discovery: COMPLETE (needs human follow-up)
+- ENV-050B TN12 mining preflight: COMPLETE
 - wallet/faucet/signing/broadcast/covenant lifecycle beyond Gate 1 remains NOT TESTED
 - roulette remains PAUSED
 
@@ -47,6 +48,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
 - Public ENV-050 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050-faucet-funding/`.
 - Public ENV-050A discovery evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050a-funding-route-discovery/`.
+- Public ENV-050B mining preflight evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-050b-tn12-mining-preflight/`.
 - Private material for ENV-049, if needed, is stored only under ignored `spikes/tn12-minimal-covenant/local-secrets/`.
 
 ## What has not been proven / tested
@@ -55,6 +57,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Real UTXO usage.
 - ENV-050 Gate 2 funding completion.
 - ENV-050A still needs a human-verified TN12 funding route before any submission.
+- ENV-050B identified mining as the likely TN12 funding path if a later one-thread mining attempt is approved.
 - Gate 3 read-only UTXO inspection (not started).
 - Live TN12 transaction submission.
 - Mempool acceptance.
@@ -86,7 +89,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 3. Treat ENV-049 Gate 1 as complete: one TN12 test-only address generated, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 4. Treat ENV-050 Gate 2 as still blocked pending a verified TN12/testnet-12 funding route.
 5. Treat ENV-050A as complete discovery-only: official Discord/community escalation was identified, but no automated funding route was verified strongly enough to use.
-6. Do not proceed to Gate 3 read-only UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
+6. Treat ENV-050B as complete preflight-only: direct TN12 mining against the existing synced node is the likely next funding path if explicitly approved later; no mining has started yet.
+7. Do not proceed to Gate 3 read-only UTXO inspection, signing, broadcast, or covenant lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -137,6 +141,18 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - Best current human-assisted route found: official Kaspa Discord `https://discord.gg/kaspa`
 - Gate 3 read-only UTXO inspection remains NOT STARTED
 - Signing/broadcast/covenant lifecycle remains NOT TESTED
+- Roulette remains PAUSED
+
+## ENV-050B mining preflight status
+
+- Status: complete (result = READY)
+- No mining started yet
+- Faucet route remains blocked
+- Mining is now the likely TN12 funding path if a later explicit mining attempt is approved
+- Existing ENV-049 address remains the only approved address: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`
+- Current synced node is still running without `--utxoindex`
+- Mining preflight evidence path: `spikes/tn12-minimal-covenant/artifacts/env-050b-tn12-mining-preflight/env-050b-summary.txt`
+- UTXO/signing/broadcast/covenant lifecycle remains NOT TESTED
 - Roulette remains PAUSED
 
 ## Suggested model/session guidance

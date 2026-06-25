@@ -1,0 +1,106 @@
+Result: READY
+Timestamp: 2026-06-25T13:50:37+00:00
+vProgs source note: user supplied TN12 guidance says faucet is coming soon, current limitation is no faucet, and test KAS must be mined directly for now. This was treated as a lead only and checked against local kaspad help/source before any execution planning.
+Existing address: kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg
+
+Current running node command:
+target/release/kaspad --testnet --netsuffix=12 --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210 --connect=178.105.76.81:16311 --connect=86.48.24.208:16311
+
+Observed binary path actually in use:
+/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/target/release/kaspad
+
+Live preflight observations:
+- Running kaspad process RSS: about 4.1 GiB resident (from ps output)
+- System memory: 7.8 GiB total, 4.8 GiB used, 461 MiB free, 3.0 GiB available
+- Swap: 8.0 GiB total, 4.1 GiB already used
+- Conclusion: mining is technically possible but resource headroom is tight; use the lowest-impact miner settings first.
+
+Flag verification:
+1. Is --mining-address a valid flag in this kaspad build?
+- No.
+- Local kaspad help does not expose --mining-address.
+- Mining address is a miner-side flag, not a kaspad flag.
+- Local source evidence: daemon/src/cpu_miner/mod.rs constructs miner argv with --mining-address, --kaspad-address, --port=16210, --threads, and --testnet.
+
+2. Is there a separate kaspad flag such as --mine, --enable-mining, --mining, or similar?
+- No built-in mine/start-mining flag was found in kaspad help.
+- The only mining-related kaspad flag exposed here is --enable-unsynced-mining.
+- Local source/help meaning: this affects whether RPC block submission is accepted while the node is unsynced; it is not a command to start mining.
+
+3. Is --utxoindex required for mining or only for later UTXO lookup?
+- Local evidence indicates --utxoindex is not required for mining itself.
+- Mining RPC path uses get_block_template and submit_block in rpc/service/src/service.rs and does not gate those methods on config.utxoindex.
+- UTXO/balance RPC methods do gate on config.utxoindex and return NoUtxoIndex otherwise.
+- README evidence also says utxoindex is needed for wallet functionality.
+- Recommendation: not required for a first mining-only attempt; required later if you want local address/UTXO lookup via node RPC.
+
+4. Can --utxoindex be enabled on the existing synced data without resync/reindex?
+- Restart is required to change the flag.
+- Local startup code in kaspad/src/daemon.rs shows enabling --utxoindex creates a separate utxoindex data directory if requested.
+- The same startup code does not show a mandatory full DB delete just because utxoindex is toggled on.
+- However, the exact one-time cost of populating the UTXO index from the existing consensus state is not fully documented in the local materials reviewed here.
+- Conservative answer: full consensus resync is not clearly required by the code reviewed, but some index build/catch-up work should be expected after restart. Treat exact duration/cost as UNKNOWN until explicitly tested.
+
+5. Does the future mining setup need --netsuffix=12?
+- Yes, absolutely.
+- docs/testnet12.md says it is very important not to forget --netsuffix=12, otherwise the node will connect to mainnet or the default testnet.
+- kaspad/src/args.rs shows default testnet suffix is 10.
+- Therefore --testnet alone is not sufficient for TN12.
+
+Candidate future mining command:
+- Preferred first attempt without restarting the currently synced node and without enabling utxoindex:
+kaspa-miner --testnet --kaspad-address=127.0.0.1 --port=16210 --mining-address=kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg --threads=1 --throttle=5000 --altlogs
+
+Why this candidate:
+- testnet12.md documents kaspa-miner --testnet --mining-address <address> -p 16210 -t 1
+- local cpu_miner source builds the richer argv form:
+  --testnet
+  --port=16210
+  --kaspad-address=127.0.0.1
+  --mining-address=<address>
+  --threads=1
+  --throttle=5000
+  --altlogs
+- This candidate preserves localhost-only RPC use and targets the existing TN12 node's gRPC port 16210.
+
+If a future node restart is later approved for UTXO index support, the matching restart command would be:
+/root/.cargo/git/checkouts/rusty-kaspa-410e06d1fde91a92/42b734f/target/release/kaspad --testnet --netsuffix=12 --utxoindex --disable-upnp --listen=127.0.0.1:16311 --rpclisten=127.0.0.1:16210 --rpclisten-borsh=127.0.0.1:17210 --connect=178.105.76.81:16311 --connect=86.48.24.208:16311
+
+Whether restart is required:
+- For mining-only with the current synced node: no restart required.
+- For enabling --utxoindex later: yes, restart required.
+
+Whether resync/reindex is expected:
+- Full consensus resync: not proven to be required just for enabling --utxoindex.
+- UTXO index population/build after restart: likely some catch-up/build work, exact cost unknown.
+
+Stop/revert command if mining causes high CPU/RAM/swap pressure:
+- First stop only the miner:
+pkill -INT -f 'kaspa-miner.*--mining-address=kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg'
+- If that pattern is unavailable, stop by PID from ps for the miner process only.
+- Do not stop/restart the currently synced node unless separately approved.
+- If a later utxoindex-enabled node restart is ever approved and proves unstable, stop that restarted kaspad and revert to the current non-utxoindex command recorded above.
+
+Risks:
+- CPU: miner is expected to add sustained CPU load; start with one thread only.
+- RAM: current node already uses significant memory.
+- Swap: swap is already heavily used (about 4.1 GiB), so extra pressure may worsen responsiveness.
+- Node stability: prior project history already saw OOM-related kaspad exits before swap was added.
+- Time-to-find-block uncertainty: finding funds by mining is probabilistic and may take an unknown amount of time.
+
+Stop conditions:
+- Stop if any command drops --netsuffix=12 from the node side.
+- Stop if any command points the miner at a non-local RPC target unexpectedly.
+- Stop if any workflow tries to create a new address, wallet, faucet request, UTXO inspection, signing, broadcasting, or covenant transaction work without separate approval.
+- Stop if CPU/RAM/swap pressure becomes unacceptable.
+- Stop if a future miner binary is not confirmed to be TN12-compatible.
+
+Public artifact recommended after a future mining attempt:
+- spikes/tn12-minimal-covenant/artifacts/env-050c-tn12-mining-attempt/env-050c-summary.txt
+- Suggested contents: PASS/FAIL/PENDING, timestamp, node command used, miner command used, existing address, whether any block reward/accepted mining event was observed, runtime duration, stop reason, confirmation that no signing/broadcast/UTXO inspection/covenant actions were performed.
+
+Recommendation:
+- Preflight passes for a future mining-only attempt against the already-running TN12 node.
+- Do not restart the current node yet.
+- Do not enable utxoindex yet unless later UTXO inspection is separately approved.
+- If mining is approved next, use one-thread miner settings first and monitor CPU, memory, and swap closely.
