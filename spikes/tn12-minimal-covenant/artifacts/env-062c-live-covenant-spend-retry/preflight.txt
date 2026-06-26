@@ -1,0 +1,48 @@
+ENV-062C preflight evidence
+UTC 2026-06-26T11:00:17Z
+
+## git status --short
+?? spikes/tn12-minimal-covenant/artifacts/env-062c-live-covenant-spend-retry/
+
+## git check-ignore helper private key
+.gitignore:37:spikes/tn12-minimal-covenant/local-secrets/	spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/helper-private-key.hex
+
+## cargo fmt --check
+
+## cargo test
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.31s
+     Running unittests src/main.rs (spikes/tn12-minimal-covenant/tn10-covenant-spike/target/debug/deps/tn10_covenant_spike-e6a3969d306eacd6)
+
+running 8 tests
+test tests::env059_plans_small_tn10_funding_amount ... ok
+test tests::env059_secret_path_stays_under_ignored_local_secrets ... ok
+test tests::env062a_reconstructs_env060c_create_txid ... ok
+test tests::env062a_local_spend_fails_at_v1_txid_precheck ... ok
+test tests::env062b_create_txid_still_matches_env060c ... ok
+test tests::env062b_local_proof_text_is_no_broadcast ... ok
+test tests::env062b_v1_differs_from_v0_covenant_script ... ok
+test tests::env062b_v1_local_spend_proof_passes_offline ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+## cargo check
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s
+
+## local no-broadcast ENV-062B proof command
+   Compiling tn10-covenant-spike v0.1.0 (/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/tn10-covenant-spike)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.96s
+     Running `spikes/tn12-minimal-covenant/tn10-covenant-spike/target/debug/tn10-covenant-spike env062b-local-proof`
+ENV-062B local v1 covenant-spend proof written
+artifact_dir=/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-062b-covenant-spend-local-proof-fix
+local_no_broadcast_spend_proof_passes=true
+network_submission_occurred=false
+live_utxo_spent=false
+
+## read-only ENV-061-style TN10 UTXO/server inspection
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.26s
+     Running `spikes/tn12-minimal-covenant/tn10-covenant-spike/target/debug/tn10-covenant-spike env061-inspect`
+ENV-061 READY
+summary=/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-061-covenant-utxo-inspection-spend-preflight/env-061-summary.txt
+covenant_utxo_observed=true
+covenant_unspent=true

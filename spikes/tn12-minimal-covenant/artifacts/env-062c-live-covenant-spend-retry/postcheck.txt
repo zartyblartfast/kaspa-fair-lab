@@ -1,0 +1,40 @@
+ENV-062C postcheck evidence
+
+Result: BLOCKED_NO_SUBMISSION_POSTCHECK
+
+Read-only postcheck source:
+- Fresh preflight command reran: cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- env061-inspect
+- Command result: ENV-061 READY; covenant_utxo_observed=true; covenant_unspent=true.
+
+Current public TN10 server facts from env061 artifact refreshed during ENV-062C preflight:
+- network_id: testnet-10
+- network_suffix_10_observed: true
+- is_synced: true
+- has_utxo_index: true
+- server_version: 2.0.1
+
+Covenant UTXO facts from refreshed read-only inspection:
+- Covenant-create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+- Covenant input/outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+- Amount: 100000000 sompi
+- Expected covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+- Observed covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+- Observed covenant id matches expected: true
+- Covenant UTXO observed: true
+- Covenant appears unspent: true
+- Covenant address UTXO count: 1
+- Mempool spend of covenant outpoint observed: false
+- Helper change outpoint observed: true
+
+Spend result details:
+- Spend txid: N/A, no submission attempted.
+- Original covenant UTXO appears spent: false.
+- New transition output/UTXO appears: false / N/A, because no spend was submitted.
+- Exact rejection: N/A, blocked before submission rather than rejected by node.
+
+Safety confirmations:
+- No write RPC / submit_transaction occurred during postcheck.
+- No mainnet was used.
+- No wallet secrets were accessed.
+- Helper private key was not exposed.
+- No roulette/web app work occurred.

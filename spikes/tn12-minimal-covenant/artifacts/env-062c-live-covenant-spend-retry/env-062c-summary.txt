@@ -1,0 +1,51 @@
+ENV-062C live TN10 covenant-spend retry summary
+
+Result: BLOCKED
+Network: TN10 / testnet-10
+
+Intended covenant input:
+- Covenant input outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+- Covenant input amount: 100000000 sompi
+- Covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+
+Preflight results:
+- git status --short: only the new ENV-062C artifact directory was untracked at preflight start.
+- helper private key path is ignored by .gitignore.
+- cargo fmt --check: PASS.
+- cargo test: PASS, 8 passed / 0 failed.
+- cargo check: PASS.
+- network/server read-only inspection: PASS, network_id=testnet-10, is_synced=true, has_utxo_index=true.
+- covenant UTXO read-only inspection: PASS, observed=true, unspent=true, covenant id matches expected=true.
+- local no-broadcast spend proof: PASS for the ENV-062B fresh offline v1-compatible create/spend proof, VM result Ok(()).
+- tx version requirement: TX_VERSION_TOCCATA/v1 is the fixed path requirement; ENV-062B evidence says the fixed path is a fresh v1-compatible covenant design, not a retroactive spend of the existing ENV-060C UTXO.
+
+Blocking reason:
+ENV-062B explicitly states that the existing live ENV-060C UTXO is locked by the old v0-style previous-txid proof script and is structurally unspendable by that script for a TX_VERSION_TOCCATA/v1 create tx. ENV-062B fixed the spend proof by introducing a v1-compatible covenant script and proving an offline fresh v1 create + continuation-spend pair. It did not make the already-created ENV-060C/ENV-061 live UTXO spendable. Submitting against that UTXO would violate the recorded ENV-062B stop condition: do not attempt to spend the existing ENV-060C v0-locked UTXO.
+
+Submission result:
+- Covenant-spend submissions attempted: 0.
+- Confirmation exactly one covenant-spend submission was attempted: false; blocked before submit to avoid an invalid live spend.
+- Spend txid if accepted: N/A.
+- Exact rejection if rejected: N/A; no node rejection because no submission occurred.
+- Fee used: N/A for live spend; intended ENV-061 command carried 300000 sompi, but no spend tx was submitted.
+
+Resulting output/state details:
+- Original covenant UTXO appears spent: false.
+- New transition output/UTXO appears: false / N/A; no spend was submitted.
+- Current read-only state still shows the original covenant UTXO unspent and covenant id matching expected.
+
+Safety confirmations:
+- No mainnet: confirmed; only TN10/testnet-10 read-only inspection ran.
+- No official wallet seed/mnemonic/private key/password accessed: confirmed.
+- Helper private key not exposed: confirmed; helper key path remains ignored and no private key content appears in public output.
+- No roulette/web app: confirmed.
+- No commit made: confirmed.
+
+Evidence files:
+- preflight.txt
+- spend-submit.txt
+- postcheck.txt
+- env-062c-summary.txt
+
+Recommended next step:
+Review this BLOCKED result. If live progress is still desired, the next safe step is not another spend retry against the ENV-060C UTXO; it is a separately approved fresh live TN10 covenant create using the ENV-062B v1-compatible script, followed by read-only confirmation, then a separately approved one-shot spend of that new v1-compatible UTXO.

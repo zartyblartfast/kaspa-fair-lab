@@ -1,0 +1,23 @@
+ENV-062C covenant-spend submission record
+
+Result: BLOCKED_BEFORE_SUBMIT
+Submission attempted: false
+Covenant-spend submit_transaction calls attempted: 0
+Accepted spend txid: N/A
+Rejection: N/A - no live submission was made.
+
+Blocking reason:
+ENV-062B explicitly proves the local v1-compatible covenant-spend path only for a fresh offline v1-compatible covenant create/spend pair. It also explicitly states that the existing live ENV-060C covenant UTXO at f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0 is locked by the older v0-style txid-proof script and is structurally unspendable under TX_VERSION_TOCCATA/v1. Therefore submitting a spend against the existing ENV-061/ENV-060C UTXO would violate the ENV-062B stop condition: do not attempt to spend the existing ENV-060C v0-locked UTXO.
+
+Evidence basis:
+- artifacts/env-062b-covenant-spend-local-proof-fix/env-062b-summary.txt lines 20-26 and 76-95.
+- artifacts/env-062b-covenant-spend-local-proof-fix/local-proof-after-fix.txt lines 3-9 and 11-24.
+- fresh ENV-062C preflight reran env062b-local-proof and env061-inspect successfully.
+
+Safety confirmations:
+- No TN10 covenant-spend transaction was submitted.
+- No automatic retry occurred.
+- No mainnet was used.
+- No official wallet seed/mnemonic/private key/password was accessed.
+- Helper private key was not printed or exposed.
+- No roulette or web app was built.
