@@ -40,6 +40,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-062 live TN10 covenant spend attempt: BLOCKED before submission (missing helper subcommand was added and focused checks passed, but local no-broadcast covenant VM proof failed with `VerifyError`; zero covenant-spend submissions were attempted; evidence under `spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/`)
 - ENV-063 corrected live TN10 covenant create: PASS (accepted txid `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849`; corrected v1 covenant UTXO `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` observed unspent with 100000000 sompi and covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`; evidence under `spikes/tn12-minimal-covenant/artifacts/env-063-corrected-live-covenant-create/`)
 - ENV-064 live corrected TN10 covenant spend: PASS (exactly one `allow_orphan=false` covenant-spend submission accepted; spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`; spent ENV-063 corrected covenant UTXO only; old ENV-060C UTXO not touched; immediate postcheck observed mempool spend and not-yet-indexed transition UTXO; evidence under `spikes/tn12-minimal-covenant/artifacts/env-064-live-corrected-covenant-spend/`)
+- ENV-065 read-only ENV-064 spend confirmation: CONFIRMED (public TN10 node `testnet-10` synced with UTXO index; ENV-064 spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c` no longer in mempool, original ENV-063 covenant UTXO `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` absent/spent, continuing output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0` visible as UTXO with 99700000 sompi and covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`; read-only only, no transaction created/submitted; evidence under `spikes/tn12-minimal-covenant/artifacts/env-065-readonly-env064-spend-confirmation/`)
 - helper-controlled live covenant create is accepted on TN10 and its covenant UTXO was observed unspent in ENV-061; covenant spend remains NOT PROVEN after ENV-062 because local sigscript proof failed before submit
 - roulette remains PAUSED
 
@@ -383,4 +384,21 @@ No wallet/key/faucet/signing/broadcast/covenant action was performed in ENV-051.
 - Safety confirmations: old ENV-060C covenant UTXO not touched; no mainnet; no wallet secrets accessed; helper private key not exposed; no roulette/web app.
 - Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-064-live-corrected-covenant-spend/`
 - Do not commit ENV-064 until reviewed.
+## ENV-065 read-only ENV-064 spend confirmation status
+
+- Status: CONFIRMED
+- Network: TN10 / testnet-10
+- Node synced: true
+- UTXO index: true
+- ENV-064 spend txid: `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`
+- Spend status: `CONFIRMED_BY_UTXO_SET`
+- Spend still in mempool: false
+- Original ENV-063 covenant UTXO `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` appears spent/absent: true
+- Continuing output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0` appears as UTXO: true
+- Continuing output value: `99700000` sompi
+- Covenant id: `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`
+- Payload/state: not directly observable from UTXO response; expected/carry-forward state from ENV-064 spend payload is `01`
+- ENV-065 was read-only: no transaction created, submitted, signed, or broadcast; no wallet secrets or helper private key exposed; old ENV-060C UTXO not touched; no roulette/web app.
+- Evidence path: `spikes/tn12-minimal-covenant/artifacts/env-065-readonly-env064-spend-confirmation/`
+- Do not commit ENV-065 until reviewed.
 
