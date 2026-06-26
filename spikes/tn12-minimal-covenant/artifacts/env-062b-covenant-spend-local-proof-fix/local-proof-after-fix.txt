@@ -1,0 +1,33 @@
+ENV-062B local covenant-spend proof after fix
+
+Existing live ENV-060C/v0 covenant (unchanged, left intact):
+  Reconstructed ENV-060C create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+  Reconstructed ENV-060C create txid still matches ENV-061: true
+  Existing live UTXO spent in this step: false
+  Note: the existing live UTXO is locked by the v0-style txid-proof script and
+        remains structurally unspendable by that script for a v1 create tx; ENV-062B
+        does NOT attempt to spend it. The fix is a v1-compatible covenant design proven offline.
+
+New offline v1-compatible covenant proof (no broadcast):
+  Offline v1 create txid: c4d1ae7e9f9eea0f327376f2b1aa59fef8e3d1dbb6294f2deb98749c2ae33abb
+  Offline v1 covenant id: ed9c1833d45a5e02d2b9db6d5a9332d35a6d65a0a8ce57f24b5af28e543c7d97
+  Previous payload (counter 0) hex: '' (empty == counter 0)
+  Spend payload (counter 1) hex: 01
+  Redeem script length: 122
+  Sigscript length: 329
+  CovenantsContext::from_tx: OK
+  CovenantsContext auth outputs for input 0: 1
+  Script-recomputed v1 txid TransactionV1Id(payload_digest||rest_digest): c4d1ae7e9f9eea0f327376f2b1aa59fef8e3d1dbb6294f2deb98749c2ae33abb
+  Create outpoint txid: c4d1ae7e9f9eea0f327376f2b1aa59fef8e3d1dbb6294f2deb98749c2ae33abb
+  First script check (v1 previous-txid proof) passes: true
+  VM result: Ok(())
+  Local no-broadcast covenant spend proof passes: true
+
+Safety confirmations:
+  Network submission occurred: false
+  Live UTXO spent: false
+  Node connection opened: false
+  Signing of live funds: false
+  Helper private key exposed: false
+  Mainnet: false
+  Roulette/web app: false

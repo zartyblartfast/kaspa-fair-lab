@@ -1,0 +1,51 @@
+ENV-062B root cause: local covenant-spend VerifyError
+
+Exact failing check (from ENV-062A diagnosis, confirmed):
+- The covenant script's FIRST OP_EQUALVERIFY: the previous-transaction-id proof.
+- Script opcode prefix: OP_DUP OP_ROT OP_ROT OP_CAT <"TransactionID"> OP_BLAKE2B_WITH_KEY
+  OP_TX_INPUT_INDEX OP_OUTPOINT_TX_ID OP_EQUALVERIFY.
+
+Why the first script check failed:
+- That prefix was adapted directly from the official upstream
+  crypto/txscript/examples/covenants.rs counter example, which is a VERSION-0
+  in-VM example.
+- A v0 transaction id is literally TransactionID(rest || payload), where
+  TransactionID is a KEYED-BLAKE2B hash with the bare domain key "TransactionID".
+  So for v0 the prefix correctly recomputes the spending input's outpoint txid.
+- The live ENV-060C create transaction is TX_VERSION_TOCCATA / version 1. A v1
+  transaction id is NOT TransactionID(rest||payload). Per
+  consensus/core/src/hashing/tx.rs::id_v1 it is:
+      rest_digest    = TransactionRest(transaction_v1_rest_preimage(tx))
+      payload_digest = PayloadDigest(tx.payload)
+      v1_txid        = TransactionV1Id(payload_digest || rest_digest)
+- Therefore the v0-style script computed
+      8e2d45196a044df8b55ebe66e4b00fa52d2eca1393343ccd29a3710cf62d7845
+  while the actual outpoint txid was
+      f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+  so the first OP_EQUALVERIFY failed -> TxScriptError::VerifyError.
+
+Root-cause classification (against the task's checklist):
+- wrong previous payload?      NO  (empty == counter 0, matches create)
+- wrong next payload?          NO  (01 == counter 1, correct increment)
+- wrong pushed preimage/rest?  PARTLY - the sigscript fed transaction_v1_rest_preimage
+                               plus payload, but the SCRIPT then combined them with a
+                               v0 algorithm, so the mismatch is in the script's hashing,
+                               not the data shape.
+- wrong redeem script?         YES - this is the real root cause. The redeem script
+                               used the v0 TransactionID(rest||payload) construction.
+- wrong covenant SPK?          NO  (P2SH over the redeem script; consistent)
+- wrong transaction id/preimage convention?  YES - v0 convention used for a v1 tx.
+- wrong v1 live-context assumptions?          YES - the script assumed a v0 txid
+                               composition for a TX_VERSION_TOCCATA v1 create tx.
+- something else?              The second, deeper detail: the v1 digest domains
+                               TransactionRest / PayloadDigest / TransactionV1Id are
+                               KEYED-BLAKE3 hashers (crypto/hashes/src/hashers.rs
+                               blake3_hasher!), where the key is the domain string
+                               zero-padded to blake3::KEY_LEN (32) bytes. They are NOT
+                               keyed-blake2b. So a correct in-VM v1 txid recomputation
+                               must use OP_BLAKE3_WITH_KEY with the 32-byte padded
+                               domain key, not OP_BLAKE2B_WITH_KEY with the bare string.
+
+Summary: the redeem script encoded the upstream v0 previous-txid proof
+(TransactionID via keyed-blake2b) instead of the v1 previous-txid proof
+(TransactionV1Id(PayloadDigest(payload) || TransactionRest(rest)) via keyed-blake3).

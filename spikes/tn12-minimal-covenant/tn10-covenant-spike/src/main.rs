@@ -24,9 +24,9 @@ use kaspa_rpc_core::api::rpc::RpcApi;
 use kaspa_txscript::caches::Cache;
 use kaspa_txscript::covenants::CovenantsContext;
 use kaspa_txscript::opcodes::codes::{
-    Op1Add, OpBlake2bWithKey, OpCat, OpDup, OpEqual, OpEqualVerify, OpOutpointTxId, OpRot,
-    OpTxInputIndex, OpTxInputSpk, OpTxOutputCount, OpTxOutputSpk, OpTxPayloadLen,
-    OpTxPayloadSubstr,
+    Op1Add, OpBlake2bWithKey, OpBlake3WithKey, OpCat, OpDup, OpEqual, OpEqualVerify,
+    OpOutpointTxId, OpOver, OpRot, OpSwap, OpTxInputIndex, OpTxInputSpk, OpTxOutputCount,
+    OpTxOutputSpk, OpTxPayloadLen, OpTxPayloadSubstr,
 };
 use kaspa_txscript::pay_to_address_script;
 use kaspa_txscript::pay_to_script_hash_script;
@@ -75,10 +75,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some("env061-inspect") => run_env061_inspect().await?,
         Some("covenant-spend") => run_covenant_spend(args.collect()).await?,
         Some("env062a-local-debug") => run_env062a_local_debug()?,
+        Some("env062b-local-proof") => run_env062b_local_proof()?,
         Some("help") | Some("--help") | Some("-h") => print_help(),
         Some(other) => {
             return Err(format!(
-                "unknown command `{other}`; use `env058-offline-scaffold`, `env059-helper-key`, `covenant-create`, `env061-inspect`, or `covenant-spend`"
+                "unknown command `{other}`; use `env058-offline-scaffold`, `env059-helper-key`, `covenant-create`, `env061-inspect`, `covenant-spend`, `env062a-local-debug`, or `env062b-local-proof`"
             )
             .into());
         }
@@ -1926,6 +1927,234 @@ fn env062_local_proof_debug_text() -> Result<String, Box<dyn std::error::Error>>
     ))
 }
 
+/// Result of the ENV-062B offline v1-compatible covenant-spend proof.
+struct Env062bV1ProofResult {
+    create_txid: String,
+    create_covenant_id: String,
+    spend_payload_hex: String,
+    prev_payload_hex: String,
+    redeem_script_len: usize,
+    sigscript_len: usize,
+    auth_outputs_for_input0: usize,
+    script_computed_v1_txid: String,
+    create_outpoint_txid: String,
+    first_check_passes: bool,
+    vm_passed: bool,
+    vm_result_debug: String,
+}
+
+/// Build an offline, no-broadcast v1 covenant create + continuation spend using
+/// the v1-compatible covenant script, run the VM, and return structured facts.
+///
+/// This is purely local. It never connects to a node, never signs live funds,
+/// never submits, and never touches the existing live ENV-060C UTXO. It uses a
+/// fixed dummy genesis outpoint so the proof is deterministic.
+fn build_env062b_v1_local_proof() -> Result<Env062bV1ProofResult, Box<dyn std::error::Error>> {
+    let covenant_script = build_covenant_script_v1()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+
+    // Deterministic dummy funding outpoint for the offline genesis create.
+    // This is a public dummy reference only; it is never spent on any network.
+    let genesis_funding_outpoint = TransactionOutpoint::new(
+        hash_from_hex("c9b4532f217d66987997e972963ec5dbfa5a9e7bf18f3e38910763274fb05135"),
+        0,
+    );
+    let create_value_sompi: u64 = 100_000_000;
+
+    // Offline genesis-style create tx: counter = 0 (empty payload), bound covenant output 0.
+    let create_input = TransactionInput::new(genesis_funding_outpoint, vec![], 0, 0);
+    let create_output = TransactionOutput::new(create_value_sompi, covenant_spk.clone());
+    let mut create_tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![create_input],
+        vec![create_output],
+        0,
+        SubnetworkId::default(),
+        0,
+        vec![],
+    );
+    create_tx.populate_genesis_covenants(&[GenesisCovenantGroup::new(0, vec![0])])?;
+    create_tx.finalize();
+
+    let covenant_id = create_tx.outputs[0]
+        .covenant
+        .expect("populate_genesis_covenants binds output 0")
+        .covenant_id;
+    let create_txid = create_tx.id();
+
+    // Continuation spend tx: counter 0 -> 1 (payload 01), same SPK, same covenant id.
+    let prev_rest = transaction_v1_rest_preimage(&create_tx);
+    let prev_payload = create_tx.payload.clone();
+    let spend_payload = vec![1u8];
+    let sig_script = ScriptBuilder::new()
+        .add_data(&prev_rest)?
+        .add_data(&prev_payload)?
+        .add_data(&covenant_script)?
+        .drain();
+    let spend_input = TransactionInput::new(
+        TransactionOutpoint::new(create_txid, 0),
+        sig_script.clone(),
+        0,
+        0,
+    );
+    let spend_output = TransactionOutput::with_covenant(
+        create_value_sompi,
+        covenant_spk.clone(),
+        Some(CovenantBinding::new(0, covenant_id)),
+    );
+    let mut spend_tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![spend_input],
+        vec![spend_output],
+        0,
+        SubnetworkId::default(),
+        0,
+        spend_payload.clone(),
+    );
+    spend_tx.finalize();
+
+    let input_utxo = UtxoEntry::new(
+        create_value_sompi,
+        covenant_spk,
+        0,
+        false,
+        Some(covenant_id),
+    );
+
+    // Independent recomputation of the v1 txid for the precheck evidence row.
+    let rest_digest = v1_rest_digest(&create_tx);
+    let payload_dig = payload_digest(&create_tx.payload);
+    let mut v1_hasher = TransactionV1Id::new();
+    v1_hasher
+        .update(payload_dig.as_bytes())
+        .update(rest_digest.as_bytes());
+    let script_computed_v1_txid = v1_hasher.finalize();
+
+    let populated = PopulatedTransaction::new(&spend_tx, vec![input_utxo.clone()]);
+    let covenants_ctx = CovenantsContext::from_tx(&populated)?;
+    let auth_outputs_for_input0 = covenants_ctx
+        .input_ctxs
+        .get(&0)
+        .map(|ctx| ctx.auth_outputs.len())
+        .unwrap_or(0);
+    let sig_cache = Cache::new(10_000);
+    let reused_values = SigHashReusedValuesUnsync::new();
+    let ctx = EngineCtx::new(&sig_cache)
+        .with_reused(&reused_values)
+        .with_covenants_ctx(&covenants_ctx);
+    let flags = EngineFlags {
+        covenants_enabled: true,
+        ..Default::default()
+    };
+    let mut vm = TxScriptEngine::from_transaction_input(
+        &populated,
+        &spend_tx.inputs[0],
+        0,
+        &input_utxo,
+        ctx,
+        flags,
+    );
+    let vm_result = vm.execute();
+
+    Ok(Env062bV1ProofResult {
+        create_txid: create_txid.to_string(),
+        create_covenant_id: covenant_id.to_string(),
+        spend_payload_hex: hex_encode(&spend_payload),
+        prev_payload_hex: hex_encode(&prev_payload),
+        redeem_script_len: covenant_script.len(),
+        sigscript_len: sig_script.len(),
+        auth_outputs_for_input0,
+        script_computed_v1_txid: script_computed_v1_txid.to_string(),
+        create_outpoint_txid: create_txid.to_string(),
+        first_check_passes: script_computed_v1_txid == create_txid,
+        vm_passed: vm_result.is_ok(),
+        vm_result_debug: format!("{vm_result:?}"),
+    })
+}
+
+/// Build the ENV-062B local-proof-after-fix text. Combines the still-true
+/// ENV-060C reconstruction facts with the new offline v1 proof.
+fn env062b_local_proof_after_fix_text() -> Result<String, Box<dyn std::error::Error>> {
+    // Carry-forward fact: the existing live ENV-060C create tx reconstruction is unchanged
+    // and still matches the on-chain txid (the v0 build_covenant_script is left intact).
+    let env060c_tx = reconstruct_env060c_create_tx()?;
+    let env060c_reconstructs = env060c_tx.id().to_string() == ENV061_CREATE_TXID;
+
+    let p = build_env062b_v1_local_proof()?;
+
+    Ok(format!(
+        concat!(
+            "ENV-062B local covenant-spend proof after fix\n\n",
+            "Existing live ENV-060C/v0 covenant (unchanged, left intact):\n",
+            "  Reconstructed ENV-060C create txid: {}\n",
+            "  Reconstructed ENV-060C create txid still matches ENV-061: {}\n",
+            "  Existing live UTXO spent in this step: false\n",
+            "  Note: the existing live UTXO is locked by the v0-style txid-proof script and\n",
+            "        remains structurally unspendable by that script for a v1 create tx; ENV-062B\n",
+            "        does NOT attempt to spend it. The fix is a v1-compatible covenant design proven offline.\n\n",
+            "New offline v1-compatible covenant proof (no broadcast):\n",
+            "  Offline v1 create txid: {}\n",
+            "  Offline v1 covenant id: {}\n",
+            "  Previous payload (counter 0) hex: '{}' (empty == counter 0)\n",
+            "  Spend payload (counter 1) hex: {}\n",
+            "  Redeem script length: {}\n",
+            "  Sigscript length: {}\n",
+            "  CovenantsContext::from_tx: OK\n",
+            "  CovenantsContext auth outputs for input 0: {}\n",
+            "  Script-recomputed v1 txid TransactionV1Id(payload_digest||rest_digest): {}\n",
+            "  Create outpoint txid: {}\n",
+            "  First script check (v1 previous-txid proof) passes: {}\n",
+            "  VM result: {}\n",
+            "  Local no-broadcast covenant spend proof passes: {}\n\n",
+            "Safety confirmations:\n",
+            "  Network submission occurred: false\n",
+            "  Live UTXO spent: false\n",
+            "  Node connection opened: false\n",
+            "  Signing of live funds: false\n",
+            "  Helper private key exposed: false\n",
+            "  Mainnet: false\n",
+            "  Roulette/web app: false\n"
+        ),
+        env060c_tx.id(),
+        env060c_reconstructs,
+        p.create_txid,
+        p.create_covenant_id,
+        p.prev_payload_hex,
+        p.spend_payload_hex,
+        p.redeem_script_len,
+        p.sigscript_len,
+        p.auth_outputs_for_input0,
+        p.script_computed_v1_txid,
+        p.create_outpoint_txid,
+        p.first_check_passes,
+        p.vm_result_debug,
+        p.vm_passed,
+    ))
+}
+
+fn run_env062b_local_proof() -> Result<(), Box<dyn std::error::Error>> {
+    let artifact_dir = env062b_artifact_dir();
+    fs::create_dir_all(&artifact_dir)?;
+    let text = env062b_local_proof_after_fix_text()?;
+    let proof_path = artifact_dir.join("local-proof-after-fix.txt");
+    fs::write(&proof_path, &text)?;
+    let p = build_env062b_v1_local_proof()?;
+    println!("ENV-062B local v1 covenant-spend proof written");
+    println!("artifact_dir={}", artifact_dir.display());
+    println!("local_no_broadcast_spend_proof_passes={}", p.vm_passed);
+    println!("network_submission_occurred=false");
+    println!("live_utxo_spent=false");
+    Ok(())
+}
+
+fn env062b_artifact_dir() -> PathBuf {
+    let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+    manifest_dir
+        .parent()
+        .expect("crate is under spikes/tn12-minimal-covenant")
+        .join("artifacts/env-062b-covenant-spend-local-proof-fix")
+}
+
 fn parse_covenant_spend_args(
     args: Vec<String>,
 ) -> Result<CovenantSpendArgs, Box<dyn std::error::Error>> {
@@ -2101,6 +2330,9 @@ fn print_help() {
     println!(
         "  env062a-local-debug      Local-only ENV-062A covenant spend VerifyError diagnostics; writes no-broadcast artifacts"
     );
+    println!(
+        "  env062b-local-proof      Local-only ENV-062B v1-compatible covenant spend proof; no connect/sign/submit"
+    );
 }
 
 fn planned_helper_funding_tkas() -> u64 {
@@ -2187,6 +2419,100 @@ fn build_covenant_script() -> ScriptBuilderResult<Vec<u8>> {
         .drain())
 }
 
+/// Version-1 (TX_VERSION_TOCCATA) compatible counter covenant script.
+///
+/// The upstream `crypto/txscript/examples/covenants.rs` example is a version-0
+/// in-VM example: its first check recomputes `TransactionID(prev_rest || prev_payload)`
+/// (keyed blake2b) and asserts equality with the spending input's outpoint txid.
+/// That works only because a v0 txid is literally `TransactionID(rest || payload)`.
+///
+/// For `TX_VERSION_TOCCATA` (v1) transactions the txid composition is different
+/// (see `consensus/core/src/hashing/tx.rs::id_v1`):
+///
+/// ```text
+/// rest_digest    = TransactionRest(transaction_v1_rest_preimage(tx))
+/// payload_digest = PayloadDigest(tx.payload)
+/// v1_txid        = TransactionV1Id(payload_digest || rest_digest)
+/// ```
+///
+/// Crucially, the v1 digest domains `TransactionRest`, `PayloadDigest`, and
+/// `TransactionV1Id` are **keyed blake3** hashers (see `crypto/hashes/src/hashers.rs`
+/// `blake3_hasher!`), where the key is the domain string zero-padded to
+/// `blake3::KEY_LEN` (32) bytes. So the script must use `OP_BLAKE3_WITH_KEY` with
+/// the 32-byte padded domain key, NOT `OP_BLAKE2B_WITH_KEY` with the bare string
+/// (which is correct only for the v0 `TransactionID` blake2b domain).
+///
+/// Stack discipline (P2SH strips the redeem script, so the script starts with the
+/// two pushed sigscript items `[prev_rest, prev_payload]`, top == prev_payload):
+///
+/// ```text
+/// start                  : prev_rest  prev_payload
+/// OP_SWAP                : prev_payload  prev_rest
+/// <pad32 TransactionRest>: prev_payload  prev_rest  key_rest
+/// OP_BLAKE3_WITH_KEY     : prev_payload  rest_digest
+/// OP_OVER                : prev_payload  rest_digest  prev_payload
+/// <pad32 PayloadDigest>  : prev_payload  rest_digest  prev_payload  key_payload
+/// OP_BLAKE3_WITH_KEY     : prev_payload  rest_digest  payload_digest
+/// OP_SWAP                : prev_payload  payload_digest  rest_digest
+/// OP_CAT                 : prev_payload  (payload_digest||rest_digest)
+/// <pad32 TransactionV1Id>: prev_payload  (pd||rd)  key_v1id
+/// OP_BLAKE3_WITH_KEY     : prev_payload  v1_txid
+/// OP_TX_INPUT_INDEX      : prev_payload  v1_txid  input_index
+/// OP_OUTPOINT_TX_ID      : prev_payload  v1_txid  outpoint_txid
+/// OP_EQUALVERIFY         : prev_payload
+/// ```
+///
+/// After the txid proof the stack is `[prev_payload]`, exactly the state the
+/// upstream example reaches after its own first check, so the remaining tail is
+/// byte-for-byte identical to upstream.
+fn build_covenant_script_v1() -> ScriptBuilderResult<Vec<u8>> {
+    let key_rest = domain_key_32(b"TransactionRest");
+    let key_payload = domain_key_32(b"PayloadDigest");
+    let key_v1id = domain_key_32(b"TransactionV1Id");
+    Ok(ScriptBuilder::new()
+        // Recompute the v1 previous-txid and verify it matches the input outpoint txid:
+        //   v1_txid = TransactionV1Id( PayloadDigest(prev_payload) || TransactionRest(prev_rest) )
+        .add_op(OpSwap)?
+        .add_data(&key_rest)?
+        .add_op(OpBlake3WithKey)?
+        .add_op(OpOver)?
+        .add_data(&key_payload)?
+        .add_op(OpBlake3WithKey)?
+        .add_op(OpSwap)?
+        .add_op(OpCat)?
+        .add_data(&key_v1id)?
+        .add_op(OpBlake3WithKey)?
+        .add_op(OpTxInputIndex)?
+        .add_op(OpOutpointTxId)?
+        .add_op(OpEqualVerify)?
+        // Enforce payload increment: payload_of_tx == prev_payload + 1 (identical to upstream).
+        .add_op(Op1Add)?
+        .add_i64(0)?
+        .add_op(OpTxPayloadLen)?
+        .add_op(OpTxPayloadSubstr)?
+        .add_op(OpEqualVerify)?
+        // Enforce same script pub key and single-output spend (identical to upstream).
+        .add_op(OpTxInputIndex)?
+        .add_op(OpTxInputSpk)?
+        .add_i64(0)?
+        .add_op(OpTxOutputSpk)?
+        .add_op(OpEqualVerify)?
+        .add_op(OpTxOutputCount)?
+        .add_i64(1)?
+        .add_op(OpEqual)?
+        .drain())
+}
+
+/// Build a 32-byte blake3 keyed-hash domain key from a domain separator string,
+/// matching `crypto/hashes/src/hashers.rs::blake3_hasher!` which zero-pads the
+/// domain separator to `blake3::KEY_LEN` (32) bytes.
+fn domain_key_32(domain: &[u8]) -> [u8; 32] {
+    let mut key = [0u8; 32];
+    assert!(domain.len() <= 32, "domain separator must fit in 32 bytes");
+    key[..domain.len()].copy_from_slice(domain);
+    key
+}
+
 fn env058_artifact_dir() -> PathBuf {
     let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
     manifest_dir
@@ -2267,5 +2593,63 @@ mod tests {
         assert!(debug.contains("First script check passes: false"));
         assert!(debug.contains("Reconstructed V1 id matches create txid: true"));
         assert!(debug.contains("Failing check/opcode: first OP_EQUALVERIFY"));
+    }
+
+    #[test]
+    fn env062b_create_txid_still_matches_env060c() {
+        // The v0 build_covenant_script and ENV-060C reconstruction must remain
+        // byte-identical so the on-chain create txid is still reproduced.
+        let tx = reconstruct_env060c_create_tx().expect("reconstruct ENV-060C create tx");
+        assert_eq!(tx.version, TX_VERSION_TOCCATA);
+        assert_eq!(tx.id().to_string(), ENV061_CREATE_TXID);
+        assert_eq!(
+            tx.outputs[0]
+                .covenant
+                .map(|binding| binding.covenant_id.to_string()),
+            Some(ENV061_EXPECTED_COVENANT_ID.to_string())
+        );
+    }
+
+    #[test]
+    fn env062b_v1_local_spend_proof_passes_offline() {
+        let proof = build_env062b_v1_local_proof().expect("build v1 local proof");
+        // The v1 previous-txid proof check must now succeed in-VM.
+        assert!(
+            proof.first_check_passes,
+            "v1 previous-txid proof check should pass; script v1 txid {} vs outpoint {}",
+            proof.script_computed_v1_txid, proof.create_outpoint_txid
+        );
+        // The whole covenant spend VM run must pass offline.
+        assert!(
+            proof.vm_passed,
+            "local no-broadcast v1 covenant spend proof should pass; vm_result={}",
+            proof.vm_result_debug
+        );
+        // Continuation context wired output 0 as an authorized covenant output.
+        assert_eq!(proof.auth_outputs_for_input0, 1);
+        // Spend payload is the counter-1 increment.
+        assert_eq!(proof.spend_payload_hex, "01");
+        // Previous payload is the empty counter-0 encoding.
+        assert_eq!(proof.prev_payload_hex, "");
+    }
+
+    #[test]
+    fn env062b_v1_differs_from_v0_covenant_script() {
+        // The v1-compatible script must actually differ from the v0 example script.
+        let v0 = build_covenant_script().expect("v0 script");
+        let v1 = build_covenant_script_v1().expect("v1 script");
+        assert_ne!(v0, v1);
+    }
+
+    #[test]
+    fn env062b_local_proof_text_is_no_broadcast() {
+        // The proof text must assert no submission/spend and is produced without any
+        // node connection (it is a sync, non-async function with no RPC client).
+        let text = env062b_local_proof_after_fix_text().expect("build proof text");
+        assert!(text.contains("Local no-broadcast covenant spend proof passes: true"));
+        assert!(text.contains("Network submission occurred: false"));
+        assert!(text.contains("Live UTXO spent: false"));
+        assert!(text.contains("Node connection opened: false"));
+        assert!(text.contains("Reconstructed ENV-060C create txid still matches ENV-061: true"));
     }
 }

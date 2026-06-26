@@ -1,0 +1,107 @@
+ENV-062B covenant-spend local proof fix
+
+Result: FIXED_OFFLINE
+
+Root cause:
+The covenant redeem script encoded the UPSTREAM VERSION-0 previous-txid proof
+(TransactionID(prev_rest || prev_payload) via keyed-blake2b), copied from the
+official tn10-toc3 crypto/txscript/examples/covenants.rs counter example. The
+live ENV-060C create transaction is TX_VERSION_TOCCATA / version 1, whose txid
+is composed as TransactionV1Id(payload_digest || rest_digest) where
+  rest_digest    = TransactionRest(transaction_v1_rest_preimage(tx))
+  payload_digest = PayloadDigest(tx.payload)
+and where TransactionRest / PayloadDigest / TransactionV1Id are KEYED-BLAKE3
+hashers (domain string zero-padded to 32 bytes), not keyed-blake2b. The v0 script
+therefore computed the wrong previous-txid and failed at the first OP_EQUALVERIFY
+with TxScriptError::VerifyError. See root-cause.txt for the full classification.
+Primary classification: wrong redeem script / wrong tx-id preimage convention
+(v0 used for a v1 tx) plus the keyed-blake2b-vs-keyed-blake3 domain detail.
+
+Scope note (important):
+The existing live ENV-060C UTXO is locked by the v0-style script and is
+structurally unspendable by that script under a v1 create tx. Per the ENV-062A
+recommendation, ENV-062B does NOT try to retroactively spend that UTXO. The fix
+is a v1-compatible covenant script/state-transition design, proven to pass the
+covenant VM offline. The v0 build_covenant_script and the ENV-060C reconstruction
+are left byte-for-byte unchanged so the live create txid still reproduces.
+
+Files changed:
+- spikes/tn12-minimal-covenant/tn10-covenant-spike/src/main.rs
+    * added build_covenant_script_v1(): v1-compatible covenant script that
+      recomputes v1_txid = TransactionV1Id(PayloadDigest(prev_payload) ||
+      TransactionRest(prev_rest)) entirely in-VM using OP_BLAKE3_WITH_KEY with
+      32-byte zero-padded domain keys; counter/SPK/output-count tail identical to
+      upstream.
+    * added domain_key_32() helper (32-byte zero-padded blake3 keyed-hash domain key).
+    * added build_env062b_v1_local_proof(): offline v1 genesis create + v1
+      continuation spend, runs the covenant VM, returns structured proof facts.
+    * added env062b_local_proof_after_fix_text(), run_env062b_local_proof(),
+      env062b_artifact_dir(); wired `env062b-local-proof` CLI command + help.
+    * imports: added OpBlake3WithKey, OpOver, OpSwap.
+    * added 4 regression tests (see below).
+- artifacts/env-062b-covenant-spend-local-proof-fix/ (new): env-062b-summary.txt,
+  root-cause.txt, local-proof-after-fix.txt, test-output.txt.
+
+Tests/checks run:
+- cargo fmt --check  : clean.
+- cargo test         : 8 passed, 0 failed. New regression tests:
+    * env062b_create_txid_still_matches_env060c        -> ENV-060C create txid
+      f4941c47...fe53d and covenant id 69a36c40...ceb3d1 still reconstructed (v0
+      path preserved).
+    * env062b_v1_local_spend_proof_passes_offline      -> first v1 txid proof
+      check passes AND full covenant VM run returns Ok(()).
+    * env062b_v1_differs_from_v0_covenant_script       -> v1 script != v0 script.
+    * env062b_local_proof_text_is_no_broadcast         -> proof text asserts
+      no-submit/no-spend/no-connect and ENV-060C reconstruction.
+  Pre-existing tests (env059_*, env062a_*) still pass; env062a still records the
+  v0 VerifyError diagnosis, unchanged.
+- cargo check        : finished, no errors.
+- cargo run -- env062b-local-proof : wrote local-proof-after-fix.txt with
+  VM result: Ok(()).
+
+Whether local no-broadcast spend proof now passes: YES.
+  - Offline v1 create txid: c4d1ae7e9f9eea0f327376f2b1aa59fef8e3d1dbb6294f2deb98749c2ae33abb
+  - Script-recomputed v1 txid == create outpoint txid: true
+  - CovenantsContext::from_tx: OK; auth outputs for input 0: 1
+  - Covenant VM result: Ok(())
+
+Whether any network submission occurred: false.
+  - No node connection was opened by this ENV. The proof path is a synchronous,
+    non-async function with no RPC client and no submit_transaction call.
+
+Whether live UTXO was spent: false.
+  - The live ENV-060C UTXO (f4941c47...fe53d:0) was not referenced as a spend
+    input, not connected to, and not submitted. It remains untouched.
+
+Recommended next step:
+ENV-062C-PLAN (planning only): design a fresh, separately-approved live TN10
+covenant CREATE that uses build_covenant_script_v1 (the v1-compatible script),
+since the existing v0-locked ENV-060C UTXO cannot be spent by a v1-correct script.
+Sequence: (1) document the v1 create + later v1 spend plan with explicit fee/mass/
+change policy and stop conditions; (2) get explicit live approval for a one-shot
+v1 covenant create; (3) read-only confirm the new v1 covenant UTXO; (4) only then
+seek separate approval for a one-shot v1 covenant spend. Do not reuse the
+ENV-060C UTXO for a spend.
+
+Stop conditions for any future ENV-062C live retry:
+- Do NOT attempt to spend the existing ENV-060C v0-locked UTXO; it is
+  structurally unspendable by a v1-correct script.
+- A live spend may be attempted only against a covenant UTXO created with
+  build_covenant_script_v1, and only after this offline VM proof is green for
+  that exact create/spend pair.
+- Require: ENV-062B committed/pushed; this crate's cargo fmt --check, cargo test,
+  cargo check all green; TX_VERSION_TOCCATA (v1) used, never literal 2;
+  network testnet-10 only (never mainnet); allow_orphan=false; exactly one submit
+  attempt; on any rejection record the exact RPC error and stop (no auto-retry).
+- Use only the helper key and only the explicitly named helper funding input; do
+  not access official wallet seed/mnemonic/password.
+- Do NOT build roulette or a web app.
+
+Safety confirmations:
+- Network submission occurred: false
+- Live UTXO spent: false
+- Node connection opened in this ENV: false
+- Signing of live funds: false
+- Helper private key exposed: false
+- Mainnet: false
+- Roulette/web app: false

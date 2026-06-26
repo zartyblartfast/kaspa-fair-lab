@@ -1,0 +1,16 @@
+   Compiling tn10-covenant-spike v0.1.0 (/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/tn10-covenant-spike)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.51s
+     Running unittests src/main.rs (spikes/tn12-minimal-covenant/tn10-covenant-spike/target/debug/deps/tn10_covenant_spike-e6a3969d306eacd6)
+
+running 8 tests
+test tests::env059_plans_small_tn10_funding_amount ... ok
+test tests::env059_secret_path_stays_under_ignored_local_secrets ... ok
+test tests::env062a_reconstructs_env060c_create_txid ... ok
+test tests::env062a_local_spend_fails_at_v1_txid_precheck ... ok
+test tests::env062b_create_txid_still_matches_env060c ... ok
+test tests::env062b_local_proof_text_is_no_broadcast ... ok
+test tests::env062b_v1_differs_from_v0_covenant_script ... ok
+test tests::env062b_v1_local_spend_proof_passes_offline ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
