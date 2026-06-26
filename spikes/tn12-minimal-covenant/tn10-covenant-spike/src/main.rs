@@ -4,23 +4,33 @@ use std::io::Write;
 #[cfg(unix)]
 use std::os::unix::fs::OpenOptionsExt;
 use std::path::{Path, PathBuf};
+use std::time::Duration;
 
 use kaspa_addresses::{Address, Prefix, Version};
 use kaspa_consensus_core::constants::TX_VERSION_TOCCATA;
+use kaspa_consensus_core::mass::ComputeBudget;
+use kaspa_consensus_core::sign::sign;
 use kaspa_consensus_core::subnets::SubnetworkId;
 use kaspa_consensus_core::tx::{
-    GenesisCovenantGroup, PopulatedTransaction, Transaction, TransactionInput, TransactionOutpoint,
-    TransactionOutput, UtxoEntry,
+    GenesisCovenantGroup, MutableTransaction, PopulatedTransaction, Transaction, TransactionInput,
+    TransactionOutpoint, TransactionOutput, UtxoEntry,
 };
 use kaspa_hashes::Hash;
+use kaspa_rpc_core::api::rpc::RpcApi;
 use kaspa_txscript::covenants::CovenantsContext;
 use kaspa_txscript::opcodes::codes::{
     Op1Add, OpBlake2bWithKey, OpCat, OpDup, OpEqual, OpEqualVerify, OpOutpointTxId, OpRot,
     OpTxInputIndex, OpTxInputSpk, OpTxOutputCount, OpTxOutputSpk, OpTxPayloadLen,
     OpTxPayloadSubstr,
 };
+use kaspa_txscript::pay_to_address_script;
 use kaspa_txscript::pay_to_script_hash_script;
 use kaspa_txscript::script_builder::{ScriptBuilder, ScriptBuilderResult};
+use kaspa_wrpc_client::{
+    KaspaRpcClient, Resolver, WrpcEncoding,
+    client::{ConnectOptions, ConnectStrategy},
+    prelude::{NetworkId, NetworkType},
+};
 use secp256k1::{Keypair, SecretKey};
 
 const SOURCE_TAG: &str = "tn10-toc3";
@@ -34,15 +44,17 @@ const SOMPI_PER_TKAS: u64 = 100_000_000;
 const ENV059_SECRET_REL_DIR: &str = "local-secrets/env-059-helper-key";
 const ENV059_ARTIFACT_REL_DIR: &str = "artifacts/env-059-helper-controlled-covenant-preflight";
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1);
     match args.next().as_deref() {
         None | Some("env058-offline-scaffold") => run_env058()?,
         Some("env059-helper-key") => run_env059_helper_key()?,
+        Some("covenant-create") => run_covenant_create(args.collect()).await?,
         Some("help") | Some("--help") | Some("-h") => print_help(),
         Some(other) => {
             return Err(format!(
-                "unknown command `{other}`; use `env058-offline-scaffold` or `env059-helper-key`"
+                "unknown command `{other}`; use `env058-offline-scaffold`, `env059-helper-key`, or `covenant-create`"
             )
             .into());
         }
@@ -465,6 +477,525 @@ fn run_env059_helper_key() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[derive(Debug)]
+struct CovenantCreateArgs {
+    network: String,
+    utxo: String,
+    input_amount_sompi: u64,
+    change_address: String,
+    submit: bool,
+    public_evidence_dir: PathBuf,
+}
+
+async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+    let args = parse_covenant_create_args(args)?;
+    if args.network != "testnet-10" {
+        return Err("blocked: covenant-create only accepts --network testnet-10".into());
+    }
+    if !args.submit {
+        return Err(
+            "blocked: ENV-060B requires explicit --submit for the one approved live attempt".into(),
+        );
+    }
+    if args.input_amount_sompi == 0 {
+        return Err("blocked: input amount must be non-zero".into());
+    }
+
+    fs::create_dir_all(&args.public_evidence_dir)?;
+    let preflight_path = args.public_evidence_dir.join("preflight.txt");
+    let submit_path = args.public_evidence_dir.join("create-submit.txt");
+    let postcheck_path = args.public_evidence_dir.join("postcheck.txt");
+    let summary_path = args.public_evidence_dir.join("env-060b-summary.txt");
+    let json_path = args.public_evidence_dir.join("env-060b-public-create.json");
+
+    let private_key_path = env059_secret_dir().join("helper-private-key.hex");
+    if !private_key_path.exists() {
+        write_blocked_summary(&summary_path, "helper private key file missing")?;
+        return Err("blocked: helper private key file missing".into());
+    }
+    let (secret_key, _) = load_or_generate_secret_key(&private_key_path)?;
+    let keypair = Keypair::from_secret_key(secp256k1::SECP256K1, &secret_key);
+    let xonly_public_key = keypair.x_only_public_key().0.serialize();
+    let helper_address = Address::new(Prefix::Testnet, Version::PubKey, &xonly_public_key);
+    let helper_address_string = helper_address.to_string();
+    if args.change_address != helper_address_string {
+        write_blocked_summary(&summary_path, "change address does not match helper key")?;
+        return Err("blocked: change address does not match helper key".into());
+    }
+
+    let (funding_txid, funding_index) = parse_outpoint_arg(&args.utxo)?;
+    let helper_spk = pay_to_address_script(&helper_address);
+
+    let client = connect_tn10_client().await?;
+    let server_info = client.get_server_info().await?;
+    if server_info.network_id.to_string() != "testnet-10"
+        || !server_info.has_utxo_index
+        || !server_info.is_synced
+    {
+        let reason = format!(
+            "server preflight failed: network_id={} has_utxo_index={} is_synced={}",
+            server_info.network_id, server_info.has_utxo_index, server_info.is_synced
+        );
+        write_blocked_summary(&summary_path, &reason)?;
+        client.disconnect().await.ok();
+        return Err(format!("blocked: {reason}").into());
+    }
+    let live_utxos = client
+        .get_utxos_by_addresses(vec![helper_address.clone()])
+        .await?;
+    let live_utxo_match = live_utxos.iter().find(|entry| {
+        entry.outpoint.transaction_id == funding_txid
+            && entry.outpoint.index == funding_index
+            && entry.utxo_entry.amount == args.input_amount_sompi
+    });
+    if live_utxo_match.is_none() {
+        write_blocked_summary(
+            &summary_path,
+            "helper UTXO missing or amount mismatch in live TN10 read-only check",
+        )?;
+        client.disconnect().await.ok();
+        return Err(
+            "blocked: helper UTXO missing or amount mismatch in live TN10 read-only check".into(),
+        );
+    }
+
+    let fee_sompi = 100_000u64;
+    let covenant_output_value_sompi = 100_000_000u64;
+    let total_outputs = covenant_output_value_sompi
+        .checked_add(fee_sompi)
+        .ok_or("blocked: output/fee overflow")?;
+    if total_outputs > args.input_amount_sompi {
+        write_blocked_summary(
+            &summary_path,
+            "transaction would spend more than helper UTXO",
+        )?;
+        client.disconnect().await.ok();
+        return Err("blocked: transaction would spend more than helper UTXO".into());
+    }
+    let change_value_sompi = args.input_amount_sompi - total_outputs;
+
+    let covenant_script = build_covenant_script()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+    let input = TransactionInput::new_with_mass(
+        TransactionOutpoint::new(funding_txid, funding_index),
+        vec![],
+        0,
+        ComputeBudget(0).into(),
+    );
+    let mut outputs = vec![TransactionOutput::new(
+        covenant_output_value_sompi,
+        covenant_spk.clone(),
+    )];
+    if change_value_sompi > 0 {
+        outputs.push(TransactionOutput::new(
+            change_value_sompi,
+            helper_spk.clone(),
+        ));
+    }
+    if outputs.len() != 2 {
+        write_blocked_summary(&summary_path, "unexpected output count before signing")?;
+        client.disconnect().await.ok();
+        return Err("blocked: unexpected output count before signing".into());
+    }
+
+    let mut tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![input],
+        outputs,
+        0,
+        SubnetworkId::default(),
+        0,
+        vec![],
+    );
+    tx.populate_genesis_covenants(&[GenesisCovenantGroup::new(0, vec![0])])?;
+    if tx.version != TX_VERSION_TOCCATA || tx.version == 2 || tx.outputs[0].covenant.is_none() {
+        write_blocked_summary(
+            &summary_path,
+            "Toccata/covenant binding pre-sign guard failed",
+        )?;
+        client.disconnect().await.ok();
+        return Err("blocked: Toccata/covenant binding pre-sign guard failed".into());
+    }
+    let binding = tx.outputs[0].covenant.expect("checked covenant binding");
+    let input_utxo = UtxoEntry::new(args.input_amount_sompi, helper_spk.clone(), 0, false, None);
+    let signed = sign(
+        MutableTransaction::with_entries(tx, vec![input_utxo.clone()]),
+        keypair,
+    );
+    let mut signed_tx = signed.tx;
+    signed_tx.finalize();
+    if signed_tx.inputs.len() != 1
+        || signed_tx.outputs.len() != 2
+        || signed_tx.inputs[0].previous_outpoint.transaction_id != funding_txid
+    {
+        write_blocked_summary(&summary_path, "signed transaction shape guard failed")?;
+        client.disconnect().await.ok();
+        return Err("blocked: signed transaction shape guard failed".into());
+    }
+
+    let preflight = format!(
+        concat!(
+            "ENV-060B preflight\n\n",
+            "Result: PASS\n",
+            "Network requested: {}\n",
+            "Server network_id: {}\n",
+            "Server is_synced: {}\n",
+            "Server has_utxo_index: {}\n",
+            "Helper address: {}\n",
+            "Helper private key exists: true\n",
+            "Helper private key path is under ignored local-secrets: true\n",
+            "Input UTXO: {}:{}\n",
+            "Input amount sompi: {}\n",
+            "Live helper UTXO observed pre-submit: true\n",
+            "TX_VERSION_TOCCATA: {}\n",
+            "Transaction version: {}\n",
+            "Uses literal version 2: false\n",
+            "populate_genesis_covenants succeeded: true\n",
+            "Covenant binding present before signing: true\n",
+            "allow_orphan planned: false\n",
+            "Output count: {}\n",
+            "Covenant output index/value: 0 / {}\n",
+            "Change output index/value: 1 / {}\n",
+            "Fee sompi: {}\n",
+            "Private key material exposed: false\n"
+        ),
+        args.network,
+        server_info.network_id,
+        server_info.is_synced,
+        server_info.has_utxo_index,
+        helper_address_string,
+        funding_txid,
+        funding_index,
+        args.input_amount_sompi,
+        TX_VERSION_TOCCATA,
+        signed_tx.version,
+        signed_tx.outputs.len(),
+        covenant_output_value_sompi,
+        change_value_sompi,
+        fee_sompi
+    );
+    fs::write(&preflight_path, preflight)?;
+
+    let local_txid = signed_tx.id().to_string();
+    let submit_result = client.submit_transaction((&signed_tx).into(), false).await;
+    match submit_result {
+        Ok(submitted_txid) => {
+            let submitted_txid_string = submitted_txid.to_string();
+            fs::write(
+                &submit_path,
+                format!(
+                    concat!(
+                        "ENV-060B create submit\n\n",
+                        "Result: PASS\n",
+                        "Submission attempts: 1\n",
+                        "allow_orphan: false\n",
+                        "Local txid: {}\n",
+                        "Submitted txid: {}\n",
+                        "Mempool accepted RPC response: true\n",
+                        "Private key material exposed: false\n"
+                    ),
+                    local_txid, submitted_txid_string
+                ),
+            )?;
+
+            let mempool_result = client.get_mempool_entry(signed_tx.id(), false, false).await;
+            let helper_post_utxos = client
+                .get_utxos_by_addresses(vec![helper_address.clone()])
+                .await?;
+            let covenant_address = Address::new(
+                Prefix::Testnet,
+                Version::ScriptHash,
+                &covenant_spk.script()[2..34],
+            );
+            let covenant_post_utxos = client
+                .get_utxos_by_addresses(vec![covenant_address.clone()])
+                .await?;
+            let covenant_observed = covenant_post_utxos.iter().any(|entry| {
+                entry.outpoint.transaction_id == signed_tx.id()
+                    && entry.outpoint.index == 0
+                    && entry.utxo_entry.amount == covenant_output_value_sompi
+            });
+            fs::write(
+                &postcheck_path,
+                format!(
+                    concat!(
+                        "ENV-060B postcheck\n\n",
+                        "Result: PASS\n",
+                        "Server network_id: {}\n",
+                        "Server is_synced: {}\n",
+                        "Server has_utxo_index: {}\n",
+                        "Submitted txid: {}\n",
+                        "Mempool entry observed: {}\n",
+                        "Helper UTXO count after submit: {}\n",
+                        "Covenant address: {}\n",
+                        "Covenant UTXO observed: {}\n",
+                        "Covenant postcheck UTXO count: {}\n"
+                    ),
+                    server_info.network_id,
+                    server_info.is_synced,
+                    server_info.has_utxo_index,
+                    submitted_txid_string,
+                    mempool_result.is_ok(),
+                    helper_post_utxos.len(),
+                    covenant_address,
+                    covenant_observed,
+                    covenant_post_utxos.len()
+                ),
+            )?;
+            fs::write(
+                &json_path,
+                format!(
+                    concat!(
+                        "{{\n",
+                        "  \"result\": \"PASS\",\n",
+                        "  \"network\": \"testnet-10\",\n",
+                        "  \"helper_address\": \"{}\",\n",
+                        "  \"input_outpoint\": \"{}:{}\",\n",
+                        "  \"input_amount_sompi\": {},\n",
+                        "  \"fee_sompi\": {},\n",
+                        "  \"tx_version\": {},\n",
+                        "  \"allow_orphan\": false,\n",
+                        "  \"covenant_output_index\": 0,\n",
+                        "  \"covenant_output_value_sompi\": {},\n",
+                        "  \"covenant_script_public_key_version\": {},\n",
+                        "  \"covenant_script_public_key_length\": {},\n",
+                        "  \"covenant_id\": \"{}\",\n",
+                        "  \"change_output_index\": 1,\n",
+                        "  \"change_output_value_sompi\": {},\n",
+                        "  \"local_txid\": \"{}\",\n",
+                        "  \"submitted_txid\": \"{}\",\n",
+                        "  \"covenant_utxo_observed\": {},\n",
+                        "  \"private_key_material_exposed\": false\n",
+                        "}}\n"
+                    ),
+                    helper_address_string,
+                    funding_txid,
+                    funding_index,
+                    args.input_amount_sompi,
+                    fee_sompi,
+                    signed_tx.version,
+                    covenant_output_value_sompi,
+                    covenant_spk.version(),
+                    covenant_spk.script().len(),
+                    binding.covenant_id,
+                    change_value_sompi,
+                    local_txid,
+                    submitted_txid_string,
+                    covenant_observed
+                ),
+            )?;
+            fs::write(
+                &summary_path,
+                format!(
+                    concat!(
+                        "ENV-060B live helper-controlled TN10 covenant create\n\n",
+                        "Result: PASS\n",
+                        "Network: TN10 / testnet-10\n",
+                        "Helper address: {}\n",
+                        "Helper input UTXO: {}:{}\n",
+                        "Amount spent/input sompi: {}\n",
+                        "Fee sompi: {}\n",
+                        "Covenant output value sompi: {}\n",
+                        "Covenant id: {}\n",
+                        "Covenant create txid: {}\n",
+                        "Postcheck: mempool_entry_observed={} helper_post_utxo_count={} covenant_utxo_observed={}\n",
+                        "Evidence path: {}\n\n",
+                        "Safety confirmations:\n",
+                        "- exactly one live covenant-create submission attempted: true\n",
+                        "- no covenant spend attempted: true\n",
+                        "- no mainnet: true\n",
+                        "- no wallet secrets accessed: true\n",
+                        "- helper private key not exposed: true\n",
+                        "- no roulette/web app: true\n"
+                    ),
+                    helper_address_string,
+                    funding_txid,
+                    funding_index,
+                    args.input_amount_sompi,
+                    fee_sompi,
+                    covenant_output_value_sompi,
+                    binding.covenant_id,
+                    submitted_txid_string,
+                    mempool_result.is_ok(),
+                    helper_post_utxos.len(),
+                    covenant_observed,
+                    args.public_evidence_dir.display()
+                ),
+            )?;
+            println!("ENV-060B PASS");
+            println!("submitted_txid={}", submitted_txid_string);
+            println!("summary={}", summary_path.display());
+        }
+        Err(err) => {
+            let rejection = err.to_string();
+            fs::write(
+                &submit_path,
+                format!(
+                    "ENV-060B create submit\n\nResult: REJECTED\nSubmission attempts: 1\nallow_orphan: false\nLocal txid: {}\nRejection/error: {}\nPrivate key material exposed: false\n",
+                    local_txid, rejection
+                ),
+            )?;
+            fs::write(
+                &postcheck_path,
+                "ENV-060B postcheck\n\nResult: NOT RUN AFTER REJECTED SUBMIT\n",
+            )?;
+            fs::write(
+                &json_path,
+                format!(
+                    concat!(
+                        "{{\n",
+                        "  \"result\": \"REJECTED\",\n",
+                        "  \"network\": \"testnet-10\",\n",
+                        "  \"helper_address\": \"{}\",\n",
+                        "  \"input_outpoint\": \"{}:{}\",\n",
+                        "  \"input_amount_sompi\": {},\n",
+                        "  \"fee_sompi\": {},\n",
+                        "  \"tx_version\": {},\n",
+                        "  \"allow_orphan\": false,\n",
+                        "  \"covenant_output_index\": 0,\n",
+                        "  \"covenant_output_value_sompi\": {},\n",
+                        "  \"covenant_id\": \"{}\",\n",
+                        "  \"change_output_index\": 1,\n",
+                        "  \"change_output_value_sompi\": {},\n",
+                        "  \"local_txid\": \"{}\",\n",
+                        "  \"submitted_txid\": null,\n",
+                        "  \"submission_attempts\": 1,\n",
+                        "  \"covenant_utxo_observed\": false,\n",
+                        "  \"private_key_material_exposed\": false\n",
+                        "}}\n"
+                    ),
+                    helper_address_string,
+                    funding_txid,
+                    funding_index,
+                    args.input_amount_sompi,
+                    fee_sompi,
+                    signed_tx.version,
+                    covenant_output_value_sompi,
+                    binding.covenant_id,
+                    change_value_sompi,
+                    local_txid
+                ),
+            )?;
+            fs::write(
+                &summary_path,
+                format!(
+                    concat!(
+                        "ENV-060B live helper-controlled TN10 covenant create\n\n",
+                        "Result: REJECTED\n",
+                        "Network: TN10 / testnet-10\n",
+                        "Helper address: {}\n",
+                        "Helper input UTXO: {}:{}\n",
+                        "Amount spent/input sompi: {}\n",
+                        "Fee sompi: {}\n",
+                        "Covenant output value sompi: {}\n",
+                        "Covenant id: {}\n",
+                        "Covenant create txid if submitted locally: {}\n",
+                        "Submit rejection/error: {}\n",
+                        "Covenant UTXO observed: false (postcheck stopped after rejection)\n\n",
+                        "Safety confirmations:\n",
+                        "- exactly one live covenant-create submission attempted: true\n",
+                        "- no covenant spend attempted: true\n",
+                        "- no mainnet: true\n",
+                        "- no wallet secrets accessed: true\n",
+                        "- helper private key not exposed: true\n",
+                        "- no roulette/web app: true\n"
+                    ),
+                    helper_address_string,
+                    funding_txid,
+                    funding_index,
+                    args.input_amount_sompi,
+                    fee_sompi,
+                    covenant_output_value_sompi,
+                    binding.covenant_id,
+                    local_txid,
+                    rejection
+                ),
+            )?;
+            println!("ENV-060B REJECTED");
+            println!("summary={}", summary_path.display());
+        }
+    }
+    client.disconnect().await.ok();
+    Ok(())
+}
+
+fn parse_covenant_create_args(
+    args: Vec<String>,
+) -> Result<CovenantCreateArgs, Box<dyn std::error::Error>> {
+    let mut network = None;
+    let mut utxo = None;
+    let mut input_amount_sompi = None;
+    let mut change_address = None;
+    let mut submit = false;
+    let mut public_evidence_dir = None;
+    let mut iter = args.into_iter();
+    while let Some(arg) = iter.next() {
+        match arg.as_str() {
+            "--network" => network = iter.next(),
+            "--utxo" => utxo = iter.next(),
+            "--input-amount-sompi" => {
+                input_amount_sompi = Some(
+                    iter.next()
+                        .ok_or("missing --input-amount-sompi value")?
+                        .parse()?,
+                )
+            }
+            "--change-address" => change_address = iter.next(),
+            "--submit" => submit = true,
+            "--public-evidence-dir" => {
+                public_evidence_dir = Some(PathBuf::from(
+                    iter.next().ok_or("missing --public-evidence-dir value")?,
+                ))
+            }
+            other => return Err(format!("unknown covenant-create argument `{other}`").into()),
+        }
+    }
+    Ok(CovenantCreateArgs {
+        network: network.ok_or("missing --network")?,
+        utxo: utxo.ok_or("missing --utxo")?,
+        input_amount_sompi: input_amount_sompi.ok_or("missing --input-amount-sompi")?,
+        change_address: change_address.ok_or("missing --change-address")?,
+        submit,
+        public_evidence_dir: public_evidence_dir.ok_or("missing --public-evidence-dir")?,
+    })
+}
+
+async fn connect_tn10_client() -> Result<KaspaRpcClient, Box<dyn std::error::Error>> {
+    let client = KaspaRpcClient::new(
+        WrpcEncoding::Borsh,
+        None,
+        Some(Resolver::default()),
+        Some(NetworkId::with_suffix(NetworkType::Testnet, 10)),
+        None,
+    )?;
+    let options = ConnectOptions {
+        block_async_connect: true,
+        connect_timeout: Some(Duration::from_millis(10_000)),
+        strategy: ConnectStrategy::Fallback,
+        ..Default::default()
+    };
+    client.connect(Some(options)).await?;
+    Ok(client)
+}
+
+fn parse_outpoint_arg(utxo: &str) -> Result<(Hash, u32), Box<dyn std::error::Error>> {
+    let (txid, index) = utxo.split_once(':').ok_or("UTXO must be <txid:index>")?;
+    Ok((hash_from_hex(txid), index.parse()?))
+}
+
+fn write_blocked_summary(path: &Path, reason: &str) -> std::io::Result<()> {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    fs::write(
+        path,
+        format!(
+            "ENV-060B live helper-controlled TN10 covenant create\n\nResult: BLOCKED\nReason: {}\nSafety confirmations: no submission attempted, no covenant spend attempted, no mainnet, no wallet secrets accessed, helper private key not exposed, no roulette/web app.\n",
+            reason
+        ),
+    )
+}
+
 fn print_help() {
     println!("tn10-covenant-spike commands:");
     println!(
@@ -472,6 +1003,9 @@ fn print_help() {
     );
     println!(
         "  env059-helper-key        Generate/reuse helper-controlled TN10 key and public address preflight artifacts"
+    );
+    println!(
+        "  covenant-create          Build, sign, submit exactly one helper-controlled TN10 covenant-create transaction"
     );
 }
 

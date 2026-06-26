@@ -34,7 +34,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-058 TN10 offline covenant scaffold: PASS (helper builds/runs a version-1 `TX_VERSION_TOCCATA` transaction offline, calls `populate_genesis_covenants(...)`, and observes output-0 `CovenantBinding`; no signing/broadcast/spend)
 - ENV-059 helper-controlled TN10 covenant create preflight: COMPLETE (helper can generate/reuse a local helper-controlled key under ignored `local-secrets/`, emits public helper TN10 address and funding/create plan; no live covenant tx/signing/broadcast/spend)
 - ENV-060A helper-controlled TN10 covenant address funding: COMPLETE (one ordinary 3 TKAS TN10 wallet send funded the helper public address and read-only balance/UTXO confirmation passed; no covenant create/sign/broadcast)
-- helper-controlled covenant create/sign/broadcast lifecycle beyond ordinary TN10 send, offline covenant structure, helper preflight, and helper funding remains NOT TESTED
+- ENV-060B helper-controlled TN10 covenant create attempt: REJECTED (exactly one version-1 helper-signed covenant-create submission attempted with `allow_orphan=false`; TN10 mempool rejected it because fee 100000 sompi was below required 208300 sompi for compute mass 2083; no retry and no covenant spend)
+- helper-controlled live covenant create is now tested only to rejection; accepted covenant create, covenant UTXO observation, and covenant spend remain NOT PROVEN
 - roulette remains PAUSED
 
 ## What has been proven
@@ -73,6 +74,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-058 created a small offline helper crate at `spikes/tn12-minimal-covenant/tn10-covenant-spike/` using path dependencies to the official `tn10-toc3` source under ignored `tools/rusty-kaspa-source/`; it compiled and ran, constructed a version-1 `TX_VERSION_TOCCATA` transaction, called `GenesisCovenantGroup::new(...)` and `populate_genesis_covenants(...)`, and observed output 0 with a `CovenantBinding` / covenant id. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/env-058-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/offline-covenant-create.json`.
 - ENV-059 extended `spikes/tn12-minimal-covenant/tn10-covenant-spike/` with `env059-helper-key`, generated a helper-controlled TN10 public address `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, stored private material only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, and documented the planned 3 TKAS funding/create flow. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/env-059-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/helper-address-public.json`.
 - ENV-060A funded the ENV-059 helper-controlled TN10 public address `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld` with exactly 3 TKAS from `env052-tn10-test-only`, then confirmed helper balance `3.0` and helper UTXO `d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0` by read-only wallet RPC. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/env-060a-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/env-060a-public-evidence.txt`.
+- ENV-060B extended `spikes/tn12-minimal-covenant/tn10-covenant-spike/` with a `covenant-create` subcommand, built a version-1 `TX_VERSION_TOCCATA` helper-signed transaction using the ENV-060A UTXO, preserved output-0 covenant binding via `populate_genesis_covenants(...)`, and submitted exactly once to TN10 with `allow_orphan=false`. Result: REJECTED because the explicit 100000 sompi fee was below the mempool-required 208300 sompi for compute mass 2083. No automatic retry, no covenant spend, no mainnet, no wallet secrets, and no helper private key exposure occurred. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-060b-live-covenant-create/env-060b-summary.txt`, `preflight.txt`, `create-submit.txt`, `postcheck.txt`, and `env-060b-public-create.json`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -84,8 +86,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## What has not been proven / tested
 
-- Signing.
-- Real UTXO usage.
+- Signing: TN10 helper signing for one create attempt was exercised in ENV-060B; accepted transaction signing remains NOT PROVEN.
+- Real UTXO usage: the ENV-060A helper UTXO was used in exactly one rejected ENV-060B submission; accepted live UTXO spend remains NOT PROVEN.
 - ENV-050 Gate 2 funding completion.
 - ENV-050A still needs a human-verified TN12 funding route before any submission.
 - ENV-050B identified mining as the likely TN12 funding path if a later one-thread mining attempt is approved.
@@ -133,9 +135,10 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 15. Treat ENV-058 as complete offline scaffold evidence: `spikes/tn12-minimal-covenant/tn10-covenant-spike/` builds and runs against official `tn10-toc3` source APIs, creates a version-1 covenant transaction structure, and records covenant binding evidence under `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/`; it does not prove live signing, wallet support, mempool acceptance, or broadcast.
 16. Treat ENV-059 as complete helper-controlled preflight: helper public address is `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, private material is local-only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, planned funding amount is 3 TKAS, and evidence is under `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/`.
 17. Treat ENV-060A as complete helper funding: one ordinary TN10 wallet send funded the helper address with exactly 3 TKAS, and read-only confirmation observed helper balance `3.0` plus helper UTXO `d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0`; public evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/`.
-18. Next smallest approvable live step is helper-controlled covenant-create execution using the funded helper UTXO `d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0`, but do not create/sign/broadcast without explicit approval.
-19. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into the next live-prep step.
-20. Do not proceed to covenant lifecycle work without explicit future approval.
+18. Treat ENV-060B as a completed rejected live create attempt: exactly one helper-controlled version-1 covenant-create submission was attempted on TN10 with `allow_orphan=false`, and it was rejected for insufficient fee (`100000` sompi supplied vs `208300` required for compute mass `2083`). Evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060b-live-covenant-create/`.
+19. Do not retry ENV-060B automatically. The next smallest approvable step is review-only: decide whether to approve a second, explicitly fee-corrected helper-controlled covenant-create attempt using the same safety boundaries.
+20. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into the next live-prep step.
+21. Do not proceed to accepted covenant create retry, covenant spend, or broader lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 
@@ -214,7 +217,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 ## Suggested model/session guidance
 
 - use `gpt-5.4` for ENV-048 documentation and normal repo work
-- use `gpt-5.5` before any high-risk signing, broadcast, or covenant execution
+- use `gpt-5.5` for high-risk signing, broadcast, covenant execution, and current ENV-060B review/follow-up
 - use `gpt-5.3-codex-spark` only for small bounded tasks and refresh with `/new` regularly
 
 ## First prompt for new ChatGPT session
@@ -227,7 +230,7 @@ Use this as the first prompt:
 
 - Do not build roulette.
 - Do not create a web app.
-- Do not submit or broadcast any Kaspa transaction.
+- Do not submit or broadcast any further Kaspa transaction without explicit approval and review of ENV-060B rejection.
 - Do not create a wallet.
 - Do not generate keys.
 - Do not request faucet funds.

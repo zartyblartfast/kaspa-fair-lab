@@ -1,0 +1,3 @@
+ENV-060B postcheck
+
+Result: NOT RUN AFTER REJECTED SUBMIT

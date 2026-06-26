@@ -1,0 +1,8 @@
+ENV-060B create submit
+
+Result: REJECTED
+Submission attempts: 1
+allow_orphan: false
+Local txid: 8ee5abe3e1b5a4462aaca629862ba01107a542863a2f192f9fcf04be11c6fe2c
+Rejection/error: RPC Server (remote error) -> Rejected transaction 8ee5abe3e1b5a4462aaca629862ba01107a542863a2f192f9fcf04be11c6fe2c: transaction 8ee5abe3e1b5a4462aaca629862ba01107a542863a2f192f9fcf04be11c6fe2c is not standard: transaction has 100000 fees which is under the required amount of 208300 for compute mass 2083
+Private key material exposed: false

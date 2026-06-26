@@ -1,0 +1,22 @@
+{
+  "result": "REJECTED",
+  "network": "testnet-10",
+  "helper_address": "kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld",
+  "input_outpoint": "d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0",
+  "input_amount_sompi": 300000000,
+  "fee_sompi": 100000,
+  "required_fee_sompi_from_rejection": 208300,
+  "rejection_compute_mass": 2083,
+  "tx_version": 1,
+  "allow_orphan": false,
+  "covenant_output_index": 0,
+  "covenant_output_value_sompi": 100000000,
+  "change_output_index": 1,
+  "change_output_value_sompi": 199900000,
+  "covenant_id": "69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1",
+  "local_txid": "8ee5abe3e1b5a4462aaca629862ba01107a542863a2f192f9fcf04be11c6fe2c",
+  "submitted_txid": null,
+  "submission_attempts": 1,
+  "covenant_utxo_observed": false,
+  "private_key_material_exposed": false
+}

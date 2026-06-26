@@ -1,0 +1,34 @@
+ENV-060B preflight
+
+Result: PASS
+Network requested: testnet-10
+Server network_id: testnet-10
+Server is_synced: true
+Server has_utxo_index: true
+Helper address: kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+Helper private key exists: true
+Helper private key path is under ignored local-secrets: true
+Input UTXO: d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0
+Input amount sompi: 300000000
+Live helper UTXO observed pre-submit: true
+TX_VERSION_TOCCATA: 1
+Transaction version: 1
+Uses literal version 2: false
+populate_genesis_covenants succeeded: true
+Covenant binding present before signing: true
+allow_orphan planned: false
+Output count: 2
+Covenant output index/value: 0 / 100000000
+Change output index/value: 1 / 199900000
+Fee sompi: 100000
+Private key material exposed: false
+
+Repository/tooling preflight:
+- ENV-060A committed and pushed before submit: true (HEAD/origin/main 06669a7 Fund helper controlled TN10 covenant address)
+- Helper private key ignored by git: true (.gitignore covers spikes/tn12-minimal-covenant/local-secrets/)
+- ENV-060A helper UTXO evidence present in env-060a-summary.txt: true
+- cargo fmt before submit: PASS
+- cargo test before submit: PASS (2 passed)
+- cargo check before submit: PASS
+- TN10/testnet-10 only: true
+- allow_orphan used for submission: false
