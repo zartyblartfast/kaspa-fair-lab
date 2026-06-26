@@ -42,7 +42,7 @@ Before implementing roulette, we need confidence that base primitives actually w
 - `run_no_broadcast_checks.sh` passes, with output logs captured in `spikes/tn12-minimal-covenant/artifacts/`.
 - local `Transaction` construction, `RpcTransaction` conversion, `SubmitTransactionRequest` construction, RPC serializer artifact production, and RPC serializer round-trip verification are all documented in `findings.md`.
 - deterministic local Borsh artifact production is documented, but consensus-wire equivalence remains unverified.
-- Target network remains TN12/testnet only.
+- Original target network was TN12/testnet-only; the final completed live covenant feasibility path pivoted to TN10 / testnet-10 after TN12 funding/mining remained blocked and official `tn10-toc3` evidence provided the Toccata route.
 - One read-only local TN12 `getServerInfo` call succeeded in env-037, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-037-get-server-info.txt`.
 - One additional read-only local TN12 `getBlockDagInfo` call succeeded in env-038, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-038-get-blockdag-info.txt`.
 - One additional read-only local TN12 `getSyncStatus` call succeeded in env-039, with output captured in `spikes/tn12-minimal-covenant/artifacts/env-039-get-sync-status.txt`.
@@ -52,12 +52,11 @@ Before implementing roulette, we need confidence that base primitives actually w
 - env-043 hardened `run_env_042_observation.sh` so it validates the intended `rusty-kaspa` Cargo workspace before any `cargo run`, uses `--manifest-path`, and refuses to fall back to the repo root.
 - env-044 reran the hardened observation script from repo root. The hardening worked: startup succeeded via `--manifest-path` and no caller-cwd Cargo failure recurred. The observed runtime after readiness was `28m36s`, localhost-only listeners were confirmed on `127.0.0.1:16311`, `127.0.0.1:16210`, and `127.0.0.1:17210`, sync progress was visible in the node log, and the node stopped with no remaining listeners. However, `kaspad` exited during the observation loop before the script reached its final read-only RPC suite, so env-044 did not regenerate fresh end-state `getServerInfo` / `getBlockDagInfo` / `getSyncStatus` artifacts.
 - env-045 ran a shorter checkpointed localhost-only TN12 sync observation. Node startup succeeded, start and end read-only checkpoints were both captured, the observation window lasted about `10m57s`, log-level sync progress occurred during the window, and the node was stopped with no remaining approved listeners. The fresh start/end RPC-visible state still remained `blockCount=0`, `headerCount=0`, `virtualDaaScore=0`, and `isSynced=false`.
-- env-046 records the successful synced-node read-only RPC milestone. Local TN12 full sync is now GREEN with a RAM/swap caveat, read-only RPC confirmation is GREEN, evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/`, `hasUtxoIndex=false` was observed, earlier `kaspad` exits were traced to the Linux OOM killer, and adding 8 GB swap allowed sync to complete. Wallet/faucet/signing/broadcast/live covenant operations remain NOT TESTED. Roulette remains PAUSED. GitHub remote: `https://github.com/zartyblartfast/kaspa-fair-lab.git`.
-- No signing was performed.
-- No real UTXO was used.
-- No faucet funding was used.
-- No live submit/broadcast steps were attempted.
-- No live TN12 create/spend/inspect lifecycle has been proven.
+- env-046 records the successful synced-node read-only RPC milestone. Local TN12 full sync is GREEN with a RAM/swap caveat, read-only RPC confirmation is GREEN, evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-046-rpc-readonly-suite/`, `hasUtxoIndex=false` was observed, earlier `kaspad` exits were traced to the Linux OOM killer, and adding 8 GB swap allowed sync to complete. Roulette remains PAUSED. GitHub remote: `https://github.com/zartyblartfast/kaspa-fair-lab.git`.
+- ENV-066 final consolidation: TN10 / testnet-10 corrected covenant create/spend/settlement is COMPLETE on the ENV-063/ENV-064/ENV-065 path. Accepted ENV-064 spend txid: `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`; continuing output: `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0`, value `99700000` sompi, covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`.
+- ENV-066 was documentation/evidence consolidation only: no live action, no signing, no submitting, no broadcasting, no transaction creation, no spend, no mainnet, no wallet-secret access, no helper-private-key exposure, no roulette, and no web app.
+- The old ENV-060C/ENV-061 UTXO `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0` was superseded and not used for the final corrected path.
+- Live TN12 create/spend/inspect lifecycle has not been proven; final completed live covenant proof is TN10/testnet-10 only.
 
 ## Env-042 local TN12 30-minute sync observation
 

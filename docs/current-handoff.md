@@ -4,6 +4,18 @@ Repo: `/root/kaspa-fair-lab`
 Purpose: primary handover note for the next ChatGPT session
 Scope: documentation only
 
+## ENV-066 final covenant spike consolidation
+
+- Status: COMPLETE (documentation/evidence consolidation only).
+- Network: TN10 / testnet-10.
+- Final live TN10 covenant lifecycle result: create/spend/settlement confirmed.
+- Corrected covenant create: ENV-063 accepted txid `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849`; covenant UTXO `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` observed unspent after mining.
+- Corrected covenant spend: ENV-064 accepted spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`; it spent only the corrected ENV-063 UTXO.
+- Settlement/read-only confirmation: ENV-065 confirmed the ENV-064 spend settled by UTXO-set evidence; original ENV-063 UTXO is absent/spent and continuing output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0` is visible as a UTXO with `99700000` sompi and covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`.
+- Old ENV-060C/ENV-061 UTXO `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0` was the original v0-locked path and was not used for the final corrected ENV-063/064 path.
+- ENV-066 performed no live action: no transaction creation, signing, submission, broadcast, spend, mainnet use, wallet-secret access, helper-private-key exposure, roulette, or web app work.
+- Final evidence summary is under `spikes/tn12-minimal-covenant/artifacts/env-066-final-covenant-spike-summary/`.
+
 ## Current project goal
 
 TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
@@ -41,7 +53,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-063 corrected live TN10 covenant create: PASS (accepted txid `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849`; corrected v1 covenant UTXO `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` observed unspent with 100000000 sompi and covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`; evidence under `spikes/tn12-minimal-covenant/artifacts/env-063-corrected-live-covenant-create/`)
 - ENV-064 live corrected TN10 covenant spend: PASS (exactly one `allow_orphan=false` covenant-spend submission accepted; spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`; spent ENV-063 corrected covenant UTXO only; old ENV-060C UTXO not touched; immediate postcheck observed mempool spend and not-yet-indexed transition UTXO; evidence under `spikes/tn12-minimal-covenant/artifacts/env-064-live-corrected-covenant-spend/`)
 - ENV-065 read-only ENV-064 spend confirmation: CONFIRMED (public TN10 node `testnet-10` synced with UTXO index; ENV-064 spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c` no longer in mempool, original ENV-063 covenant UTXO `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` absent/spent, continuing output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0` visible as UTXO with 99700000 sompi and covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`; read-only only, no transaction created/submitted; evidence under `spikes/tn12-minimal-covenant/artifacts/env-065-readonly-env064-spend-confirmation/`)
-- helper-controlled live covenant create is accepted on TN10 and its covenant UTXO was observed unspent in ENV-061; covenant spend remains NOT PROVEN after ENV-062 because local sigscript proof failed before submit
+- Final corrected TN10 covenant lifecycle is PROVEN on the ENV-063/ENV-064/ENV-065 path: corrected create accepted, corrected spend accepted with txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`, and continuing covenant output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0` observed after settlement. The old ENV-060C UTXO remains outside the final corrected path.
 - roulette remains PAUSED
 
 ## What has been proven
@@ -95,18 +107,12 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## What has not been proven / tested
 
-- Signing: TN10 helper signing for one accepted create retry was exercised in ENV-060C; covenant spend signing remains NOT PROVEN.
-- Real UTXO usage: the ENV-060A helper UTXO was consumed by the accepted ENV-060C create retry; ENV-061 later observed the resulting covenant UTXO unspent on TN10.
-- Covenant spend construction/sign/broadcast remains NOT PROVEN; ENV-062 local VM proof failed with `VerifyError` before any submit call.
-- ENV-050 Gate 2 funding completion.
-- ENV-050A still needs a human-verified TN12 funding route before any submission.
-- ENV-050B identified mining as the likely TN12 funding path if a later one-thread mining attempt is approved.
-- ENV-050C showed the immediate blocker: `kaspa-miner` is not installed/available locally, so no mining run occurred.
-- Gate 3 read-only UTXO inspection (not started).
-- Live TN12 transaction submission.
-- Mempool acceptance.
-- Covenant-bound create/spend/inspect lifecycle.
-- Roulette/game integration.
+- Mainnet behavior remains NOT TESTED and out of scope.
+- TN12 live covenant lifecycle remains NOT TESTED; the completed live covenant proof is TN10 / testnet-10 only.
+- The old ENV-060C/ENV-061 covenant UTXO `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0` remains the superseded v0-locked path and was not used for final corrected feasibility.
+- Roulette/game integration remains PAUSED and not built.
+- Web app work remains NOT STARTED.
+- No further live covenant create/spend action is required for the spike result; any future live action needs a new reviewed plan and explicit approval.
 
 ## Current node / sync status
 
@@ -128,30 +134,11 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## Recommended next step
 
-1. Treat ENV-046 as complete and as the TN12 readiness baseline.
-2. Treat ENV-047 and ENV-048 as planning/preflight background context.
-3. Treat ENV-049 Gate 1 as complete: one TN12 test-only address generated, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
-4. Treat ENV-050 Gate 2 as still blocked pending a verified TN12/testnet-12 funding route.
-5. Treat ENV-050A as complete discovery-only: official Discord/community escalation was identified, but no automated funding route was verified strongly enough to use.
-6. Treat ENV-050B as complete preflight-only: direct TN12 mining against the existing synced node is the likely next funding path if explicitly approved later; no mining has started yet.
-7. Treat ENV-050C as blocked: the approved one-thread mining attempt could not start because `kaspa-miner` is not installed/available locally, and no install was approved.
-8. Treat ENV-053 as complete: TN10 faucet funding request succeeded for the ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-053-tn10-faucet-funding/`.
-9. Treat ENV-054 as complete: TN10 read-only balance and UTXO inspection passed for the funded ENV-052 address, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-054-tn10-readonly-utxo/`.
-10. Treat ENV-055 as ready-only preflight: TN10 ordinary spend syntax and estimate/send path were identified without signing or broadcasting, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-055-tn10-ordinary-spend-preflight/`.
-11. Treat ENV-056 as complete: one live ordinary TN10 send of 1 TKAS succeeded and was confirmed by read-only post-send checks, with public evidence under `spikes/tn12-minimal-covenant/artifacts/env-056-tn10-ordinary-send/`.
-12. Treat ENV-057 as complete preflight-only and BLOCKED for live covenant execution: see `spikes/tn12-minimal-covenant/artifacts/env-057-tn10-covenant-preflight/env-057-summary.txt` for the TN10 activation/version/signing blockers.
-13. Treat ENV-057A as partially superseded by ENV-057B: keep its tx-version and wallet-route cautions, but do not rely on its earlier TN10 activation conclusion.
-14. Treat ENV-057B as the current authoritative source reconciliation result: PARTIAL / PARTIALLY_UNBLOCKED for source-level blockers only. Official `tn10-toc3` source proves TN10 Toccata activation and tx version 1, and the official local covenant example passes, but wallet/create/sign/broadcast path remains unproven; see `spikes/tn12-minimal-covenant/artifacts/env-057b-covenant-source-reconciliation/env-057b-summary.txt`.
-15. Treat ENV-058 as complete offline scaffold evidence: `spikes/tn12-minimal-covenant/tn10-covenant-spike/` builds and runs against official `tn10-toc3` source APIs, creates a version-1 covenant transaction structure, and records covenant binding evidence under `spikes/tn12-minimal-covenant/artifacts/env-058-tn10-offline-covenant-scaffold/`; it does not prove live signing, wallet support, mempool acceptance, or broadcast.
-16. Treat ENV-059 as complete helper-controlled preflight: helper public address is `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, private material is local-only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, planned funding amount is 3 TKAS, and evidence is under `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/`.
-17. Treat ENV-060A as complete helper funding: one ordinary TN10 wallet send funded the helper address with exactly 3 TKAS, and read-only confirmation observed helper balance `3.0` plus helper UTXO `d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0`; public evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/`.
-18. Treat ENV-060B as a completed rejected live create attempt: exactly one helper-controlled version-1 covenant-create submission was attempted on TN10 with `allow_orphan=false`, and it was rejected for insufficient fee (`100000` sompi supplied vs `208300` required for compute mass `2083`). Evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060b-live-covenant-create/`.
-19. Treat ENV-060C as a completed accepted fee-corrected live create retry: exactly one retry was submitted on TN10 with `allow_orphan=false`, fee `300000` sompi, accepted txid `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d`, and immediate read-only postcheck observed the mempool entry but not the covenant UTXO. Evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060c-live-covenant-create-fee-retry/`.
-20. Treat ENV-061 as completed read-only covenant UTXO inspection and spend preflight: covenant UTXO `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0` is observed unspent on TN10 with amount `100000000` sompi and covenant id `69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1`; future spend command shape and stop conditions are recorded under `spikes/tn12-minimal-covenant/artifacts/env-061-covenant-utxo-inspection-spend-preflight/`.
-21. Treat ENV-062 as BLOCKED before submission: the `covenant-spend` subcommand was added and focused checks passed, but local covenant VM proof returned `VerifyError`, so zero TN10 covenant-spend submissions were attempted. Evidence is under `spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/`.
-22. Do not retry covenant create automatically and do not attempt another covenant-spend submit. The next smallest step is debugging the local covenant-spend sigscript/VM proof against the official `tn10-toc3` covenant example before any new live approval.
-23. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into a later live-prep step.
-24. Do not proceed to covenant spend or broader lifecycle work without explicit future approval.
+1. Review ENV-066 documentation/evidence consolidation and diffs.
+2. If accepted, commit ENV-066 only after review.
+3. Treat TN10 covenant feasibility as complete/proven for the spike: corrected create (ENV-063), corrected spend (ENV-064), and settlement/read-only continuing UTXO confirmation (ENV-065).
+4. Keep roulette/web-app work paused unless a separate product/design plan is explicitly opened.
+5. Do not perform further signing, submitting, broadcasting, or live covenant actions without a new scoped approval.
 
 ## ENV-047 planning status
 

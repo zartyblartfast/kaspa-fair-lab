@@ -38,12 +38,12 @@ Evaluate whether the project can meet the minimum technical promise:
 - Earlier `kaspad` exits were caused by the Linux OOM killer.
 - Adding 8 GB swap allowed sync to complete on the VPS.
 - `hasUtxoIndex: false` was observed on the synced-node read-only RPC check.
-- Wallet, faucet, signing, broadcast, and live covenant operations remain NOT TESTED.
+- TN10 wallet/faucet/signing/broadcast and live corrected covenant create/spend/settlement are tested on testnet-10; TN12 and mainnet remain NOT TESTED.
 - Roulette remains PAUSED.
 
 ### Unknown
 
-- Whether artefact creation and spend can be completed without undocumented side steps.
+- Whether the TN10-proven flow transfers unchanged to TN12 or any future/mainnet Toccata environment.
 - Exact minimum metadata required for reliable inspection.
 - Whether the observed outputs are sufficient for independent explanation.
 - Which failure cases are expected vs. infra-induced artifacts.
@@ -56,10 +56,10 @@ Evaluate whether the project can meet the minimum technical promise:
 
 ## What remains unverified (explicitly)
 
-- Any claim that covenant creation/spend/inspection works end-to-end.
+- Any claim that covenant creation/spend/inspection works on TN12 or mainnet.
 - Any statement that a roulette architecture is currently safe to implement.
 - Any performance, throughput, or cost assumptions.
-- Any claim that wallet, faucet, signing, broadcast, or live covenant operations have been tested.
+- Any claim that roulette/web-app integration has been tested, or that the TN10 spike result is a mainnet result.
 
 ## Current TN12 infrastructure conclusion
 
@@ -78,3 +78,18 @@ A positive feasibility call requires all of the following in a spike report:
 - Clear statement of failure modes and recovery steps.
 
 Anything less should be labeled `Unverified` and carried as risk to planning.
+
+## Final TN10 covenant spike evidence (ENV-066)
+
+Result: COMPLETE for the constrained TN10 covenant feasibility spike. The corrected live path is evidence-backed by:
+
+- ENV-063 corrected live TN10 covenant create: accepted txid `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849`; output `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0` observed unspent after mining with covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`.
+- ENV-064 corrected live TN10 covenant spend: accepted spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`, spending the ENV-063 corrected covenant UTXO only.
+- ENV-065 read-only settlement confirmation: original ENV-063 UTXO absent/spent; continuing output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0` visible as a UTXO with `99700000` sompi and covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`.
+
+Important scope notes:
+
+- Network proven: TN10 / testnet-10 only.
+- The old ENV-060C/ENV-061 UTXO `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0` was superseded by the corrected v1 path and was not used for final corrected feasibility.
+- ENV-066 performed documentation/evidence consolidation only: no signing, submitting, broadcasting, transaction creation, spend action, mainnet action, wallet-secret access, helper-private-key exposure, roulette, or web-app work.
+- Final evidence index: `spikes/tn12-minimal-covenant/artifacts/env-066-final-covenant-spike-summary/evidence-index.txt`.

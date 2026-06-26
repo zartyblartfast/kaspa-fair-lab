@@ -89,5 +89,11 @@ Known local-only wallet files:
 Current project boundary:
 
 - TN10 ordinary wallet/faucet/UTXO/sign/broadcast is proven.
-- Live covenant create/spend/inspect is not yet proven.
+- TN10 corrected live covenant create/spend/settlement is proven on the ENV-063/ENV-064/ENV-065 path.
+- Corrected covenant create ENV: ENV-063, txid `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849`, output `2c7802ff9a6eec2828a96168d8f62a9a276176441ed8cb6086cd5d5d0cb26849:0`, covenant id `e2bdd874add81ebcdba4d0f9ef650967ddadf1085ce4ab15f5eb29fddbf79ff7`.
+- Corrected covenant spend ENV: ENV-064, accepted spend txid `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c`, continuing output `4cb31dbad4465665b978ba3ec5eeecb21824a3ea686f5085b46a97066446466c:0`, value `99700000` sompi.
+- Settlement confirmation ENV: ENV-065, continuing output visible and original ENV-063 input absent/spent.
+- Old ENV-060C/ENV-061 covenant UTXO `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0` was the superseded v0-locked path and must not be treated as the final corrected path.
+- Stop conditions after ENV-065/ENV-066: no more signing, submitting, broadcasting, transaction creation, or live spend/create action is required for the completed spike; any future live action requires a new reviewed plan and explicit approval.
+- Never use mainnet, expose wallet secrets/helper private key material, build roulette, or build a web app under this workflow.
 - Roulette remains paused.
