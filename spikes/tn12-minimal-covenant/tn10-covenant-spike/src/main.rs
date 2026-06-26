@@ -43,6 +43,7 @@ const ENV059_HELPER_FUNDING_TKAS: u64 = 3;
 const SOMPI_PER_TKAS: u64 = 100_000_000;
 const ENV059_SECRET_REL_DIR: &str = "local-secrets/env-059-helper-key";
 const ENV059_ARTIFACT_REL_DIR: &str = "artifacts/env-059-helper-controlled-covenant-preflight";
+const ENV060C_FEE_SOMPI: u64 = 300_000;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -494,7 +495,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
     }
     if !args.submit {
         return Err(
-            "blocked: ENV-060B requires explicit --submit for the one approved live attempt".into(),
+            "blocked: ENV-060C requires explicit --submit for the one approved live retry".into(),
         );
     }
     if args.input_amount_sompi == 0 {
@@ -503,10 +504,11 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
 
     fs::create_dir_all(&args.public_evidence_dir)?;
     let preflight_path = args.public_evidence_dir.join("preflight.txt");
+    let fee_analysis_path = args.public_evidence_dir.join("fee-analysis.txt");
     let submit_path = args.public_evidence_dir.join("create-submit.txt");
     let postcheck_path = args.public_evidence_dir.join("postcheck.txt");
-    let summary_path = args.public_evidence_dir.join("env-060b-summary.txt");
-    let json_path = args.public_evidence_dir.join("env-060b-public-create.json");
+    let summary_path = args.public_evidence_dir.join("env-060c-summary.txt");
+    let json_path = args.public_evidence_dir.join("env-060c-public-create.json");
 
     let private_key_path = env059_secret_dir().join("helper-private-key.hex");
     if !private_key_path.exists() {
@@ -559,7 +561,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
         );
     }
 
-    let fee_sompi = 100_000u64;
+    let fee_sompi = ENV060C_FEE_SOMPI;
     let covenant_output_value_sompi = 100_000_000u64;
     let total_outputs = covenant_output_value_sompi
         .checked_add(fee_sompi)
@@ -635,7 +637,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
 
     let preflight = format!(
         concat!(
-            "ENV-060B preflight\n\n",
+            "ENV-060C preflight\n\n",
             "Result: PASS\n",
             "Network requested: {}\n",
             "Server network_id: {}\n",
@@ -674,6 +676,38 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
         change_value_sompi,
         fee_sompi
     );
+    fs::write(
+        &fee_analysis_path,
+        format!(
+            concat!(
+                "ENV-060C fee analysis\n\n",
+                "Prior ENV-060B result: REJECTED\n",
+                "Prior ENV-060B fee used sompi: 100000\n",
+                "Prior ENV-060B required fee reported sompi: 208300\n",
+                "Prior ENV-060B reported compute mass: 2083\n",
+                "ENV-060C selected fee sompi: {}\n",
+                "Fee margin above reported requirement sompi: {}\n",
+                "Input amount sompi: {}\n",
+                "Covenant output value sompi: {}\n",
+                "Change output value sompi: {}\n",
+                "Change returns to helper address: true ({})\n",
+                "Excessive spend guard: PASS (fee + covenant output <= input)\n",
+                "TX_VERSION_TOCCATA: {}\n",
+                "Transaction version: {}\n",
+                "Covenant binding present before signing: true\n",
+                "allow_orphan planned: false\n",
+                "Private key material exposed: false\n"
+            ),
+            fee_sompi,
+            fee_sompi.saturating_sub(208_300),
+            args.input_amount_sompi,
+            covenant_output_value_sompi,
+            change_value_sompi,
+            helper_address_string,
+            TX_VERSION_TOCCATA,
+            signed_tx.version,
+        ),
+    )?;
     fs::write(&preflight_path, preflight)?;
 
     let local_txid = signed_tx.id().to_string();
@@ -685,7 +719,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                 &submit_path,
                 format!(
                     concat!(
-                        "ENV-060B create submit\n\n",
+                        "ENV-060C create submit\n\n",
                         "Result: PASS\n",
                         "Submission attempts: 1\n",
                         "allow_orphan: false\n",
@@ -719,7 +753,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                 &postcheck_path,
                 format!(
                     concat!(
-                        "ENV-060B postcheck\n\n",
+                        "ENV-060C postcheck\n\n",
                         "Result: PASS\n",
                         "Server network_id: {}\n",
                         "Server is_synced: {}\n",
@@ -788,7 +822,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                 &summary_path,
                 format!(
                     concat!(
-                        "ENV-060B live helper-controlled TN10 covenant create\n\n",
+                        "ENV-060C live helper-controlled TN10 covenant create fee retry\n\n",
                         "Result: PASS\n",
                         "Network: TN10 / testnet-10\n",
                         "Helper address: {}\n",
@@ -796,8 +830,10 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                         "Amount spent/input sompi: {}\n",
                         "Fee sompi: {}\n",
                         "Covenant output value sompi: {}\n",
+                        "Change output value sompi: {}\n",
                         "Covenant id: {}\n",
-                        "Covenant create txid: {}\n",
+                        "Submitted txid if accepted: {}\n",
+                        "Covenant UTXO observed: {}\n",
                         "Postcheck: mempool_entry_observed={} helper_post_utxo_count={} covenant_utxo_observed={}\n",
                         "Evidence path: {}\n\n",
                         "Safety confirmations:\n",
@@ -814,15 +850,17 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                     args.input_amount_sompi,
                     fee_sompi,
                     covenant_output_value_sompi,
+                    change_value_sompi,
                     binding.covenant_id,
                     submitted_txid_string,
+                    covenant_observed,
                     mempool_result.is_ok(),
                     helper_post_utxos.len(),
                     covenant_observed,
                     args.public_evidence_dir.display()
                 ),
             )?;
-            println!("ENV-060B PASS");
+            println!("ENV-060C PASS");
             println!("submitted_txid={}", submitted_txid_string);
             println!("summary={}", summary_path.display());
         }
@@ -831,13 +869,13 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
             fs::write(
                 &submit_path,
                 format!(
-                    "ENV-060B create submit\n\nResult: REJECTED\nSubmission attempts: 1\nallow_orphan: false\nLocal txid: {}\nRejection/error: {}\nPrivate key material exposed: false\n",
+                    "ENV-060C create submit\n\nResult: REJECTED\nSubmission attempts: 1\nallow_orphan: false\nLocal txid: {}\nRejection/error: {}\nPrivate key material exposed: false\n",
                     local_txid, rejection
                 ),
             )?;
             fs::write(
                 &postcheck_path,
-                "ENV-060B postcheck\n\nResult: NOT RUN AFTER REJECTED SUBMIT\n",
+                "ENV-060C postcheck\n\nResult: NOT RUN AFTER REJECTED SUBMIT\n",
             )?;
             fs::write(
                 &json_path,
@@ -880,7 +918,7 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                 &summary_path,
                 format!(
                     concat!(
-                        "ENV-060B live helper-controlled TN10 covenant create\n\n",
+                        "ENV-060C live helper-controlled TN10 covenant create fee retry\n\n",
                         "Result: REJECTED\n",
                         "Network: TN10 / testnet-10\n",
                         "Helper address: {}\n",
@@ -888,8 +926,10 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                         "Amount spent/input sompi: {}\n",
                         "Fee sompi: {}\n",
                         "Covenant output value sompi: {}\n",
+                        "Change output value sompi: {}\n",
                         "Covenant id: {}\n",
                         "Covenant create txid if submitted locally: {}\n",
+                        "Submitted txid if accepted: none\n",
                         "Submit rejection/error: {}\n",
                         "Covenant UTXO observed: false (postcheck stopped after rejection)\n\n",
                         "Safety confirmations:\n",
@@ -906,12 +946,13 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                     args.input_amount_sompi,
                     fee_sompi,
                     covenant_output_value_sompi,
+                    change_value_sompi,
                     binding.covenant_id,
                     local_txid,
                     rejection
                 ),
             )?;
-            println!("ENV-060B REJECTED");
+            println!("ENV-060C REJECTED");
             println!("summary={}", summary_path.display());
         }
     }
@@ -990,7 +1031,7 @@ fn write_blocked_summary(path: &Path, reason: &str) -> std::io::Result<()> {
     fs::write(
         path,
         format!(
-            "ENV-060B live helper-controlled TN10 covenant create\n\nResult: BLOCKED\nReason: {}\nSafety confirmations: no submission attempted, no covenant spend attempted, no mainnet, no wallet secrets accessed, helper private key not exposed, no roulette/web app.\n",
+            "ENV-060C live helper-controlled TN10 covenant create fee retry\n\nResult: BLOCKED\nReason: {}\nSafety confirmations: no submission attempted, no covenant spend attempted, no mainnet, no wallet secrets accessed, helper private key not exposed, no roulette/web app.\n",
             reason
         ),
     )

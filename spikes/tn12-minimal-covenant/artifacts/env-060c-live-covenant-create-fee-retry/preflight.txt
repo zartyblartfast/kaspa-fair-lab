@@ -1,0 +1,24 @@
+ENV-060C preflight
+
+Result: PASS
+Network requested: testnet-10
+Server network_id: testnet-10
+Server is_synced: true
+Server has_utxo_index: true
+Helper address: kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+Helper private key exists: true
+Helper private key path is under ignored local-secrets: true
+Input UTXO: d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0
+Input amount sompi: 300000000
+Live helper UTXO observed pre-submit: true
+TX_VERSION_TOCCATA: 1
+Transaction version: 1
+Uses literal version 2: false
+populate_genesis_covenants succeeded: true
+Covenant binding present before signing: true
+allow_orphan planned: false
+Output count: 2
+Covenant output index/value: 0 / 100000000
+Change output index/value: 1 / 199700000
+Fee sompi: 300000
+Private key material exposed: false

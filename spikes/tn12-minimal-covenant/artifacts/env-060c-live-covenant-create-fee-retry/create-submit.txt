@@ -1,0 +1,9 @@
+ENV-060C create submit
+
+Result: PASS
+Submission attempts: 1
+allow_orphan: false
+Local txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Submitted txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Mempool accepted RPC response: true
+Private key material exposed: false

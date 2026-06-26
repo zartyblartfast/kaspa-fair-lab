@@ -1,0 +1,23 @@
+ENV-060C live helper-controlled TN10 covenant create fee retry
+
+Result: PASS
+Network: TN10 / testnet-10
+Helper address: kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+Helper input UTXO: d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0
+Amount spent/input sompi: 300000000
+Fee sompi: 300000
+Covenant output value sompi: 100000000
+Change output value sompi: 199700000
+Covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Submitted txid if accepted: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Covenant UTXO observed: false
+Postcheck: mempool_entry_observed=true helper_post_utxo_count=1 covenant_utxo_observed=false
+Evidence path: spikes/tn12-minimal-covenant/artifacts/env-060c-live-covenant-create-fee-retry/
+
+Safety confirmations:
+- exactly one live covenant-create submission attempted: true
+- no covenant spend attempted: true
+- no mainnet: true
+- no wallet secrets accessed: true
+- helper private key not exposed: true
+- no roulette/web app: true

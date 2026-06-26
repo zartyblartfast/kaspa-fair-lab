@@ -1,0 +1,12 @@
+ENV-060C postcheck
+
+Result: PASS
+Server network_id: testnet-10
+Server is_synced: true
+Server has_utxo_index: true
+Submitted txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Mempool entry observed: true
+Helper UTXO count after submit: 1
+Covenant address: kaspatest:prafcnqu0h6zz23pef3cdvvsjxhkj87mnprtva0crnvee6vmcc4pkjck849ef
+Covenant UTXO observed: false
+Covenant postcheck UTXO count: 0

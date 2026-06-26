@@ -35,7 +35,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-059 helper-controlled TN10 covenant create preflight: COMPLETE (helper can generate/reuse a local helper-controlled key under ignored `local-secrets/`, emits public helper TN10 address and funding/create plan; no live covenant tx/signing/broadcast/spend)
 - ENV-060A helper-controlled TN10 covenant address funding: COMPLETE (one ordinary 3 TKAS TN10 wallet send funded the helper public address and read-only balance/UTXO confirmation passed; no covenant create/sign/broadcast)
 - ENV-060B helper-controlled TN10 covenant create attempt: REJECTED (exactly one version-1 helper-signed covenant-create submission attempted with `allow_orphan=false`; TN10 mempool rejected it because fee 100000 sompi was below required 208300 sompi for compute mass 2083; no retry and no covenant spend)
-- helper-controlled live covenant create is now tested only to rejection; accepted covenant create, covenant UTXO observation, and covenant spend remain NOT PROVEN
+- ENV-060C fee-corrected TN10 covenant create retry: PASS (exactly one retry submitted with 300000 sompi fee and `allow_orphan=false`; accepted txid `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d`; immediate read-only postcheck observed mempool entry but did not yet observe covenant UTXO)
+- helper-controlled live covenant create is now accepted on TN10; covenant UTXO observation and covenant spend remain NOT PROVEN
 - roulette remains PAUSED
 
 ## What has been proven
@@ -75,6 +76,7 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 - ENV-059 extended `spikes/tn12-minimal-covenant/tn10-covenant-spike/` with `env059-helper-key`, generated a helper-controlled TN10 public address `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, stored private material only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, and documented the planned 3 TKAS funding/create flow. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/env-059-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/helper-address-public.json`.
 - ENV-060A funded the ENV-059 helper-controlled TN10 public address `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld` with exactly 3 TKAS from `env052-tn10-test-only`, then confirmed helper balance `3.0` and helper UTXO `d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0` by read-only wallet RPC. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/env-060a-summary.txt` and `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/env-060a-public-evidence.txt`.
 - ENV-060B extended `spikes/tn12-minimal-covenant/tn10-covenant-spike/` with a `covenant-create` subcommand, built a version-1 `TX_VERSION_TOCCATA` helper-signed transaction using the ENV-060A UTXO, preserved output-0 covenant binding via `populate_genesis_covenants(...)`, and submitted exactly once to TN10 with `allow_orphan=false`. Result: REJECTED because the explicit 100000 sompi fee was below the mempool-required 208300 sompi for compute mass 2083. No automatic retry, no covenant spend, no mainnet, no wallet secrets, and no helper private key exposure occurred. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-060b-live-covenant-create/env-060b-summary.txt`, `preflight.txt`, `create-submit.txt`, `postcheck.txt`, and `env-060b-public-create.json`.
+- ENV-060C patched the helper to use a conservative 300000 sompi fee, re-ran `cargo fmt --check`, `cargo test`, and `cargo check`, and submitted exactly one fee-corrected TN10 covenant-create retry with `allow_orphan=false`. Result: PASS / accepted txid `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d`; immediate read-only postcheck observed the mempool entry but did not observe the covenant UTXO yet. Evidence: `spikes/tn12-minimal-covenant/artifacts/env-060c-live-covenant-create-fee-retry/env-060c-summary.txt`, `preflight.txt`, `fee-analysis.txt`, `create-submit.txt`, `postcheck.txt`, and `env-060c-public-create.json`.
 - ENV-049 Gate 1 generated one TN12 test-only address with a non-interactive local helper.
 - Public ENV-049 evidence is preserved under `spikes/tn12-minimal-covenant/artifacts/env-049-key-address/`.
 - Existing ENV-049 address reused for ENV-050 Gate 2: `kaspatest:qqaq5f4ju52g9r869c50n55lmtgku9nsf2pc56y76neaj7rksmewg2ytrxccg`.
@@ -86,8 +88,8 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 
 ## What has not been proven / tested
 
-- Signing: TN10 helper signing for one create attempt was exercised in ENV-060B; accepted transaction signing remains NOT PROVEN.
-- Real UTXO usage: the ENV-060A helper UTXO was used in exactly one rejected ENV-060B submission; accepted live UTXO spend remains NOT PROVEN.
+- Signing: TN10 helper signing for one accepted create retry was exercised in ENV-060C; covenant spend signing remains NOT PROVEN.
+- Real UTXO usage: the ENV-060A helper UTXO was consumed by the accepted ENV-060C create retry; immediate postcheck observed the mempool entry but not yet a covenant UTXO.
 - ENV-050 Gate 2 funding completion.
 - ENV-050A still needs a human-verified TN12 funding route before any submission.
 - ENV-050B identified mining as the likely TN12 funding path if a later one-thread mining attempt is approved.
@@ -136,9 +138,10 @@ TN12 minimal covenant feasibility spike for a future KaspaFair/Toccata showcase.
 16. Treat ENV-059 as complete helper-controlled preflight: helper public address is `kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld`, private material is local-only under ignored `spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key/`, planned funding amount is 3 TKAS, and evidence is under `spikes/tn12-minimal-covenant/artifacts/env-059-helper-controlled-covenant-preflight/`.
 17. Treat ENV-060A as complete helper funding: one ordinary TN10 wallet send funded the helper address with exactly 3 TKAS, and read-only confirmation observed helper balance `3.0` plus helper UTXO `d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0`; public evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/`.
 18. Treat ENV-060B as a completed rejected live create attempt: exactly one helper-controlled version-1 covenant-create submission was attempted on TN10 with `allow_orphan=false`, and it was rejected for insufficient fee (`100000` sompi supplied vs `208300` required for compute mass `2083`). Evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060b-live-covenant-create/`.
-19. Do not retry ENV-060B automatically. The next smallest approvable step is review-only: decide whether to approve a second, explicitly fee-corrected helper-controlled covenant-create attempt using the same safety boundaries.
-20. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into the next live-prep step.
-21. Do not proceed to accepted covenant create retry, covenant spend, or broader lifecycle work without explicit future approval.
+19. Treat ENV-060C as a completed accepted fee-corrected live create retry: exactly one retry was submitted on TN10 with `allow_orphan=false`, fee `300000` sompi, accepted txid `f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d`, and immediate read-only postcheck observed the mempool entry but not the covenant UTXO. Evidence is under `spikes/tn12-minimal-covenant/artifacts/env-060c-live-covenant-create-fee-retry/`.
+20. Do not retry covenant create automatically and do not covenant-spend yet. The next smallest approvable step is review/read-only observation of whether the accepted create becomes an observable covenant UTXO.
+21. Patch or replace stale local `tx.version == 2` fixtures/helpers in a separate narrow cleanup unless the reviewer explicitly wants that folded into a later live-prep step.
+22. Do not proceed to covenant spend or broader lifecycle work without explicit future approval.
 
 ## ENV-047 planning status
 

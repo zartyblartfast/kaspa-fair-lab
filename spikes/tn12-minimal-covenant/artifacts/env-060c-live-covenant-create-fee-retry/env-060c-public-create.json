@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "network": "testnet-10",
+  "helper_address": "kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld",
+  "input_outpoint": "d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0",
+  "input_amount_sompi": 300000000,
+  "fee_sompi": 300000,
+  "tx_version": 1,
+  "allow_orphan": false,
+  "covenant_output_index": 0,
+  "covenant_output_value_sompi": 100000000,
+  "covenant_script_public_key_version": 0,
+  "covenant_script_public_key_length": 35,
+  "covenant_id": "69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1",
+  "change_output_index": 1,
+  "change_output_value_sompi": 199700000,
+  "local_txid": "f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d",
+  "submitted_txid": "f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d",
+  "covenant_utxo_observed": false,
+  "private_key_material_exposed": false
+}
