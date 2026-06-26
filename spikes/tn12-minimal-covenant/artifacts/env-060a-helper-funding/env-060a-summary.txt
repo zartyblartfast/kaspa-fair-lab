@@ -1,0 +1,42 @@
+ENV-060A helper-controlled TN10 covenant address funding
+
+Result: PASS
+Network: testnet-10 / TN10
+Funding wallet: env052-tn10-test-only
+Helper public address: kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+Amount sent: 3 TKAS
+Priority fee: 0
+Observed public TN10 endpoint: wss://electron-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh
+Observed server info: network_type=Testnet, suffix=10, has_utxo_index=true, is_synced=true
+
+Estimate result:
+- command: estimate 3 0
+- observed line: Estimate - Amount: 3 TKAS  Fees: 0.003154 TKAS  Total: 3.003154 TKAS  UTXOs: 2
+
+Funding send result:
+- command: send kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld 3 0
+- observed send summary: Send - Amount: 3 TKAS  Fees: 0.003154 TKAS  Total: 3.003154 TKAS  UTXOs: 2
+- funding txid: d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439
+- txid evidence basis: read-only helper UTXO outpoint after the send
+
+Observed helper balance:
+- rpc get-balance-by-address returned: 3.0
+
+Observed helper UTXO outpoint(s):
+- d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439:0 amount 300000000 sompi covenant_id None
+
+Attempt-count / scope confirmations:
+- ENV-059 was already committed before this step (HEAD: 8ee2316 Prepare helper controlled TN10 covenant key).
+- Exactly one ordinary wallet send was performed in this approved funding step.
+- No covenant transaction was created.
+- No helper covenant-create command was run.
+- No helper signing was performed.
+- No helper-created transaction was broadcast.
+- No faucet request was submitted.
+- No mainnet action occurred.
+- No private material was exposed in public artifacts.
+- No private material under local-secrets/ was committed.
+
+Public evidence files:
+- spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/env-060a-summary.txt
+- spikes/tn12-minimal-covenant/artifacts/env-060a-helper-funding/env-060a-public-evidence.txt

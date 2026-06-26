@@ -1,0 +1,43 @@
+ENV-060A public-safe wallet evidence
+
+Command sequence used:
+- network testnet-10
+- server public
+- connect
+- rpc get-server-info
+- wallet open env052-tn10-test-only
+- estimate 3 0
+- send kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld 3 0
+- rpc get-balance-by-address kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+- rpc get-utxos-by-addresses kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+- disconnect
+
+Observed connect output:
+- Connected to Kaspa node version 2.0.1 at wss://electron-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh
+
+Observed server info excerpt:
+- network_type: Testnet
+- suffix: Some(10)
+- has_utxo_index: true
+- is_synced: true
+- virtual_daa_score: 501067166
+
+Observed estimate output:
+- Estimate - Amount: 3 TKAS  Fees: 0.003154 TKAS  Total: 3.003154 TKAS  UTXOs: 2
+
+Observed send output excerpt:
+- Send - Amount: 3 TKAS  Fees: 0.003154 TKAS  Total: 3.003154 TKAS  UTXOs: 2
+- Sending 3 KAS to kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld, tx ids:
+
+Observed helper balance output:
+- 3.0
+
+Observed helper UTXO output excerpt:
+- transaction_id: d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439
+- index: 0
+- amount: 300000000
+- block_daa_score: 501067251
+- covenant_id: None
+
+Secret handling note:
+- Wallet password entry was required for wallet open and send, but no wallet password, mnemonic, seed, private key, or wallet file contents are recorded here.
