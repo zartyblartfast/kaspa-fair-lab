@@ -1,0 +1,26 @@
+ENV-062 live TN10 covenant spend attempt
+
+Result: BLOCKED
+Network: TN10 / testnet-10
+Covenant input outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+Covenant input amount: 100000000 sompi
+Covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Spend txid if accepted: none
+Fee used: 300000 sompi planned; not submitted
+Resulting output/state details: planned output0 same covenant SPK, same covenant id, value 99700000 sompi, payload 01; not submitted
+Whether original covenant UTXO appears spent: false by ENV-062 action; no submission attempted
+Whether new output/UTXO appears: false; no submission attempted
+Exact rejection if rejected: none from TN10; local no-broadcast proof failed first with VerifyError
+Confirmation exactly one covenant-spend submission was attempted: false; zero submissions were attempted because the ENV-061 stop condition fired before submit
+Confirmation no mainnet: true
+Confirmation no wallet secrets accessed: true
+Confirmation helper private key not exposed: true
+Confirmation no roulette/web app: true
+Evidence path: spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/
+
+Notes:
+- The missing covenant-spend subcommand was implemented in the existing helper crate.
+- Focused cargo checks passed after implementation: fmt --check, test, and check.
+- The live command was invoked once, but the helper performs local covenant VM proof before calling submit_transaction.
+- The local VM proof returned VerifyError, so the helper exited before any TN10 submit_transaction call.
+- Per ENV-061 stop conditions, no retry and no broadcast/submission was performed.

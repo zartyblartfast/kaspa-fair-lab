@@ -1,0 +1,28 @@
+ENV-062A local proof debug
+
+Reconstructed ENV-060C create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Expected ENV-061 create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Create tx version: 1
+Create tx payload hex: 
+Spend tx version: 1
+Spend tx payload hex: 01
+Spend input previous outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+Spend output count: 1
+Spend output covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Input UTXO covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+CovenantsContext::from_tx: OK
+CovenantsContext auth outputs for input 0: 1
+Sigscript stack item 1 / prev_rest length: 255
+Sigscript stack item 2 / prev_payload length: 0
+Sigscript stack item 3 / covenant script length: 35
+Script check 1 opcode: OP_EQUALVERIFY after OP_BLAKE2B_WITH_KEY/OP_OUTPOINT_TX_ID
+Script-computed v0-style TransactionID(prev_rest || prev_payload): 8e2d45196a044df8b55ebe66e4b00fa52d2eca1393343ccd29a3710cf62d7845
+Actual outpoint txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+First script check passes: false
+V1 rest digest: 09ecf22a8928e383efe978b01af61d7f146c6eca5d00782202a2a1796ecd7a4c
+V1 payload digest: 9c0ca2acb45e92ffe6ceb4ae29188b35c82d9676cdd3ce067fd6ccc30a9c4a38
+Reconstructed V1 id from payload_digest || rest_digest: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Reconstructed V1 id matches create txid: true
+VM result: Err(VerifyError)
+Exact VerifyError variant: TxScriptError::VerifyError
+Failing check/opcode: first OP_EQUALVERIFY; the upstream v0 script hashes prev_rest||prev_payload with TransactionID, but live TX_VERSION_TOCCATA v1 txid is TransactionV1Id(payload_digest||rest_digest)

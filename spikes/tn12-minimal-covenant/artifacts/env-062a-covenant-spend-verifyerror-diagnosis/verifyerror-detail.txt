@@ -1,0 +1,41 @@
+ENV-062A VerifyError detail
+
+Result: DIAGNOSED
+Exact VerifyError variant: TxScriptError::VerifyError
+Local no-broadcast spend proof passes now: false
+Network submission occurred: false
+Live UTXO spent: false
+
+Failing script check/opcode:
+- first OP_EQUALVERIFY in build_covenant_script()
+- location in script logic: after OP_DUP OP_ROT OP_ROT OP_CAT <TransactionID> OP_BLAKE2B_WITH_KEY OP_TX_INPUT_INDEX OP_OUTPOINT_TX_ID
+- intended check inherited from upstream crypto/txscript/examples/covenants.rs: hash(prev_tx_rest || prev_tx_payload) with TransactionID domain must equal the input outpoint txid.
+
+Observed values from local-proof-debug.txt:
+- reconstructed ENV-060C create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+- script-computed v0-style TransactionID(prev_rest || prev_payload): 8e2d45196a044df8b55ebe66e4b00fa52d2eca1393343ccd29a3710cf62d7845
+- actual outpoint txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+- first script check passes: false
+- VM result: Err(VerifyError)
+
+Root cause:
+The live ENV-060C create transaction is TX_VERSION_TOCCATA / version 1. The official upstream covenant example is a version-0 in-VM example: it uses transaction_v0_id_preimage(tx), splits that preimage into rest + payload, and its covenant script recomputes TransactionID(prev_tx_rest || prev_tx_payload) directly.
+
+For the live version-1 create tx, the helper fed transaction_v1_rest_preimage(create_tx) plus create_tx.payload. That is not a version-1 transaction-id preimage. Version-1 txid is TransactionV1Id(payload_digest || rest_digest), where rest_digest is TransactionRest(transaction_v1_rest_preimage) and payload_digest is PayloadDigest(payload). The local debug confirms:
+- V1 rest digest: 09ecf22a8928e383efe978b01af61d7f146c6eca5d00782202a2a1796ecd7a4c
+- V1 payload digest: 9c0ca2acb45e92ffe6ceb4ae29188b35c82d9676cdd3ce067fd6ccc30a9c4a38
+- reconstructed V1 id from payload_digest || rest_digest matches create txid: true
+
+Therefore the helper cannot make the existing live covenant UTXO pass this script check by changing only sigscript stack items, unless it can provide a preimage that hashes under TransactionID to the already-fixed v1 txid, which is not a constructive spend path.
+
+Investigated questions:
+1. Exact VerifyError variant: TxScriptError::VerifyError.
+2. Failing check/opcode: first OP_EQUALVERIFY, the previous-txid proof check.
+3. Same stack items as upstream example: structurally yes: prev_rest, prev_payload, covenant_script; semantically no for version 1 because upstream prev_rest is from transaction_v0_id_preimage and live helper uses transaction_v1_rest_preimage.
+4. Correct previous payload/state: previous payload is empty and matches ENV-060C create payload; state value 0 is encoded as empty, matching upstream encode_counter(0).
+5. Correct next payload/state: next payload is 01, matching increment from empty/0 to 1.
+6. Same covenant SPK and covenant id preserved: yes; output0 uses the same P2SH covenant SPK and same covenant id 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1.
+7. Live v1 context different from upstream in-VM example: yes; upstream example uses tx version 0 and transaction_v0_id_preimage, while live TN10 covenant create/spend uses TX_VERSION_TOCCATA = 1 and V1 txid composition.
+8. Helper reconstructing ENV-060C create tx correctly: yes; reconstructed txid equals f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d and covenant id matches ENV-061.
+9. CovenantsContext::from_tx setup correct for spend: yes for continuation context; local debug reports OK and auth outputs for input 0 = 1.
+10. Exact change required before ENV-062B: do not retry spending the existing ENV-060C UTXO with this script. A future live attempt needs a new, separately approved covenant create using a script/state design whose previous-state proof is valid for TX_VERSION_TOCCATA v1, or a script that avoids this v0 txid-preimage assumption. Only after local no-broadcast proof is green for that new design should a live spend be considered.

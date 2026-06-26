@@ -1,0 +1,12 @@
+ENV-062 postcheck
+
+Result: NOT RUN AFTER LOCAL PREFLIGHT BLOCKER
+Reason: local no-broadcast covenant VM proof failed with VerifyError before any submit_transaction call.
+Submission attempts: 0
+Original covenant UTXO spent by ENV-062: false (no submission attempted)
+New transition output/UTXO observed by ENV-062: false (no submission attempted)
+Read-only post-submit inspection run: false
+No mainnet: true
+No wallet secrets accessed: true
+Helper private key exposed: false
+No roulette/web app: true

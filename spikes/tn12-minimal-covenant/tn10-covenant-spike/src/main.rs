@@ -8,15 +8,20 @@ use std::time::Duration;
 
 use kaspa_addresses::{Address, Prefix, Version};
 use kaspa_consensus_core::constants::TX_VERSION_TOCCATA;
+use kaspa_consensus_core::hashing::sighash::SigHashReusedValuesUnsync;
+use kaspa_consensus_core::hashing::tx::{
+    payload_digest, transaction_v1_rest_preimage, v1_rest_digest,
+};
 use kaspa_consensus_core::mass::ComputeBudget;
 use kaspa_consensus_core::sign::sign;
 use kaspa_consensus_core::subnets::SubnetworkId;
 use kaspa_consensus_core::tx::{
-    GenesisCovenantGroup, MutableTransaction, PopulatedTransaction, Transaction, TransactionInput,
-    TransactionOutpoint, TransactionOutput, UtxoEntry,
+    CovenantBinding, GenesisCovenantGroup, MutableTransaction, PopulatedTransaction, Transaction,
+    TransactionInput, TransactionOutpoint, TransactionOutput, UtxoEntry,
 };
-use kaspa_hashes::Hash;
+use kaspa_hashes::{Hash, Hasher, HasherBase, TransactionID, TransactionV1Id};
 use kaspa_rpc_core::api::rpc::RpcApi;
+use kaspa_txscript::caches::Cache;
 use kaspa_txscript::covenants::CovenantsContext;
 use kaspa_txscript::opcodes::codes::{
     Op1Add, OpBlake2bWithKey, OpCat, OpDup, OpEqual, OpEqualVerify, OpOutpointTxId, OpRot,
@@ -26,6 +31,7 @@ use kaspa_txscript::opcodes::codes::{
 use kaspa_txscript::pay_to_address_script;
 use kaspa_txscript::pay_to_script_hash_script;
 use kaspa_txscript::script_builder::{ScriptBuilder, ScriptBuilderResult};
+use kaspa_txscript::{EngineCtx, EngineFlags, TxScriptEngine};
 use kaspa_wrpc_client::{
     KaspaRpcClient, Resolver, WrpcEncoding,
     client::{ConnectOptions, ConnectStrategy},
@@ -44,6 +50,9 @@ const SOMPI_PER_TKAS: u64 = 100_000_000;
 const ENV059_SECRET_REL_DIR: &str = "local-secrets/env-059-helper-key";
 const ENV059_ARTIFACT_REL_DIR: &str = "artifacts/env-059-helper-controlled-covenant-preflight";
 const ENV060C_FEE_SOMPI: u64 = 300_000;
+const ENV060C_HELPER_FUNDING_TXID: &str =
+    "d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439";
+const ENV060C_HELPER_FUNDING_INDEX: u32 = 0;
 const ENV061_ARTIFACT_REL_DIR: &str = "artifacts/env-061-covenant-utxo-inspection-spend-preflight";
 const ENV061_CREATE_TXID: &str = "f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d";
 const ENV061_COVENANT_OUTPUT_INDEX: u32 = 0;
@@ -64,10 +73,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some("env059-helper-key") => run_env059_helper_key()?,
         Some("covenant-create") => run_covenant_create(args.collect()).await?,
         Some("env061-inspect") => run_env061_inspect().await?,
+        Some("covenant-spend") => run_covenant_spend(args.collect()).await?,
+        Some("env062a-local-debug") => run_env062a_local_debug()?,
         Some("help") | Some("--help") | Some("-h") => print_help(),
         Some(other) => {
             return Err(format!(
-                "unknown command `{other}`; use `env058-offline-scaffold`, `env059-helper-key`, or `covenant-create`"
+                "unknown command `{other}`; use `env058-offline-scaffold`, `env059-helper-key`, `covenant-create`, `env061-inspect`, or `covenant-spend`"
             )
             .into());
         }
@@ -1309,6 +1320,690 @@ async fn run_env061_inspect() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[derive(Debug)]
+struct CovenantSpendArgs {
+    network: String,
+    covenant_utxo: String,
+    input_amount_sompi: u64,
+    covenant_id: String,
+    fee_sompi: u64,
+    output_value_sompi: u64,
+    submit: bool,
+    public_evidence_dir: PathBuf,
+}
+
+async fn run_covenant_spend(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+    let args = parse_covenant_spend_args(args)?;
+    if args.network != "testnet-10" {
+        return Err("blocked: covenant-spend only accepts --network testnet-10".into());
+    }
+    if !args.submit {
+        return Err("blocked: ENV-062 live path requires explicit --submit for the one approved covenant-spend attempt".into());
+    }
+    fs::create_dir_all(&args.public_evidence_dir)?;
+    let preflight_path = args.public_evidence_dir.join("preflight.txt");
+    let submit_path = args.public_evidence_dir.join("spend-submit.txt");
+    let postcheck_path = args.public_evidence_dir.join("postcheck.txt");
+    let summary_path = args.public_evidence_dir.join("env-062-summary.txt");
+
+    let (covenant_txid, covenant_index) = parse_outpoint_arg(&args.covenant_utxo)?;
+    if covenant_txid != hash_from_hex(ENV061_CREATE_TXID)
+        || covenant_index != ENV061_COVENANT_OUTPUT_INDEX
+        || args.input_amount_sompi != ENV061_COVENANT_OUTPUT_VALUE_SOMPI
+        || args.covenant_id != ENV061_EXPECTED_COVENANT_ID
+        || args.fee_sompi != ENV061_FUTURE_SPEND_FEE_SOMPI
+        || args.output_value_sompi + args.fee_sompi != args.input_amount_sompi
+    {
+        write_env062_blocked_summary(
+            &summary_path,
+            "ENV-061 spend inputs/fee/output do not match the reviewed plan",
+        )?;
+        return Err(
+            "blocked: ENV-061 spend inputs/fee/output do not match the reviewed plan".into(),
+        );
+    }
+
+    let covenant_script = build_covenant_script()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+    let covenant_address = Address::new(
+        Prefix::Testnet,
+        Version::ScriptHash,
+        &covenant_spk.script()[2..34],
+    );
+    let covenant_id = hash_from_hex(&args.covenant_id);
+
+    let client = connect_tn10_client().await?;
+    let server_info = client.get_server_info().await?;
+    let server_ok = server_info.network_id.to_string() == "testnet-10"
+        && server_info.is_synced
+        && server_info.has_utxo_index;
+    if !server_ok {
+        let reason = format!(
+            "server preflight failed: network_id={} has_utxo_index={} is_synced={}",
+            server_info.network_id, server_info.has_utxo_index, server_info.is_synced
+        );
+        write_env062_blocked_summary(&summary_path, &reason)?;
+        client.disconnect().await.ok();
+        return Err(format!("blocked: {reason}").into());
+    }
+
+    let covenant_utxos_before = client
+        .get_utxos_by_addresses(vec![covenant_address.clone()])
+        .await?;
+    let covenant_match = covenant_utxos_before.iter().find(|entry| {
+        entry.outpoint.transaction_id == covenant_txid
+            && entry.outpoint.index == covenant_index
+            && entry.utxo_entry.amount == args.input_amount_sompi
+            && entry.utxo_entry.covenant_id == Some(covenant_id)
+    });
+    if covenant_match.is_none() {
+        write_env062_blocked_summary(
+            &summary_path,
+            "covenant UTXO absent, spent, amount-mismatched, or covenant id mismatched",
+        )?;
+        client.disconnect().await.ok();
+        return Err(
+            "blocked: covenant UTXO absent, spent, amount-mismatched, or covenant id mismatched"
+                .into(),
+        );
+    }
+    let mempool_entries_before = client.get_mempool_entries(false, false).await;
+    let mempool_spend_before = mempool_entries_before
+        .as_ref()
+        .map(|entries| {
+            entries.iter().any(|entry| {
+                entry.transaction.inputs.iter().any(|input| {
+                    input.previous_outpoint.transaction_id == covenant_txid
+                        && input.previous_outpoint.index == covenant_index
+                })
+            })
+        })
+        .unwrap_or(false);
+    if mempool_spend_before {
+        write_env062_blocked_summary(
+            &summary_path,
+            "mempool already contains a spend of the covenant outpoint",
+        )?;
+        client.disconnect().await.ok();
+        return Err("blocked: mempool already contains a spend of the covenant outpoint".into());
+    }
+
+    let create_tx = reconstruct_env060c_create_tx()?;
+    let reconstructed_create_txid = create_tx.id().to_string();
+    if reconstructed_create_txid != ENV061_CREATE_TXID {
+        let reason =
+            format!("reconstructed ENV-060C create txid mismatch: {reconstructed_create_txid}");
+        write_env062_blocked_summary(&summary_path, &reason)?;
+        client.disconnect().await.ok();
+        return Err(format!("blocked: {reason}").into());
+    }
+    let prev_rest = transaction_v1_rest_preimage(&create_tx);
+    let prev_payload = create_tx.payload.clone();
+    let spend_payload = vec![1u8];
+    let sig_script = ScriptBuilder::new()
+        .add_data(&prev_rest)?
+        .add_data(&prev_payload)?
+        .add_data(&covenant_script)?
+        .drain();
+    let input = TransactionInput::new_with_mass(
+        TransactionOutpoint::new(covenant_txid, covenant_index),
+        sig_script.clone(),
+        0,
+        ComputeBudget(0).into(),
+    );
+    let output = TransactionOutput::with_covenant(
+        args.output_value_sompi,
+        covenant_spk.clone(),
+        Some(CovenantBinding::new(0, covenant_id)),
+    );
+    let mut spend_tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![input],
+        vec![output],
+        0,
+        SubnetworkId::default(),
+        0,
+        spend_payload.clone(),
+    );
+    spend_tx.finalize();
+    let input_utxo = UtxoEntry::new(
+        args.input_amount_sompi,
+        covenant_spk.clone(),
+        0,
+        false,
+        Some(covenant_id),
+    );
+    let populated = PopulatedTransaction::new(&spend_tx, vec![input_utxo.clone()]);
+    let covenants_ctx = CovenantsContext::from_tx(&populated)?;
+    let sig_cache = Cache::new(10_000);
+    let reused_values = SigHashReusedValuesUnsync::new();
+    let ctx = EngineCtx::new(&sig_cache)
+        .with_reused(&reused_values)
+        .with_covenants_ctx(&covenants_ctx);
+    let flags = EngineFlags {
+        covenants_enabled: true,
+        ..Default::default()
+    };
+    let mut vm = TxScriptEngine::from_transaction_input(
+        &populated,
+        &spend_tx.inputs[0],
+        0,
+        &input_utxo,
+        ctx,
+        flags,
+    );
+    vm.execute()?;
+    let local_txid = spend_tx.id().to_string();
+
+    fs::write(
+        &preflight_path,
+        format!(
+            concat!(
+                "ENV-062 preflight\n\n",
+                "Result: PASS\n",
+                "Network requested: {}\n",
+                "Server network_id: {}\n",
+                "Server is_synced: {}\n",
+                "Server has_utxo_index: {}\n",
+                "Covenant address: {}\n",
+                "Covenant input outpoint: {}:{}\n",
+                "Covenant input amount sompi: {}\n",
+                "Covenant id: {}\n",
+                "Covenant UTXO observed before submit: true\n",
+                "Mempool spend of covenant outpoint before submit: false\n",
+                "Reconstructed create txid matches ENV-061: true\n",
+                "TX_VERSION_TOCCATA: {}\n",
+                "Spend transaction version: {}\n",
+                "Uses literal version 2: false\n",
+                "Spend input count: {}\n",
+                "Spend uses expected covenant UTXO only: true\n",
+                "Helper fee input used: false\n",
+                "Spend output count: {}\n",
+                "Continuing covenant output value sompi: {}\n",
+                "Fee sompi: {}\n",
+                "Covenant output/state transition: output0 same SPK, same covenant id, payload 01\n",
+                "Redeem script length: {}\n",
+                "Sigscript length: {}\n",
+                "Local VM covenant spend check passed: true\n",
+                "Private key material exposed: false\n"
+            ),
+            args.network,
+            server_info.network_id,
+            server_info.is_synced,
+            server_info.has_utxo_index,
+            covenant_address,
+            covenant_txid,
+            covenant_index,
+            args.input_amount_sompi,
+            args.covenant_id,
+            TX_VERSION_TOCCATA,
+            spend_tx.version,
+            spend_tx.inputs.len(),
+            spend_tx.outputs.len(),
+            args.output_value_sompi,
+            args.fee_sompi,
+            covenant_script.len(),
+            sig_script.len(),
+        ),
+    )?;
+
+    let submit_result = client.submit_transaction((&spend_tx).into(), false).await;
+    match submit_result {
+        Ok(submitted_txid) => {
+            let submitted_txid_string = submitted_txid.to_string();
+            fs::write(
+                &submit_path,
+                format!(
+                    concat!(
+                        "ENV-062 covenant spend submit\n\n",
+                        "Result: PASS\n",
+                        "Submission attempts: 1\n",
+                        "allow_orphan: false\n",
+                        "Local txid: {}\n",
+                        "Submitted txid: {}\n",
+                        "Mempool accepted RPC response: true\n",
+                        "Private key material exposed: false\n"
+                    ),
+                    local_txid, submitted_txid_string
+                ),
+            )?;
+            let mempool_result = client.get_mempool_entry(spend_tx.id(), false, false).await;
+            let covenant_utxos_after = client
+                .get_utxos_by_addresses(vec![covenant_address.clone()])
+                .await?;
+            let original_utxo_after = covenant_utxos_after.iter().any(|entry| {
+                entry.outpoint.transaction_id == covenant_txid
+                    && entry.outpoint.index == covenant_index
+            });
+            let new_utxo_after = covenant_utxos_after.iter().any(|entry| {
+                entry.outpoint.transaction_id == spend_tx.id()
+                    && entry.outpoint.index == 0
+                    && entry.utxo_entry.amount == args.output_value_sompi
+                    && entry.utxo_entry.covenant_id == Some(covenant_id)
+            });
+            let mempool_spend_after = mempool_result
+                .as_ref()
+                .map(|entry| {
+                    entry.transaction.inputs.iter().any(|input| {
+                        input.previous_outpoint.transaction_id == covenant_txid
+                            && input.previous_outpoint.index == covenant_index
+                    })
+                })
+                .unwrap_or(false);
+            fs::write(
+                &postcheck_path,
+                format!(
+                    concat!(
+                        "ENV-062 postcheck\n\n",
+                        "Result: PASS\n",
+                        "Server network_id: {}\n",
+                        "Server is_synced: {}\n",
+                        "Server has_utxo_index: {}\n",
+                        "Submitted txid: {}\n",
+                        "Mempool entry observed: {}\n",
+                        "Mempool entry spends original covenant outpoint: {}\n",
+                        "Covenant address UTXO count after submit: {}\n",
+                        "Original covenant UTXO still visible in UTXO set: {}\n",
+                        "Original covenant UTXO appears spent or pending-spent: {}\n",
+                        "New transition UTXO visible in UTXO set: {}\n",
+                        "New transition output if accepted: {}:0 value {} sompi same SPK same covenant id payload 01\n"
+                    ),
+                    server_info.network_id,
+                    server_info.is_synced,
+                    server_info.has_utxo_index,
+                    submitted_txid_string,
+                    mempool_result.is_ok(),
+                    mempool_spend_after,
+                    covenant_utxos_after.len(),
+                    original_utxo_after,
+                    (!original_utxo_after) || mempool_spend_after,
+                    new_utxo_after,
+                    submitted_txid_string,
+                    args.output_value_sompi,
+                ),
+            )?;
+            fs::write(
+                &summary_path,
+                format!(
+                    concat!(
+                        "ENV-062 live TN10 covenant spend attempt\n\n",
+                        "Result: PASS\n",
+                        "Network: TN10 / testnet-10\n",
+                        "Covenant input outpoint: {}:{}\n",
+                        "Covenant input amount: {}\n",
+                        "Covenant id: {}\n",
+                        "Spend txid if accepted: {}\n",
+                        "Fee used: {}\n",
+                        "Resulting output/state details: output0 same covenant SPK, same covenant id, value {} sompi, payload 01\n",
+                        "Original covenant UTXO appears spent: {}\n",
+                        "New output/UTXO appears: {}\n",
+                        "Exact rejection if rejected: none\n",
+                        "Exactly one covenant-spend submission attempted: true\n",
+                        "Confirmation no mainnet: true\n",
+                        "Confirmation no wallet secrets accessed: true\n",
+                        "Confirmation helper private key not exposed: true\n",
+                        "Confirmation no roulette/web app: true\n",
+                        "Evidence path: {}\n"
+                    ),
+                    covenant_txid,
+                    covenant_index,
+                    args.input_amount_sompi,
+                    args.covenant_id,
+                    submitted_txid_string,
+                    args.fee_sompi,
+                    args.output_value_sompi,
+                    (!original_utxo_after) || mempool_spend_after,
+                    new_utxo_after,
+                    args.public_evidence_dir.display(),
+                ),
+            )?;
+            println!("ENV-062 PASS");
+            println!("submitted_txid={}", submitted_txid_string);
+            println!("summary={}", summary_path.display());
+        }
+        Err(err) => {
+            let rejection = err.to_string();
+            fs::write(
+                &submit_path,
+                format!(
+                    "ENV-062 covenant spend submit\n\nResult: REJECTED\nSubmission attempts: 1\nallow_orphan: false\nLocal txid: {}\nRejection/error: {}\nPrivate key material exposed: false\n",
+                    local_txid, rejection
+                ),
+            )?;
+            fs::write(
+                &postcheck_path,
+                "ENV-062 postcheck\n\nResult: NOT RUN AFTER REJECTED SUBMIT\n",
+            )?;
+            fs::write(
+                &summary_path,
+                format!(
+                    concat!(
+                        "ENV-062 live TN10 covenant spend attempt\n\n",
+                        "Result: REJECTED\n",
+                        "Network: TN10 / testnet-10\n",
+                        "Covenant input outpoint: {}:{}\n",
+                        "Covenant input amount: {}\n",
+                        "Covenant id: {}\n",
+                        "Spend txid if accepted: none\n",
+                        "Fee used: {}\n",
+                        "Resulting output/state details: not accepted; planned output0 same covenant SPK, same covenant id, value {} sompi, payload 01\n",
+                        "Original covenant UTXO appears spent: false (postcheck stopped after rejection)\n",
+                        "New output/UTXO appears: false\n",
+                        "Exact rejection if rejected: {}\n",
+                        "Exactly one covenant-spend submission attempted: true\n",
+                        "Confirmation no mainnet: true\n",
+                        "Confirmation no wallet secrets accessed: true\n",
+                        "Confirmation helper private key not exposed: true\n",
+                        "Confirmation no roulette/web app: true\n"
+                    ),
+                    covenant_txid,
+                    covenant_index,
+                    args.input_amount_sompi,
+                    args.covenant_id,
+                    args.fee_sompi,
+                    args.output_value_sompi,
+                    rejection,
+                ),
+            )?;
+            println!("ENV-062 REJECTED");
+            println!("summary={}", summary_path.display());
+        }
+    }
+    client.disconnect().await.ok();
+    Ok(())
+}
+
+fn reconstruct_env060c_create_tx() -> Result<Transaction, Box<dyn std::error::Error>> {
+    let helper_address = Address::try_from(ENV061_HELPER_ADDRESS)?;
+    let helper_spk = pay_to_address_script(&helper_address);
+    let covenant_script = build_covenant_script()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+    let input = TransactionInput::new_with_mass(
+        TransactionOutpoint::new(
+            hash_from_hex(ENV060C_HELPER_FUNDING_TXID),
+            ENV060C_HELPER_FUNDING_INDEX,
+        ),
+        vec![],
+        0,
+        ComputeBudget(0).into(),
+    );
+    let mut tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![input],
+        vec![
+            TransactionOutput::new(ENV061_COVENANT_OUTPUT_VALUE_SOMPI, covenant_spk),
+            TransactionOutput::new(ENV061_HELPER_CHANGE_VALUE_SOMPI, helper_spk),
+        ],
+        0,
+        SubnetworkId::default(),
+        0,
+        vec![],
+    );
+    tx.populate_genesis_covenants(&[GenesisCovenantGroup::new(0, vec![0])])?;
+    tx.finalize();
+    Ok(tx)
+}
+
+fn run_env062a_local_debug() -> Result<(), Box<dyn std::error::Error>> {
+    let artifact_dir = env062a_artifact_dir();
+    fs::create_dir_all(&artifact_dir)?;
+    let debug = env062_local_proof_debug_text()?;
+    fs::write(artifact_dir.join("local-proof-debug.txt"), &debug)?;
+    println!("ENV-062A local proof debug written");
+    println!("artifact_dir={}", artifact_dir.display());
+    Ok(())
+}
+
+fn env062a_artifact_dir() -> PathBuf {
+    let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
+    manifest_dir
+        .parent()
+        .expect("crate is under spikes/tn12-minimal-covenant")
+        .join("artifacts/env-062a-covenant-spend-verifyerror-diagnosis")
+}
+
+fn build_env062_local_spend_for_proof()
+-> Result<(Transaction, UtxoEntry, Vec<u8>, Vec<u8>, Vec<u8>, Hash), Box<dyn std::error::Error>> {
+    let covenant_txid = hash_from_hex(ENV061_CREATE_TXID);
+    let covenant_index = ENV061_COVENANT_OUTPUT_INDEX;
+    let covenant_id = hash_from_hex(ENV061_EXPECTED_COVENANT_ID);
+    let covenant_script = build_covenant_script()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+    let create_tx = reconstruct_env060c_create_tx()?;
+    let prev_rest = transaction_v1_rest_preimage(&create_tx);
+    let prev_payload = create_tx.payload.clone();
+    let spend_payload = vec![1u8];
+    let sig_script = ScriptBuilder::new()
+        .add_data(&prev_rest)?
+        .add_data(&prev_payload)?
+        .add_data(&covenant_script)?
+        .drain();
+    let input = TransactionInput::new_with_mass(
+        TransactionOutpoint::new(covenant_txid, covenant_index),
+        sig_script,
+        0,
+        ComputeBudget(0).into(),
+    );
+    let output = TransactionOutput::with_covenant(
+        ENV061_COVENANT_OUTPUT_VALUE_SOMPI - ENV061_FUTURE_SPEND_FEE_SOMPI,
+        covenant_spk.clone(),
+        Some(CovenantBinding::new(0, covenant_id)),
+    );
+    let mut spend_tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![input],
+        vec![output],
+        0,
+        SubnetworkId::default(),
+        0,
+        spend_payload,
+    );
+    spend_tx.finalize();
+    let input_utxo = UtxoEntry::new(
+        ENV061_COVENANT_OUTPUT_VALUE_SOMPI,
+        covenant_spk,
+        0,
+        false,
+        Some(covenant_id),
+    );
+    Ok((
+        spend_tx,
+        input_utxo,
+        prev_rest,
+        prev_payload,
+        covenant_script,
+        covenant_id,
+    ))
+}
+
+fn env062_local_proof_debug_text() -> Result<String, Box<dyn std::error::Error>> {
+    let create_tx = reconstruct_env060c_create_tx()?;
+    let (spend_tx, input_utxo, prev_rest, prev_payload, covenant_script, covenant_id) =
+        build_env062_local_spend_for_proof()?;
+    let mut v0_style_preimage = prev_rest.clone();
+    v0_style_preimage.extend_from_slice(&prev_payload);
+    let script_computed_txid = TransactionID::hash(&v0_style_preimage);
+    let rest_digest = v1_rest_digest(&create_tx);
+    let payload_digest = payload_digest(&create_tx.payload);
+    let mut v1_hasher = TransactionV1Id::new();
+    v1_hasher
+        .update(payload_digest.as_bytes())
+        .update(rest_digest.as_bytes());
+    let reconstructed_v1_id = v1_hasher.finalize();
+    let populated = PopulatedTransaction::new(&spend_tx, vec![input_utxo.clone()]);
+    let covenants_ctx = CovenantsContext::from_tx(&populated)?;
+    let sig_cache = Cache::new(10_000);
+    let reused_values = SigHashReusedValuesUnsync::new();
+    let ctx = EngineCtx::new(&sig_cache)
+        .with_reused(&reused_values)
+        .with_covenants_ctx(&covenants_ctx);
+    let flags = EngineFlags {
+        covenants_enabled: true,
+        ..Default::default()
+    };
+    let mut vm = TxScriptEngine::from_transaction_input(
+        &populated,
+        &spend_tx.inputs[0],
+        0,
+        &input_utxo,
+        ctx,
+        flags,
+    );
+    let vm_result = vm.execute();
+    Ok(format!(
+        concat!(
+            "ENV-062A local proof debug\n\n",
+            "Reconstructed ENV-060C create txid: {}\n",
+            "Expected ENV-061 create txid: {}\n",
+            "Create tx version: {}\n",
+            "Create tx payload hex: {}\n",
+            "Spend tx version: {}\n",
+            "Spend tx payload hex: {}\n",
+            "Spend input previous outpoint: {}:{}\n",
+            "Spend output count: {}\n",
+            "Spend output covenant id: {}\n",
+            "Input UTXO covenant id: {}\n",
+            "CovenantsContext::from_tx: OK\n",
+            "CovenantsContext auth outputs for input 0: {}\n",
+            "Sigscript stack item 1 / prev_rest length: {}\n",
+            "Sigscript stack item 2 / prev_payload length: {}\n",
+            "Sigscript stack item 3 / covenant script length: {}\n",
+            "Script check 1 opcode: OP_EQUALVERIFY after OP_BLAKE2B_WITH_KEY/OP_OUTPOINT_TX_ID\n",
+            "Script-computed v0-style TransactionID(prev_rest || prev_payload): {}\n",
+            "Actual outpoint txid: {}\n",
+            "First script check passes: {}\n",
+            "V1 rest digest: {}\n",
+            "V1 payload digest: {}\n",
+            "Reconstructed V1 id from payload_digest || rest_digest: {}\n",
+            "Reconstructed V1 id matches create txid: {}\n",
+            "VM result: {:?}\n",
+            "Exact VerifyError variant: {}\n",
+            "Failing check/opcode: {}\n"
+        ),
+        create_tx.id(),
+        ENV061_CREATE_TXID,
+        create_tx.version,
+        hex_encode(&create_tx.payload),
+        spend_tx.version,
+        hex_encode(&spend_tx.payload),
+        spend_tx.inputs[0].previous_outpoint.transaction_id,
+        spend_tx.inputs[0].previous_outpoint.index,
+        spend_tx.outputs.len(),
+        spend_tx.outputs[0]
+            .covenant
+            .map(|binding| binding.covenant_id.to_string())
+            .unwrap_or_else(|| "none".to_string()),
+        covenant_id,
+        covenants_ctx
+            .input_ctxs
+            .get(&0)
+            .map(|ctx| ctx.auth_outputs.len())
+            .unwrap_or(0),
+        prev_rest.len(),
+        prev_payload.len(),
+        covenant_script.len(),
+        script_computed_txid,
+        create_tx.id(),
+        script_computed_txid == create_tx.id(),
+        rest_digest,
+        payload_digest,
+        reconstructed_v1_id,
+        reconstructed_v1_id == create_tx.id(),
+        vm_result,
+        if matches!(
+            vm_result,
+            Err(kaspa_txscript_errors::TxScriptError::VerifyError)
+        ) {
+            "TxScriptError::VerifyError"
+        } else {
+            "not VerifyError"
+        },
+        if script_computed_txid != create_tx.id() {
+            "first OP_EQUALVERIFY; the upstream v0 script hashes prev_rest||prev_payload with TransactionID, but live TX_VERSION_TOCCATA v1 txid is TransactionV1Id(payload_digest||rest_digest)"
+        } else {
+            "not isolated by txid precheck"
+        },
+    ))
+}
+
+fn parse_covenant_spend_args(
+    args: Vec<String>,
+) -> Result<CovenantSpendArgs, Box<dyn std::error::Error>> {
+    let mut network = None;
+    let mut covenant_utxo = None;
+    let mut input_amount_sompi = None;
+    let mut covenant_id = None;
+    let mut fee_sompi = None;
+    let mut output_value_sompi = None;
+    let mut submit = false;
+    let mut public_evidence_dir = None;
+    let mut iter = args.into_iter();
+    while let Some(arg) = iter.next() {
+        match arg.as_str() {
+            "--network" => network = iter.next(),
+            "--covenant-utxo" => covenant_utxo = iter.next(),
+            "--input-amount-sompi" | "--covenant-amount-sompi" => {
+                input_amount_sompi = Some(
+                    iter.next()
+                        .ok_or("missing --input-amount-sompi value")?
+                        .parse()?,
+                );
+            }
+            "--covenant-id" => covenant_id = iter.next(),
+            "--fee-sompi" => {
+                fee_sompi = Some(iter.next().ok_or("missing --fee-sompi value")?.parse()?)
+            }
+            "--output-value-sompi" => {
+                output_value_sompi = Some(
+                    iter.next()
+                        .ok_or("missing --output-value-sompi value")?
+                        .parse()?,
+                )
+            }
+            "--submit" => submit = true,
+            "--public-evidence-dir" => {
+                public_evidence_dir = Some(PathBuf::from(
+                    iter.next().ok_or("missing --public-evidence-dir value")?,
+                ));
+            }
+            other => return Err(format!("unknown covenant-spend argument `{other}`").into()),
+        }
+    }
+    Ok(CovenantSpendArgs {
+        network: network.ok_or("missing --network")?,
+        covenant_utxo: covenant_utxo.ok_or("missing --covenant-utxo")?,
+        input_amount_sompi: input_amount_sompi.ok_or("missing --input-amount-sompi")?,
+        covenant_id: covenant_id.ok_or("missing --covenant-id")?,
+        fee_sompi: fee_sompi.ok_or("missing --fee-sompi")?,
+        output_value_sompi: output_value_sompi.ok_or("missing --output-value-sompi")?,
+        submit,
+        public_evidence_dir: public_evidence_dir.ok_or("missing --public-evidence-dir")?,
+    })
+}
+
+fn write_env062_blocked_summary(path: &Path, reason: &str) -> std::io::Result<()> {
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    fs::write(
+        path,
+        format!(
+            concat!(
+                "ENV-062 live TN10 covenant spend attempt\n\n",
+                "Result: BLOCKED\n",
+                "Network: TN10 / testnet-10\n",
+                "Reason: {}\n",
+                "Exactly one covenant-spend submission attempted: false\n",
+                "Confirmation no mainnet: true\n",
+                "Confirmation no wallet secrets accessed: true\n",
+                "Confirmation helper private key not exposed: true\n",
+                "Confirmation no roulette/web app: true\n"
+            ),
+            reason
+        ),
+    )
+}
+
 fn parse_covenant_create_args(
     args: Vec<String>,
 ) -> Result<CovenantCreateArgs, Box<dyn std::error::Error>> {
@@ -1399,6 +2094,12 @@ fn print_help() {
     );
     println!(
         "  env061-inspect           Read-only inspect accepted covenant-create UTXO and write ENV-061 preflight artifacts"
+    );
+    println!(
+        "  covenant-spend           Build, locally prove, and submit exactly one ENV-062 TN10 covenant-spend transaction"
+    );
+    println!(
+        "  env062a-local-debug      Local-only ENV-062A covenant spend VerifyError diagnostics; writes no-broadcast artifacts"
     );
 }
 
@@ -1544,5 +2245,27 @@ mod tests {
     fn env059_secret_path_stays_under_ignored_local_secrets() {
         let path = env059_secret_dir();
         assert!(path.ends_with("spikes/tn12-minimal-covenant/local-secrets/env-059-helper-key"));
+    }
+
+    #[test]
+    fn env062a_reconstructs_env060c_create_txid() {
+        let tx = reconstruct_env060c_create_tx().expect("reconstruct ENV-060C create tx");
+        assert_eq!(tx.version, TX_VERSION_TOCCATA);
+        assert_eq!(tx.id().to_string(), ENV061_CREATE_TXID);
+        assert_eq!(
+            tx.outputs[0]
+                .covenant
+                .map(|binding| binding.covenant_id.to_string()),
+            Some(ENV061_EXPECTED_COVENANT_ID.to_string())
+        );
+    }
+
+    #[test]
+    fn env062a_local_spend_fails_at_v1_txid_precheck() {
+        let debug = env062_local_proof_debug_text().expect("build local proof debug text");
+        assert!(debug.contains("VM result: Err(VerifyError)"));
+        assert!(debug.contains("First script check passes: false"));
+        assert!(debug.contains("Reconstructed V1 id matches create txid: true"));
+        assert!(debug.contains("Failing check/opcode: first OP_EQUALVERIFY"));
     }
 }

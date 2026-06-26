@@ -1,0 +1,11 @@
+ENV-062 covenant spend submit
+
+Result: BLOCKED
+Submission attempts: 0
+allow_orphan: false (planned, not reached)
+Local command invoked: cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-spend --network testnet-10 --covenant-utxo f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0 --input-amount-sompi 100000000 --covenant-id 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1 --fee-sompi 300000 --output-value-sompi 99700000 --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/
+Submit call reached: false
+Submit txid: none
+Exact local blocker before submit: VerifyError during local covenant VM proof
+Exact rejection if rejected by TN10: none; no TN10 submission was attempted
+Private key material exposed: false

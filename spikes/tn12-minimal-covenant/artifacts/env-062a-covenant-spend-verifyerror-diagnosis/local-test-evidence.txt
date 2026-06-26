@@ -1,0 +1,23 @@
+$ cargo fmt --check
+
+$ cargo test -- --nocapture
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running unittests src/main.rs (target/debug/deps/tn10_covenant_spike-e6a3969d306eacd6)
+
+running 4 tests
+test tests::env059_plans_small_tn10_funding_amount ... ok
+test tests::env059_secret_path_stays_under_ignored_local_secrets ... ok
+test tests::env062a_reconstructs_env060c_create_txid ... ok
+test tests::env062a_local_spend_fails_at_v1_txid_precheck ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+$ cargo check
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.30s
+
+$ cargo run -- env062a-local-debug
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running `target/debug/tn10-covenant-spike env062a-local-debug`
+ENV-062A local proof debug written
+artifact_dir=/root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-062a-covenant-spend-verifyerror-diagnosis

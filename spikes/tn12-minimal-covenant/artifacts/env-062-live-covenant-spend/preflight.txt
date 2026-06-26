@@ -1,0 +1,28 @@
+ENV-062 preflight
+
+Result: BLOCKED
+Network requested: testnet-10
+Covenant input outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+Covenant input amount sompi: 100000000
+Covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Planned fee sompi: 300000
+Planned output value sompi: 99700000
+Expected tx version: 1 (TX_VERSION_TOCCATA)
+Focused checks before live attempt:
+- git status --short before implementation showed only source change after adding the missing subcommand; no local-secrets files staged.
+- helper private key file exists: true
+- helper private key file ignored by git: true (.gitignore covers spikes/tn12-minimal-covenant/local-secrets/)
+- cargo fmt --check: PASS
+- cargo test: PASS (2 passed)
+- cargo check: PASS
+Local no-broadcast construction/proof:
+- covenant-spend subcommand was implemented and invoked with the exact ENV-061 command shape.
+- command reached local covenant script VM proof before any submit_transaction call.
+- local VM result: VerifyError
+Blocker:
+- the ENV-061 stop condition requires stopping if local no-broadcast spend construction cannot prove the exact sigscript/redeem data.
+- because the local VM proof failed, no TN10 covenant-spend submission was attempted.
+Private key material exposed: false
+No mainnet: true
+No wallet secrets accessed: true
+No roulette/web app: true

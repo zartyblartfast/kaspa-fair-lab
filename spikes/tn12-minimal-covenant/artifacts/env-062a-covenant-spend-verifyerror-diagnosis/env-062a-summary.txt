@@ -1,0 +1,68 @@
+ENV-062A covenant-spend VerifyError diagnosis summary
+
+Result: DIAGNOSED
+Exact VerifyError variant: TxScriptError::VerifyError
+Root cause identified: yes
+
+Root cause:
+The ENV-060C live covenant UTXO was created by a TX_VERSION_TOCCATA/version-1 transaction, but the covenant script was adapted from the official crypto/txscript/examples/covenants.rs version-0 in-VM example. The first script check recomputes TransactionID(prev_tx_rest || prev_tx_payload) and compares it to the input outpoint txid. That works for the upstream v0 example because its stack item is transaction_v0_id_preimage split into rest/payload. It fails for the live v1 create tx because v1 txid is TransactionV1Id(payload_digest || rest_digest), not TransactionID(transaction_v1_rest_preimage || payload).
+
+Exact failing check/opcode:
+first OP_EQUALVERIFY in build_covenant_script(), immediately after OP_BLAKE2B_WITH_KEY and OP_OUTPOINT_TX_ID.
+
+Key local evidence:
+- Reconstructed ENV-060C create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+- Script-computed v0-style TransactionID(prev_rest || prev_payload): 8e2d45196a044df8b55ebe66e4b00fa52d2eca1393343ccd29a3710cf62d7845
+- First script check passes: false
+- Reconstructed V1 id from payload_digest || rest_digest matches create txid: true
+- CovenantsContext::from_tx: OK
+- CovenantsContext auth outputs for input 0: 1
+- Input/output covenant id preserved: true
+- Same covenant SPK preserved: true by construction of output0 with the same P2SH covenant SPK
+- Previous payload/state: empty payload / counter 0
+- Next payload/state: 01 / counter 1
+
+Files changed:
+- spikes/tn12-minimal-covenant/tn10-covenant-spike/src/main.rs
+  - added local ENV-062A debug helpers and env062a-local-debug subcommand
+  - added local tests proving ENV-060C reconstruction and isolating the v1 txid precheck failure
+- spikes/tn12-minimal-covenant/artifacts/env-062a-covenant-spend-verifyerror-diagnosis/local-proof-debug.txt
+- spikes/tn12-minimal-covenant/artifacts/env-062a-covenant-spend-verifyerror-diagnosis/local-test-evidence.txt
+- spikes/tn12-minimal-covenant/artifacts/env-062a-covenant-spend-verifyerror-diagnosis/verifyerror-detail.txt
+- spikes/tn12-minimal-covenant/artifacts/env-062a-covenant-spend-verifyerror-diagnosis/env-062a-summary.txt
+
+Tests/checks run:
+- cargo fmt --check
+- cargo test env062a -- --nocapture
+- cargo test -- --nocapture
+- cargo check
+- cargo run -- env062a-local-debug
+
+Validation results:
+- cargo fmt --check: PASS
+- cargo test env062a -- --nocapture: PASS, 2 passed
+- cargo test -- --nocapture: PASS, 4 passed
+- cargo check: PASS
+- cargo run -- env062a-local-debug: PASS, wrote local-proof-debug.txt
+
+Whether local no-broadcast spend proof now passes: false
+Whether any network submission occurred: false
+Whether submit_transaction was reached: false
+Whether live UTXO was spent: false
+Whether mainnet was used: false
+Whether official wallet secrets were accessed: false
+Whether helper private key was exposed: false
+Whether roulette/web app work occurred: false
+
+Recommended next step:
+Do not run a new ENV-062B spend attempt against the existing ENV-060C UTXO. Plan a new offline-only covenant script/state design for TX_VERSION_TOCCATA v1 that does not rely on the upstream v0 TransactionID(prev_rest || prev_payload) preimage assumption, then prove create/spend locally before any new live approval. If the intended design still needs previous-txid verification, first identify a script-level v1-compatible construction from official tn10-toc3 APIs/opcodes; otherwise create a new covenant UTXO with a corrected script.
+
+Stop conditions for any future live retry:
+- Stop if local no-broadcast VM proof is not PASS for the exact planned live create/spend script and stack items.
+- Stop if the exact VerifyError variant or failing opcode is unknown.
+- Stop if reconstructed create txid/covenant id does not match the observed UTXO.
+- Stop if CovenantsContext::from_tx is not OK for the planned spend.
+- Stop if output0 does not preserve the intended covenant SPK/covenant id/state transition.
+- Stop before submit_transaction unless there is explicit fresh approval for exactly one live submission.
+- Stop after any rejection or ambiguous response; do not auto-retry.
+- Never use mainnet, official wallet secrets, roulette, or web app paths for this step.
