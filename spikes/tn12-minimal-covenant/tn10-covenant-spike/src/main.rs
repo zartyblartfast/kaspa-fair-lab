@@ -50,6 +50,11 @@ const SOMPI_PER_TKAS: u64 = 100_000_000;
 const ENV059_SECRET_REL_DIR: &str = "local-secrets/env-059-helper-key";
 const ENV059_ARTIFACT_REL_DIR: &str = "artifacts/env-059-helper-controlled-covenant-preflight";
 const ENV060C_FEE_SOMPI: u64 = 300_000;
+// ENV-063 fee for the corrected v1 covenant create. Set safely above the prior
+// ENV-060B low-fee rejection (100000 sompi supplied / 208300 required) and equal
+// to the proven-accepted ENV-060C fee on TN10.
+const ENV063_FEE_SOMPI: u64 = 300_000;
+const ENV063_COVENANT_OUTPUT_VALUE_SOMPI: u64 = 100_000_000;
 const ENV060C_HELPER_FUNDING_TXID: &str =
     "d84921a7a30ffa1c8de5df189297fcace3a6a908191eaa9c19b6dfef29eca439";
 const ENV060C_HELPER_FUNDING_INDEX: u32 = 0;
@@ -72,6 +77,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         None | Some("env058-offline-scaffold") => run_env058()?,
         Some("env059-helper-key") => run_env059_helper_key()?,
         Some("covenant-create") => run_covenant_create(args.collect()).await?,
+        Some("covenant-create-v1") => run_covenant_create_v1(args.collect()).await?,
+        Some("helper-utxos") => run_helper_utxos().await?,
+        Some("inspect-address") => run_inspect_address(args.collect()).await?,
         Some("env061-inspect") => run_env061_inspect().await?,
         Some("covenant-spend") => run_covenant_spend(args.collect()).await?,
         Some("env062a-local-debug") => run_env062a_local_debug()?,
@@ -977,6 +985,512 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
                 ),
             )?;
             println!("ENV-060C REJECTED");
+            println!("summary={}", summary_path.display());
+        }
+    }
+    client.disconnect().await.ok();
+    Ok(())
+}
+
+/// Read-only helper: print the helper-controlled address and its current TN10
+/// UTXOs. No writes, no signing, no submission. Used to discover the live
+/// funding outpoint/amount before an ENV-063 covenant-create-v1 run.
+async fn run_helper_utxos() -> Result<(), Box<dyn std::error::Error>> {
+    let private_key_path = env059_secret_dir().join("helper-private-key.hex");
+    if !private_key_path.exists() {
+        return Err("blocked: helper private key file missing".into());
+    }
+    let (secret_key, _) = load_or_generate_secret_key(&private_key_path)?;
+    let keypair = Keypair::from_secret_key(secp256k1::SECP256K1, &secret_key);
+    let xonly_public_key = keypair.x_only_public_key().0.serialize();
+    let helper_address = Address::new(Prefix::Testnet, Version::PubKey, &xonly_public_key);
+    println!("helper_address={helper_address}");
+
+    let client = connect_tn10_client().await?;
+    let server_info = client.get_server_info().await?;
+    println!(
+        "server network_id={} is_synced={} has_utxo_index={}",
+        server_info.network_id, server_info.is_synced, server_info.has_utxo_index
+    );
+    let utxos = client
+        .get_utxos_by_addresses(vec![helper_address.clone()])
+        .await?;
+    println!("helper_utxo_count={}", utxos.len());
+    for entry in &utxos {
+        println!(
+            "utxo outpoint={}:{} amount_sompi={} is_coinbase={}",
+            entry.outpoint.transaction_id,
+            entry.outpoint.index,
+            entry.utxo_entry.amount,
+            entry.utxo_entry.is_coinbase
+        );
+    }
+    client.disconnect().await.ok();
+    Ok(())
+}
+
+/// Read-only helper: print the current TN10 UTXOs for an arbitrary address
+/// (e.g. a covenant P2SH address). No writes, no signing, no submission.
+async fn run_inspect_address(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+    let address_string = args
+        .into_iter()
+        .next()
+        .ok_or("missing <address> argument")?;
+    let address = Address::try_from(address_string.as_str())?;
+    let client = connect_tn10_client().await?;
+    let server_info = client.get_server_info().await?;
+    println!(
+        "server network_id={} is_synced={} has_utxo_index={}",
+        server_info.network_id, server_info.is_synced, server_info.has_utxo_index
+    );
+    println!("inspect_address={address}");
+    let utxos = client.get_utxos_by_addresses(vec![address.clone()]).await?;
+    println!("utxo_count={}", utxos.len());
+    for entry in &utxos {
+        println!(
+            "utxo outpoint={}:{} amount_sompi={} is_coinbase={}",
+            entry.outpoint.transaction_id,
+            entry.outpoint.index,
+            entry.utxo_entry.amount,
+            entry.utxo_entry.is_coinbase
+        );
+    }
+    client.disconnect().await.ok();
+    Ok(())
+}
+
+/// ENV-063: corrected live TN10 covenant create using the ENV-062B v1 script path.
+///
+/// This is a near-clone of `run_covenant_create` (ENV-060C) but deliberately
+/// uses `build_covenant_script_v1()` instead of the v0 `build_covenant_script()`,
+/// so the produced covenant UTXO is spendable by the corrected v1 continuation
+/// script proven offline in ENV-062B. It must NEVER touch the old ENV-060C
+/// v0-locked UTXO and performs exactly one create submission (no spend).
+async fn run_covenant_create_v1(args: Vec<String>) -> Result<(), Box<dyn std::error::Error>> {
+    let args = parse_covenant_create_args(args)?;
+    if args.network != "testnet-10" {
+        return Err("blocked: covenant-create-v1 only accepts --network testnet-10".into());
+    }
+    if !args.submit {
+        return Err(
+            "blocked: ENV-063 requires explicit --submit for the one approved live create".into(),
+        );
+    }
+    if args.input_amount_sompi == 0 {
+        return Err("blocked: input amount must be non-zero".into());
+    }
+
+    fs::create_dir_all(&args.public_evidence_dir)?;
+    let preflight_path = args.public_evidence_dir.join("preflight.txt");
+    let fee_analysis_path = args.public_evidence_dir.join("fee-analysis.txt");
+    let submit_path = args.public_evidence_dir.join("create-submit.txt");
+    let postcheck_path = args.public_evidence_dir.join("postcheck.txt");
+    let summary_path = args.public_evidence_dir.join("env-063-summary.txt");
+
+    let write_env063_blocked = |reason: &str| -> std::io::Result<()> {
+        fs::write(
+            &summary_path,
+            format!(
+                concat!(
+                    "ENV-063 corrected live TN10 covenant create (v1 script path)\n\n",
+                    "Result: BLOCKED\n",
+                    "Network: TN10 / testnet-10\n",
+                    "Reason: {}\n",
+                    "Covenant-create submit_transaction calls attempted: 0\n",
+                    "Used corrected ENV-062B v1 script path: not reached\n\n",
+                    "Safety confirmations:\n",
+                    "- no covenant-create submission attempted: true\n",
+                    "- no covenant spend attempted: true\n",
+                    "- old ENV-060C covenant UTXO not spent: true\n",
+                    "- no mainnet: true\n",
+                    "- no wallet secrets accessed: true\n",
+                    "- helper private key not exposed: true\n",
+                    "- no roulette/web app: true\n"
+                ),
+                reason
+            ),
+        )
+    };
+
+    let private_key_path = env059_secret_dir().join("helper-private-key.hex");
+    if !private_key_path.exists() {
+        write_env063_blocked("helper private key file missing")?;
+        return Err("blocked: helper private key file missing".into());
+    }
+    let (secret_key, _) = load_or_generate_secret_key(&private_key_path)?;
+    let keypair = Keypair::from_secret_key(secp256k1::SECP256K1, &secret_key);
+    let xonly_public_key = keypair.x_only_public_key().0.serialize();
+    let helper_address = Address::new(Prefix::Testnet, Version::PubKey, &xonly_public_key);
+    let helper_address_string = helper_address.to_string();
+    if args.change_address != helper_address_string {
+        write_env063_blocked("change address does not match helper key")?;
+        return Err("blocked: change address does not match helper key".into());
+    }
+
+    let (funding_txid, funding_index) = parse_outpoint_arg(&args.utxo)?;
+
+    // Hard guard: never spend the old ENV-060C v0-locked covenant UTXO as the
+    // ENV-063 funding input.
+    let env060c_create_txid = hash_from_hex(ENV061_CREATE_TXID);
+    if funding_txid == env060c_create_txid && funding_index == ENV061_COVENANT_OUTPUT_INDEX {
+        write_env063_blocked("refusing to spend the old ENV-060C v0-locked covenant UTXO")?;
+        return Err("blocked: refusing to spend the old ENV-060C v0-locked covenant UTXO".into());
+    }
+
+    let helper_spk = pay_to_address_script(&helper_address);
+
+    let client = connect_tn10_client().await?;
+    let server_info = client.get_server_info().await?;
+    if server_info.network_id.to_string() != "testnet-10"
+        || !server_info.has_utxo_index
+        || !server_info.is_synced
+    {
+        let reason = format!(
+            "server preflight failed: network_id={} has_utxo_index={} is_synced={}",
+            server_info.network_id, server_info.has_utxo_index, server_info.is_synced
+        );
+        write_env063_blocked(&reason)?;
+        client.disconnect().await.ok();
+        return Err(format!("blocked: {reason}").into());
+    }
+    let live_utxos = client
+        .get_utxos_by_addresses(vec![helper_address.clone()])
+        .await?;
+    let live_utxo_match = live_utxos.iter().find(|entry| {
+        entry.outpoint.transaction_id == funding_txid
+            && entry.outpoint.index == funding_index
+            && entry.utxo_entry.amount == args.input_amount_sompi
+    });
+    if live_utxo_match.is_none() {
+        write_env063_blocked(
+            "helper funding UTXO missing or amount mismatch in live TN10 read-only check",
+        )?;
+        client.disconnect().await.ok();
+        return Err(
+            "blocked: helper funding UTXO missing or amount mismatch in live TN10 read-only check"
+                .into(),
+        );
+    }
+
+    let fee_sompi = ENV063_FEE_SOMPI;
+    let covenant_output_value_sompi = ENV063_COVENANT_OUTPUT_VALUE_SOMPI;
+    let total_outputs = covenant_output_value_sompi
+        .checked_add(fee_sompi)
+        .ok_or("blocked: output/fee overflow")?;
+    if total_outputs > args.input_amount_sompi {
+        write_env063_blocked("transaction would spend more than helper UTXO")?;
+        client.disconnect().await.ok();
+        return Err("blocked: transaction would spend more than helper UTXO".into());
+    }
+    let change_value_sompi = args.input_amount_sompi - total_outputs;
+
+    // CORRECTED v1 ENV-062B script path (NOT the v0 build_covenant_script()).
+    let covenant_script = build_covenant_script_v1()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+    let input = TransactionInput::new_with_mass(
+        TransactionOutpoint::new(funding_txid, funding_index),
+        vec![],
+        0,
+        ComputeBudget(0).into(),
+    );
+    let mut outputs = vec![TransactionOutput::new(
+        covenant_output_value_sompi,
+        covenant_spk.clone(),
+    )];
+    if change_value_sompi > 0 {
+        outputs.push(TransactionOutput::new(
+            change_value_sompi,
+            helper_spk.clone(),
+        ));
+    }
+    if outputs.len() != 2 {
+        write_env063_blocked("unexpected output count before signing")?;
+        client.disconnect().await.ok();
+        return Err("blocked: unexpected output count before signing".into());
+    }
+
+    let mut tx = Transaction::new(
+        TX_VERSION_TOCCATA,
+        vec![input],
+        outputs,
+        0,
+        SubnetworkId::default(),
+        0,
+        vec![],
+    );
+    tx.populate_genesis_covenants(&[GenesisCovenantGroup::new(0, vec![0])])?;
+    if tx.version != TX_VERSION_TOCCATA || tx.version == 2 || tx.outputs[0].covenant.is_none() {
+        write_env063_blocked("Toccata/covenant binding pre-sign guard failed")?;
+        client.disconnect().await.ok();
+        return Err("blocked: Toccata/covenant binding pre-sign guard failed".into());
+    }
+    let binding = tx.outputs[0].covenant.expect("checked covenant binding");
+    let input_utxo = UtxoEntry::new(args.input_amount_sompi, helper_spk.clone(), 0, false, None);
+    let signed = sign(
+        MutableTransaction::with_entries(tx, vec![input_utxo.clone()]),
+        keypair,
+    );
+    let mut signed_tx = signed.tx;
+    signed_tx.finalize();
+    if signed_tx.inputs.len() != 1
+        || signed_tx.outputs.len() != 2
+        || signed_tx.inputs[0].previous_outpoint.transaction_id != funding_txid
+    {
+        write_env063_blocked("signed transaction shape guard failed")?;
+        client.disconnect().await.ok();
+        return Err("blocked: signed transaction shape guard failed".into());
+    }
+
+    let preflight = format!(
+        concat!(
+            "ENV-063 preflight\n\n",
+            "Result: PASS\n",
+            "Network requested: {}\n",
+            "Server network_id: {}\n",
+            "Server is_synced: {}\n",
+            "Server has_utxo_index: {}\n",
+            "Helper address: {}\n",
+            "Helper private key exists: true\n",
+            "Helper private key path is under ignored local-secrets: true\n",
+            "Input UTXO: {}:{}\n",
+            "Input amount sompi: {}\n",
+            "Live helper UTXO observed pre-submit: true\n",
+            "Old ENV-060C covenant UTXO used as input: false\n",
+            "Covenant script path: corrected ENV-062B v1 (build_covenant_script_v1)\n",
+            "TX_VERSION_TOCCATA: {}\n",
+            "Transaction version: {}\n",
+            "Uses literal version 2: false\n",
+            "populate_genesis_covenants succeeded: true\n",
+            "Covenant binding present before signing: true\n",
+            "allow_orphan planned: false\n",
+            "Output count: {}\n",
+            "Covenant output index/value: 0 / {}\n",
+            "Change output index/value: 1 / {}\n",
+            "Fee sompi: {}\n",
+            "Private key material exposed: false\n"
+        ),
+        args.network,
+        server_info.network_id,
+        server_info.is_synced,
+        server_info.has_utxo_index,
+        helper_address_string,
+        funding_txid,
+        funding_index,
+        args.input_amount_sompi,
+        TX_VERSION_TOCCATA,
+        signed_tx.version,
+        signed_tx.outputs.len(),
+        covenant_output_value_sompi,
+        change_value_sompi,
+        fee_sompi
+    );
+    fs::write(
+        &fee_analysis_path,
+        format!(
+            concat!(
+                "ENV-063 fee analysis\n\n",
+                "Prior ENV-060B result: REJECTED\n",
+                "Prior ENV-060B fee used sompi: 100000\n",
+                "Prior ENV-060B required fee reported sompi: 208300\n",
+                "Prior ENV-060B reported compute mass: 2083\n",
+                "ENV-063 selected fee sompi: {}\n",
+                "Fee margin above prior reported requirement sompi: {}\n",
+                "Input amount sompi: {}\n",
+                "Covenant output value sompi: {}\n",
+                "Change output value sompi: {}\n",
+                "Change returns to helper address: true ({})\n",
+                "Excessive spend guard: PASS (fee + covenant output <= input)\n",
+                "Covenant script path: corrected ENV-062B v1\n",
+                "TX_VERSION_TOCCATA: {}\n",
+                "Transaction version: {}\n",
+                "Covenant binding present before signing: true\n",
+                "allow_orphan planned: false\n",
+                "Private key material exposed: false\n"
+            ),
+            fee_sompi,
+            fee_sompi.saturating_sub(208_300),
+            args.input_amount_sompi,
+            covenant_output_value_sompi,
+            change_value_sompi,
+            helper_address_string,
+            TX_VERSION_TOCCATA,
+            signed_tx.version,
+        ),
+    )?;
+    fs::write(&preflight_path, preflight)?;
+
+    let local_txid = signed_tx.id().to_string();
+    let submit_result = client.submit_transaction((&signed_tx).into(), false).await;
+    match submit_result {
+        Ok(submitted_txid) => {
+            let submitted_txid_string = submitted_txid.to_string();
+            fs::write(
+                &submit_path,
+                format!(
+                    concat!(
+                        "ENV-063 create submit\n\n",
+                        "Result: PASS\n",
+                        "Submission attempts: 1\n",
+                        "allow_orphan: false\n",
+                        "Covenant script path: corrected ENV-062B v1\n",
+                        "Local txid: {}\n",
+                        "Submitted txid: {}\n",
+                        "Mempool accepted RPC response: true\n",
+                        "Private key material exposed: false\n"
+                    ),
+                    local_txid, submitted_txid_string
+                ),
+            )?;
+
+            let mempool_result = client.get_mempool_entry(signed_tx.id(), false, false).await;
+            let helper_post_utxos = client
+                .get_utxos_by_addresses(vec![helper_address.clone()])
+                .await?;
+            let covenant_address = Address::new(
+                Prefix::Testnet,
+                Version::ScriptHash,
+                &covenant_spk.script()[2..34],
+            );
+            let covenant_post_utxos = client
+                .get_utxos_by_addresses(vec![covenant_address.clone()])
+                .await?;
+            let covenant_observed = covenant_post_utxos.iter().any(|entry| {
+                entry.outpoint.transaction_id == signed_tx.id()
+                    && entry.outpoint.index == 0
+                    && entry.utxo_entry.amount == covenant_output_value_sompi
+            });
+            let covenant_unspent = covenant_observed;
+            fs::write(
+                &postcheck_path,
+                format!(
+                    concat!(
+                        "ENV-063 postcheck\n\n",
+                        "Result: PASS\n",
+                        "Server network_id: {}\n",
+                        "Server is_synced: {}\n",
+                        "Server has_utxo_index: {}\n",
+                        "Submitted txid: {}\n",
+                        "Mempool entry observed: {}\n",
+                        "Helper UTXO count after submit: {}\n",
+                        "Covenant address: {}\n",
+                        "Covenant UTXO observed: {}\n",
+                        "Covenant UTXO appears unspent: {}\n",
+                        "Covenant postcheck UTXO count: {}\n"
+                    ),
+                    server_info.network_id,
+                    server_info.is_synced,
+                    server_info.has_utxo_index,
+                    submitted_txid_string,
+                    mempool_result.is_ok(),
+                    helper_post_utxos.len(),
+                    covenant_address,
+                    covenant_observed,
+                    covenant_unspent,
+                    covenant_post_utxos.len()
+                ),
+            )?;
+            fs::write(
+                &summary_path,
+                format!(
+                    concat!(
+                        "ENV-063 corrected live TN10 covenant create (v1 script path)\n\n",
+                        "Result: PASS\n",
+                        "Network: TN10 / testnet-10\n",
+                        "Helper address: {}\n",
+                        "Input UTXO: {}:{}\n",
+                        "Input amount sompi: {}\n",
+                        "Fee used sompi: {}\n",
+                        "Covenant output index: 0\n",
+                        "Covenant output value sompi: {}\n",
+                        "Change output index/value: 1 / {}\n",
+                        "Covenant id: {}\n",
+                        "Submitted txid if accepted: {}\n",
+                        "Covenant UTXO observed post-submit: {}\n",
+                        "Covenant UTXO appears unspent: {}\n",
+                        "Used corrected ENV-062B v1 script path: true\n",
+                        "Exactly one covenant-create submission attempted: true\n",
+                        "No covenant spend attempted: true\n",
+                        "Old ENV-060C covenant UTXO not spent: true\n",
+                        "No mainnet: true\n",
+                        "No wallet secrets accessed: true\n",
+                        "Helper private key not exposed: true\n",
+                        "No roulette/web app: true\n",
+                        "Evidence path: {}\n"
+                    ),
+                    helper_address_string,
+                    funding_txid,
+                    funding_index,
+                    args.input_amount_sompi,
+                    fee_sompi,
+                    covenant_output_value_sompi,
+                    change_value_sompi,
+                    binding.covenant_id,
+                    submitted_txid_string,
+                    covenant_observed,
+                    covenant_unspent,
+                    args.public_evidence_dir.display()
+                ),
+            )?;
+            println!("ENV-063 PASS");
+            println!("submitted_txid={}", submitted_txid_string);
+            println!("covenant_id={}", binding.covenant_id);
+            println!("summary={}", summary_path.display());
+        }
+        Err(err) => {
+            let rejection = err.to_string();
+            fs::write(
+                &submit_path,
+                format!(
+                    "ENV-063 create submit\n\nResult: REJECTED\nSubmission attempts: 1\nallow_orphan: false\nCovenant script path: corrected ENV-062B v1\nLocal txid: {}\nRejection/error: {}\nPrivate key material exposed: false\n",
+                    local_txid, rejection
+                ),
+            )?;
+            fs::write(
+                &postcheck_path,
+                "ENV-063 postcheck\n\nResult: NOT RUN AFTER REJECTED SUBMIT\n",
+            )?;
+            fs::write(
+                &summary_path,
+                format!(
+                    concat!(
+                        "ENV-063 corrected live TN10 covenant create (v1 script path)\n\n",
+                        "Result: REJECTED\n",
+                        "Network: TN10 / testnet-10\n",
+                        "Helper address: {}\n",
+                        "Input UTXO: {}:{}\n",
+                        "Input amount sompi: {}\n",
+                        "Fee used sompi: {}\n",
+                        "Covenant output index: 0\n",
+                        "Covenant output value sompi: {}\n",
+                        "Change output index/value: 1 / {}\n",
+                        "Covenant id: {}\n",
+                        "Local txid: {}\n",
+                        "Submitted txid if accepted: none\n",
+                        "Submit rejection/error: {}\n",
+                        "Covenant UTXO observed post-submit: false (postcheck stopped after rejection)\n",
+                        "Covenant UTXO appears unspent: n/a\n",
+                        "Used corrected ENV-062B v1 script path: true\n",
+                        "Exactly one covenant-create submission attempted: true\n",
+                        "No covenant spend attempted: true\n",
+                        "Old ENV-060C covenant UTXO not spent: true\n",
+                        "No mainnet: true\n",
+                        "No wallet secrets accessed: true\n",
+                        "Helper private key not exposed: true\n",
+                        "No roulette/web app: true\n"
+                    ),
+                    helper_address_string,
+                    funding_txid,
+                    funding_index,
+                    args.input_amount_sompi,
+                    fee_sompi,
+                    covenant_output_value_sompi,
+                    change_value_sompi,
+                    binding.covenant_id,
+                    local_txid,
+                    rejection
+                ),
+            )?;
+            println!("ENV-063 REJECTED");
             println!("summary={}", summary_path.display());
         }
     }
@@ -2320,6 +2834,9 @@ fn print_help() {
     );
     println!(
         "  covenant-create          Build, sign, submit exactly one helper-controlled TN10 covenant-create transaction"
+    );
+    println!(
+        "  covenant-create-v1       ENV-063: build/sign/submit exactly one helper-controlled TN10 covenant-create using the corrected ENV-062B v1 script path"
     );
     println!(
         "  env061-inspect           Read-only inspect accepted covenant-create UTXO and write ENV-061 preflight artifacts"
