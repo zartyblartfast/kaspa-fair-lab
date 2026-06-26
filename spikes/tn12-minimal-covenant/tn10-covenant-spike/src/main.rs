@@ -44,6 +44,17 @@ const SOMPI_PER_TKAS: u64 = 100_000_000;
 const ENV059_SECRET_REL_DIR: &str = "local-secrets/env-059-helper-key";
 const ENV059_ARTIFACT_REL_DIR: &str = "artifacts/env-059-helper-controlled-covenant-preflight";
 const ENV060C_FEE_SOMPI: u64 = 300_000;
+const ENV061_ARTIFACT_REL_DIR: &str = "artifacts/env-061-covenant-utxo-inspection-spend-preflight";
+const ENV061_CREATE_TXID: &str = "f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d";
+const ENV061_COVENANT_OUTPUT_INDEX: u32 = 0;
+const ENV061_COVENANT_OUTPUT_VALUE_SOMPI: u64 = 100_000_000;
+const ENV061_EXPECTED_COVENANT_ID: &str =
+    "69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1";
+const ENV061_HELPER_ADDRESS: &str =
+    "kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld";
+const ENV061_HELPER_CHANGE_OUTPOINT_INDEX: u32 = 1;
+const ENV061_HELPER_CHANGE_VALUE_SOMPI: u64 = 199_700_000;
+const ENV061_FUTURE_SPEND_FEE_SOMPI: u64 = 300_000;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -52,6 +63,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         None | Some("env058-offline-scaffold") => run_env058()?,
         Some("env059-helper-key") => run_env059_helper_key()?,
         Some("covenant-create") => run_covenant_create(args.collect()).await?,
+        Some("env061-inspect") => run_env061_inspect().await?,
         Some("help") | Some("--help") | Some("-h") => print_help(),
         Some(other) => {
             return Err(format!(
@@ -960,6 +972,343 @@ async fn run_covenant_create(args: Vec<String>) -> Result<(), Box<dyn std::error
     Ok(())
 }
 
+async fn run_env061_inspect() -> Result<(), Box<dyn std::error::Error>> {
+    let artifact_dir = spike_root_dir().join(ENV061_ARTIFACT_REL_DIR);
+    fs::create_dir_all(&artifact_dir)?;
+    let server_info_path = artifact_dir.join("server-info.txt");
+    let inspection_path = artifact_dir.join("covenant-utxo-inspection.txt");
+    let preflight_path = artifact_dir.join("spend-preflight.txt");
+    let summary_path = artifact_dir.join("env-061-summary.txt");
+
+    let create_txid = hash_from_hex(ENV061_CREATE_TXID);
+    let covenant_script = build_covenant_script()?;
+    let covenant_spk = pay_to_script_hash_script(&covenant_script);
+    let covenant_address = Address::new(
+        Prefix::Testnet,
+        Version::ScriptHash,
+        &covenant_spk.script()[2..34],
+    );
+    let covenant_spk_hex = hex_encode(covenant_spk.script());
+    let helper_address = Address::try_from(ENV061_HELPER_ADDRESS)?;
+
+    let client = connect_tn10_client().await?;
+    let server_info = client.get_server_info().await?;
+    let server_ok = server_info.network_id.to_string() == "testnet-10"
+        && server_info.is_synced
+        && server_info.has_utxo_index;
+    fs::write(
+        &server_info_path,
+        format!(
+            concat!(
+                "ENV-061 public TN10 server info\n\n",
+                "Result: {}\n",
+                "network_id: {}\n",
+                "network_suffix_10_observed: {}\n",
+                "is_synced: {}\n",
+                "has_utxo_index: {}\n",
+                "virtual_daa_score: {}\n",
+                "server_version: {}\n",
+                "read_only_rpc_only: true\n"
+            ),
+            if server_ok { "PASS" } else { "BLOCKED" },
+            server_info.network_id,
+            server_info.network_id.to_string() == "testnet-10",
+            server_info.is_synced,
+            server_info.has_utxo_index,
+            server_info.virtual_daa_score,
+            server_info.server_version,
+        ),
+    )?;
+
+    let mempool_entry = client.get_mempool_entry(create_txid, false, false).await;
+    let mempool_observed = mempool_entry.is_ok();
+    let (mempool_tx_version, mempool_output_count, mempool_output0_covenant_id) =
+        match &mempool_entry {
+            Ok(entry) => {
+                let cov = entry
+                    .transaction
+                    .outputs
+                    .get(0)
+                    .and_then(|o| o.covenant)
+                    .map(|c| c.0.covenant_id.to_string());
+                (
+                    Some(entry.transaction.version),
+                    Some(entry.transaction.outputs.len()),
+                    cov,
+                )
+            }
+            Err(_) => (None, None, None),
+        };
+    let covenant_utxos = client
+        .get_utxos_by_addresses(vec![covenant_address.clone()])
+        .await?;
+    let helper_utxos = client
+        .get_utxos_by_addresses(vec![helper_address.clone()])
+        .await?;
+    let covenant_match = covenant_utxos.iter().find(|entry| {
+        entry.outpoint.transaction_id == create_txid
+            && entry.outpoint.index == ENV061_COVENANT_OUTPUT_INDEX
+            && entry.utxo_entry.amount == ENV061_COVENANT_OUTPUT_VALUE_SOMPI
+    });
+    let covenant_observed = covenant_match.is_some();
+    let covenant_unspent = covenant_observed;
+    let observed_covenant_id = covenant_match
+        .and_then(|entry| entry.utxo_entry.covenant_id)
+        .map(|id| id.to_string());
+    let covenant_id_matches_expected =
+        observed_covenant_id.as_deref() == Some(ENV061_EXPECTED_COVENANT_ID);
+    let helper_change_observed = helper_utxos.iter().any(|entry| {
+        entry.outpoint.transaction_id == create_txid
+            && entry.outpoint.index == ENV061_HELPER_CHANGE_OUTPOINT_INDEX
+            && entry.utxo_entry.amount == ENV061_HELPER_CHANGE_VALUE_SOMPI
+    });
+    let mempool_entries_result = client.get_mempool_entries(false, false).await;
+    let mempool_spend_seen = mempool_entries_result
+        .as_ref()
+        .map(|entries| {
+            entries.iter().any(|entry| {
+                entry.transaction.inputs.iter().any(|input| {
+                    input.previous_outpoint.transaction_id == create_txid
+                        && input.previous_outpoint.index == ENV061_COVENANT_OUTPUT_INDEX
+                })
+            })
+        })
+        .unwrap_or(false);
+    let mempool_entries_count = mempool_entries_result
+        .as_ref()
+        .map(|entries| entries.len())
+        .ok();
+
+    let result = if !server_ok {
+        "BLOCKED"
+    } else if covenant_observed && covenant_unspent {
+        "READY"
+    } else {
+        "PARTIAL"
+    };
+    let observed_covenant_id_display = observed_covenant_id
+        .as_deref()
+        .unwrap_or("not returned / not observed");
+    let mempool_output0_covenant_id_display = mempool_output0_covenant_id
+        .as_deref()
+        .unwrap_or("not returned / not in mempool");
+    let mempool_error_display = match &mempool_entry {
+        Ok(_) => "none".to_string(),
+        Err(err) => err.to_string(),
+    };
+
+    fs::write(
+        &inspection_path,
+        format!(
+            concat!(
+                "ENV-061 covenant UTXO inspection\n\n",
+                "Result: {}\n",
+                "Network: TN10 / testnet-10\n",
+                "Covenant-create txid: {}\n",
+                "Covenant UTXO outpoint: {}:{}\n",
+                "Covenant output amount sompi: {}\n",
+                "Covenant address: {}\n",
+                "Covenant script public key version: {}\n",
+                "Covenant script public key length: {}\n",
+                "Covenant script public key hex: {}\n",
+                "Redeem script length: {}\n",
+                "Expected covenant id from ENV-060C: {}\n",
+                "Observed UTXO covenant id: {}\n",
+                "Observed covenant id matches expected: {}\n",
+                "Covenant UTXO observed: {}\n",
+                "Covenant appears unspent: {}\n",
+                "Covenant address UTXO count: {}\n",
+                "Mempool entry for create tx observed: {}\n",
+                "Mempool entry error if absent: {}\n",
+                "Mempool tx version if observed: {:?}\n",
+                "Mempool tx output count if observed: {:?}\n",
+                "Mempool output0 covenant id if observed: {}\n",
+                "Mempool spend of covenant outpoint observed: {}\n",
+                "Mempool entries scanned count: {:?}\n",
+                "Helper change outpoint: {}:{}\n",
+                "Helper change value sompi: {}\n",
+                "Helper change observed: {}\n",
+                "Helper current UTXO count: {}\n",
+                "Read-only RPC only: true\n"
+            ),
+            result,
+            ENV061_CREATE_TXID,
+            ENV061_CREATE_TXID,
+            ENV061_COVENANT_OUTPUT_INDEX,
+            ENV061_COVENANT_OUTPUT_VALUE_SOMPI,
+            covenant_address,
+            covenant_spk.version(),
+            covenant_spk.script().len(),
+            covenant_spk_hex,
+            covenant_script.len(),
+            ENV061_EXPECTED_COVENANT_ID,
+            observed_covenant_id_display,
+            covenant_id_matches_expected,
+            covenant_observed,
+            covenant_unspent,
+            covenant_utxos.len(),
+            mempool_observed,
+            mempool_error_display,
+            mempool_tx_version,
+            mempool_output_count,
+            mempool_output0_covenant_id_display,
+            mempool_spend_seen,
+            mempool_entries_count,
+            ENV061_CREATE_TXID,
+            ENV061_HELPER_CHANGE_OUTPOINT_INDEX,
+            ENV061_HELPER_CHANGE_VALUE_SOMPI,
+            helper_change_observed,
+            helper_utxos.len(),
+        ),
+    )?;
+
+    let future_output_value =
+        ENV061_COVENANT_OUTPUT_VALUE_SOMPI.saturating_sub(ENV061_FUTURE_SPEND_FEE_SOMPI);
+    fs::write(
+        &preflight_path,
+        format!(
+            concat!(
+                "ENV-061 covenant-spend preflight for future ENV-062\n\n",
+                "Result: {}\n",
+                "This file is a plan only; no spend was signed or broadcast.\n\n",
+                "Future input covenant UTXO outpoint: {}:{}\n",
+                "Future input amount sompi: {}\n",
+                "Redeem script needed: same helper covenant script from build_covenant_script(); length {} bytes.\n",
+                "Unlock/signature script needed: push values satisfying the P2SH covenant script; exact byte-level sigscript still needs a local no-broadcast construction check before live signing.\n",
+                "Script constraints summarized: output count must be 1; output 0 SPK must equal input SPK; payload substring check must match expected transition data; outpoint txid relation is checked by the script.\n",
+                "Expected output state transition: one continuing covenant output to the same covenant script/address, with payload/unlock data proving the permitted transition.\n",
+                "Planned output count: 1\n",
+                "Planned output value sompi if fee is {}: {}\n",
+                "Planned fee sompi: {}\n",
+                "Planned change: none for the covenant input because script requires exactly one output; use output value = input - fee.\n",
+                "Helper key role: helper private key should not sign the covenant input unless the actual spend construction proves it is required; helper key may sign a separate helper fee input only if future ENV-062 explicitly approves adding one.\n",
+                "Expected tx version: {} (TX_VERSION_TOCCATA)\n",
+                "Expected covenant id/state after spend: continuing output should retain/bind the covenant id according to Toccata covenant rules; exact post-spend id/state must be confirmed by local construction and later read-only RPC.\n\n",
+                "Exact future command shape (do not run without ENV-062 approval):\n",
+                "cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-spend --network testnet-10 --covenant-utxo {}:{} --input-amount-sompi {} --covenant-id {} --fee-sompi {} --output-value-sompi {} --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/\n\n",
+                "Required ENV-062 prechecks before any signing/submission:\n",
+                "- git-reviewed ENV-061 evidence.\n",
+                "- public TN10 server info still testnet-10, synced, has UTXO index.\n",
+                "- covenant UTXO still observed at the exact outpoint and amount.\n",
+                "- local no-broadcast spend construction passes and records tx version/output count/covenant binding/sigscript shape.\n",
+                "- explicit approval for live covenant spend signing and exactly one submission.\n\n",
+                "Stop conditions:\n",
+                "- stop if network is not testnet-10/TN10.\n",
+                "- stop if server is not synced or lacks UTXO index.\n",
+                "- stop if covenant UTXO is absent, spent, amount-mismatched, or covenant id mismatched.\n",
+                "- stop if local no-broadcast spend construction cannot prove the exact sigscript/redeem data.\n",
+                "- stop before signing if approval is not explicit.\n",
+                "- stop before broadcast/submission unless exactly-one-submit approval is explicit.\n",
+                "- stop before mainnet, wallet-secret access, helper-private-key exposure, roulette, or web app work.\n"
+            ),
+            if covenant_observed {
+                "READY"
+            } else {
+                "PARTIAL"
+            },
+            ENV061_CREATE_TXID,
+            ENV061_COVENANT_OUTPUT_INDEX,
+            ENV061_COVENANT_OUTPUT_VALUE_SOMPI,
+            covenant_script.len(),
+            ENV061_FUTURE_SPEND_FEE_SOMPI,
+            future_output_value,
+            ENV061_FUTURE_SPEND_FEE_SOMPI,
+            TX_VERSION_TOCCATA,
+            ENV061_CREATE_TXID,
+            ENV061_COVENANT_OUTPUT_INDEX,
+            ENV061_COVENANT_OUTPUT_VALUE_SOMPI,
+            ENV061_EXPECTED_COVENANT_ID,
+            ENV061_FUTURE_SPEND_FEE_SOMPI,
+            future_output_value,
+        ),
+    )?;
+
+    fs::write(
+        &summary_path,
+        format!(
+            concat!(
+                "ENV-061 read-only covenant UTXO inspection and covenant-spend preflight\n\n",
+                "Result: {}\n",
+                "Network: TN10 / testnet-10\n",
+                "Covenant-create txid: {}\n",
+                "Covenant UTXO outpoint: {}:{}\n",
+                "Covenant output amount sompi: {}\n",
+                "Covenant id: {}\n",
+                "Covenant UTXO observed: {}\n",
+                "Covenant appears unspent: {}\n",
+                "Helper address: {}\n",
+                "Helper change output, if any: {}:{} value {} sompi; observed={}\n",
+                "Fee used by ENV-060C: {} sompi\n",
+                "Create tx still in mempool: {}\n",
+                "No covenant spend observed by read-only checks: {}\n\n",
+                "Future ENV-062 spend strategy:\n",
+                "- spend the covenant UTXO only after explicit approval; construct a version-1 Toccata transaction with exactly one continuing covenant output to the same covenant SPK, no change from the covenant input, and output value input minus fee.\n",
+                "- first add/prove a local no-broadcast covenant-spend construction path so the exact sigscript/unlock bytes are known before live signing.\n",
+                "- keep allow_orphan=false and exactly one submission if later approved.\n\n",
+                "Exact future command shape:\n",
+                "cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-spend --network testnet-10 --covenant-utxo {}:{} --input-amount-sompi {} --covenant-id {} --fee-sompi {} --output-value-sompi {} --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/\n\n",
+                "Remaining risks/unknowns:\n",
+                "- exact covenant-spend sigscript/unlock data has not yet been implemented/proven locally.\n",
+                "- whether a future spend preserves/rebinds covenant id/state exactly as expected must be verified by local construction and then read-only postcheck after any approved live spend.\n",
+                "- public-node mempool entry for the create may disappear after mining; UTXO observation is the stronger unspent evidence.\n\n",
+                "Stop conditions:\n",
+                "- stop if network is not TN10/testnet-10.\n",
+                "- stop if server is not synced or lacks UTXO index.\n",
+                "- stop if covenant UTXO is absent, spent, amount-mismatched, or covenant id mismatched.\n",
+                "- stop before signing or broadcasting without explicit ENV-062 approval.\n",
+                "- stop before private key exposure, mainnet, roulette, or web app work.\n\n",
+                "Safety confirmations:\n",
+                "- no signing: true\n",
+                "- no broadcast: true\n",
+                "- no covenant spend: true\n",
+                "- no UTXO spent: true\n",
+                "- no mainnet: true\n",
+                "- no private key exposed: true\n",
+                "- no roulette/web app: true\n\n",
+                "Evidence files:\n",
+                "- {}\n",
+                "- {}\n",
+                "- {}\n",
+                "- {}\n"
+            ),
+            result,
+            ENV061_CREATE_TXID,
+            ENV061_CREATE_TXID,
+            ENV061_COVENANT_OUTPUT_INDEX,
+            ENV061_COVENANT_OUTPUT_VALUE_SOMPI,
+            observed_covenant_id
+                .as_deref()
+                .unwrap_or(ENV061_EXPECTED_COVENANT_ID),
+            covenant_observed,
+            covenant_unspent,
+            ENV061_HELPER_ADDRESS,
+            ENV061_CREATE_TXID,
+            ENV061_HELPER_CHANGE_OUTPOINT_INDEX,
+            ENV061_HELPER_CHANGE_VALUE_SOMPI,
+            helper_change_observed,
+            ENV060C_FEE_SOMPI,
+            mempool_observed,
+            covenant_unspent && !mempool_spend_seen,
+            ENV061_CREATE_TXID,
+            ENV061_COVENANT_OUTPUT_INDEX,
+            ENV061_COVENANT_OUTPUT_VALUE_SOMPI,
+            ENV061_EXPECTED_COVENANT_ID,
+            ENV061_FUTURE_SPEND_FEE_SOMPI,
+            future_output_value,
+            summary_path.display(),
+            server_info_path.display(),
+            inspection_path.display(),
+            preflight_path.display(),
+        ),
+    )?;
+    client.disconnect().await.ok();
+    println!("ENV-061 {}", result);
+    println!("summary={}", summary_path.display());
+    println!("covenant_utxo_observed={}", covenant_observed);
+    println!("covenant_unspent={}", covenant_unspent);
+    Ok(())
+}
+
 fn parse_covenant_create_args(
     args: Vec<String>,
 ) -> Result<CovenantCreateArgs, Box<dyn std::error::Error>> {
@@ -1047,6 +1396,9 @@ fn print_help() {
     );
     println!(
         "  covenant-create          Build, sign, submit exactly one helper-controlled TN10 covenant-create transaction"
+    );
+    println!(
+        "  env061-inspect           Read-only inspect accepted covenant-create UTXO and write ENV-061 preflight artifacts"
     );
 }
 

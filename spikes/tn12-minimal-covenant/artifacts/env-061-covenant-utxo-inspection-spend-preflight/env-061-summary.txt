@@ -1,0 +1,50 @@
+ENV-061 read-only covenant UTXO inspection and covenant-spend preflight
+
+Result: READY
+Network: TN10 / testnet-10
+Covenant-create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Covenant UTXO outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+Covenant output amount sompi: 100000000
+Covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Covenant UTXO observed: true
+Covenant appears unspent: true
+Helper address: kaspatest:qzn7auhpkdladk9m20f02dz46clvv7whgumgrm4pex4djesaued0g9wutcqld
+Helper change output, if any: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:1 value 199700000 sompi; observed=true
+Fee used by ENV-060C: 300000 sompi
+Create tx still in mempool: false
+No covenant spend observed by read-only checks: true
+
+Future ENV-062 spend strategy:
+- spend the covenant UTXO only after explicit approval; construct a version-1 Toccata transaction with exactly one continuing covenant output to the same covenant SPK, no change from the covenant input, and output value input minus fee.
+- first add/prove a local no-broadcast covenant-spend construction path so the exact sigscript/unlock bytes are known before live signing.
+- keep allow_orphan=false and exactly one submission if later approved.
+
+Exact future command shape:
+cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-spend --network testnet-10 --covenant-utxo f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0 --input-amount-sompi 100000000 --covenant-id 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1 --fee-sompi 300000 --output-value-sompi 99700000 --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/
+
+Remaining risks/unknowns:
+- exact covenant-spend sigscript/unlock data has not yet been implemented/proven locally.
+- whether a future spend preserves/rebinds covenant id/state exactly as expected must be verified by local construction and then read-only postcheck after any approved live spend.
+- public-node mempool entry for the create may disappear after mining; UTXO observation is the stronger unspent evidence.
+
+Stop conditions:
+- stop if network is not TN10/testnet-10.
+- stop if server is not synced or lacks UTXO index.
+- stop if covenant UTXO is absent, spent, amount-mismatched, or covenant id mismatched.
+- stop before signing or broadcasting without explicit ENV-062 approval.
+- stop before private key exposure, mainnet, roulette, or web app work.
+
+Safety confirmations:
+- no signing: true
+- no broadcast: true
+- no covenant spend: true
+- no UTXO spent: true
+- no mainnet: true
+- no private key exposed: true
+- no roulette/web app: true
+
+Evidence files:
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-061-covenant-utxo-inspection-spend-preflight/env-061-summary.txt
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-061-covenant-utxo-inspection-spend-preflight/server-info.txt
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-061-covenant-utxo-inspection-spend-preflight/covenant-utxo-inspection.txt
+- /root/kaspa-fair-lab/spikes/tn12-minimal-covenant/artifacts/env-061-covenant-utxo-inspection-spend-preflight/spend-preflight.txt

@@ -1,0 +1,10 @@
+ENV-061 public TN10 server info
+
+Result: PASS
+network_id: testnet-10
+network_suffix_10_observed: true
+is_synced: true
+has_utxo_index: true
+virtual_daa_score: 501090696
+server_version: 2.0.1
+read_only_rpc_only: true

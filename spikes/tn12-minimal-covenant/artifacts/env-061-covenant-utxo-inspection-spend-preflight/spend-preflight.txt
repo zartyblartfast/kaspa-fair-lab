@@ -1,0 +1,37 @@
+ENV-061 covenant-spend preflight for future ENV-062
+
+Result: READY
+This file is a plan only; no spend was signed or broadcast.
+
+Future input covenant UTXO outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+Future input amount sompi: 100000000
+Redeem script needed: same helper covenant script from build_covenant_script(); length 35 bytes.
+Unlock/signature script needed: push values satisfying the P2SH covenant script; exact byte-level sigscript still needs a local no-broadcast construction check before live signing.
+Script constraints summarized: output count must be 1; output 0 SPK must equal input SPK; payload substring check must match expected transition data; outpoint txid relation is checked by the script.
+Expected output state transition: one continuing covenant output to the same covenant script/address, with payload/unlock data proving the permitted transition.
+Planned output count: 1
+Planned output value sompi if fee is 300000: 99700000
+Planned fee sompi: 300000
+Planned change: none for the covenant input because script requires exactly one output; use output value = input - fee.
+Helper key role: helper private key should not sign the covenant input unless the actual spend construction proves it is required; helper key may sign a separate helper fee input only if future ENV-062 explicitly approves adding one.
+Expected tx version: 1 (TX_VERSION_TOCCATA)
+Expected covenant id/state after spend: continuing output should retain/bind the covenant id according to Toccata covenant rules; exact post-spend id/state must be confirmed by local construction and later read-only RPC.
+
+Exact future command shape (do not run without ENV-062 approval):
+cargo run --manifest-path spikes/tn12-minimal-covenant/tn10-covenant-spike/Cargo.toml -- covenant-spend --network testnet-10 --covenant-utxo f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0 --input-amount-sompi 100000000 --covenant-id 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1 --fee-sompi 300000 --output-value-sompi 99700000 --submit --public-evidence-dir spikes/tn12-minimal-covenant/artifacts/env-062-live-covenant-spend/
+
+Required ENV-062 prechecks before any signing/submission:
+- git-reviewed ENV-061 evidence.
+- public TN10 server info still testnet-10, synced, has UTXO index.
+- covenant UTXO still observed at the exact outpoint and amount.
+- local no-broadcast spend construction passes and records tx version/output count/covenant binding/sigscript shape.
+- explicit approval for live covenant spend signing and exactly one submission.
+
+Stop conditions:
+- stop if network is not testnet-10/TN10.
+- stop if server is not synced or lacks UTXO index.
+- stop if covenant UTXO is absent, spent, amount-mismatched, or covenant id mismatched.
+- stop if local no-broadcast spend construction cannot prove the exact sigscript/redeem data.
+- stop before signing if approval is not explicit.
+- stop before broadcast/submission unless exactly-one-submit approval is explicit.
+- stop before mainnet, wallet-secret access, helper-private-key exposure, roulette, or web app work.

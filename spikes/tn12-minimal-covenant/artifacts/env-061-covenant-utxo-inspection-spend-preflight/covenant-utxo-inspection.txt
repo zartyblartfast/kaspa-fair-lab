@@ -1,0 +1,30 @@
+ENV-061 covenant UTXO inspection
+
+Result: READY
+Network: TN10 / testnet-10
+Covenant-create txid: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d
+Covenant UTXO outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:0
+Covenant output amount sompi: 100000000
+Covenant address: kaspatest:prafcnqu0h6zz23pef3cdvvsjxhkj87mnprtva0crnvee6vmcc4pkjck849ef
+Covenant script public key version: 0
+Covenant script public key length: 35
+Covenant script public key hex: aa20fa9c4c1c7df4212a21ca6386b19091af691fdb9846b675f81cd99ce99bc62a1b87
+Redeem script length: 35
+Expected covenant id from ENV-060C: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Observed UTXO covenant id: 69a36c409aa9d71304d2fb08f4e4c6e7d979a81db019d589d8e979d594ceb3d1
+Observed covenant id matches expected: true
+Covenant UTXO observed: true
+Covenant appears unspent: true
+Covenant address UTXO count: 1
+Mempool entry for create tx observed: false
+Mempool entry error if absent: RPC Server (remote error) -> Transaction f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d not found
+Mempool tx version if observed: None
+Mempool tx output count if observed: None
+Mempool output0 covenant id if observed: not returned / not in mempool
+Mempool spend of covenant outpoint observed: false
+Mempool entries scanned count: Some(5082)
+Helper change outpoint: f4941c478e9540c477e04d0a2dff7ab1b0d0d794a3ae453c8148d25d125fe53d:1
+Helper change value sompi: 199700000
+Helper change observed: true
+Helper current UTXO count: 1
+Read-only RPC only: true
